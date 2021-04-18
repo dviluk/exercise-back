@@ -16,21 +16,19 @@ class TagResource extends JsonResource
     public function formatter($resource, array $options): array
     {
         if (isset($options['embed'])) {
-            $format = [
+            return [
                 'id' => $resource->id,
                 'name' => $resource->name,
-            ];
-        } else {
-            $format = [
-                'id' => $resource->id,
-                'name' => $resource->name,
-                'description' => $resource->description,
-                'created_at' => $resource->created_at,
-                'updated_at' => $resource->updated_at,
-                'deleted_at' => $resource->deleted_at,
             ];
         }
 
-        return $format;
+        return  [
+            'id' => $resource->id,
+            'name' => $resource->name,
+            'description' => $resource->description,
+            'created_at' => $resource->created_at,
+            'updated_at' => $resource->updated_at,
+            'deleted_at' => $resource->deleted_at,
+        ];
     }
 }
