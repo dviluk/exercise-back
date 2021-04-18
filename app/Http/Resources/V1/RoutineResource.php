@@ -15,6 +15,14 @@ class RoutineResource extends JsonResource
      */
     public function formatter($resource, array $options): array
     {
+        if (isset($options['embed'])) {
+            return [
+                'id' => $resource->id,
+                'name' => $resource->name,
+                'description' => $resource->description,
+            ];
+        }
+
         $format = [
             'id' => $resource->id,
             'name' => $resource->name,

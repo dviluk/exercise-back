@@ -16,7 +16,10 @@ namespace App\Models{
  *
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel newQuery()
+ * @method static \Illuminate\Database\Query\Builder|BaseModel onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|BaseModel query()
+ * @method static \Illuminate\Database\Query\Builder|BaseModel withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|BaseModel withoutTrashed()
  */
 	class BaseModel extends \Eloquent {}
 }
@@ -155,16 +158,51 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\Plan
+ *
+ * @property string $id
+ * @property string $name
+ * @property string $difficulty_id
+ * @property string $introduction
+ * @property string $description
+ * @property string $instructions
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\Difficulty $difficulty
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Goal[] $goals
+ * @property-read int|null $goals_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Routine[] $routines
+ * @property-read int|null $routines_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Plan newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Plan newQuery()
+ * @method static \Illuminate\Database\Query\Builder|Plan onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Plan query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Plan whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Plan whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Plan whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Plan whereDifficultyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Plan whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Plan whereInstructions($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Plan whereIntroduction($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Plan whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Plan whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|Plan withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Plan withoutTrashed()
+ */
+	class Plan extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Routine
  *
  * @property string $id
- * @property string $difficulty_id
  * @property string $name
  * @property string $description
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \App\Models\Difficulty $difficulty
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Workout[] $workouts
  * @property-read int|null $workouts_count
  * @method static \Illuminate\Database\Eloquent\Builder|Routine newModelQuery()
@@ -173,7 +211,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Routine whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Routine whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Routine whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Routine whereDifficultyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Routine whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Routine whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Routine whereUpdatedAt($value)
@@ -206,6 +243,29 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Tag whereUpdatedAt($value)
  */
 	class Tag extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\Unit
+ *
+ * @property string $id
+ * @property string $name
+ * @property string $description
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit whereUpdatedAt($value)
+ */
+	class Unit extends \Eloquent {}
 }
 
 namespace App\Models{
