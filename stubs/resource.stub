@@ -2,18 +2,26 @@
 
 namespace {{ namespace }};
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use App\Utils\Json\JsonResource;
 
 class {{ class }} extends JsonResource
 {
     /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * Da formato al recurso.
+     * 
+     * @param mixed $resource 
+     * @param array $options 
+     * @return array 
      */
-    public function toArray($request)
+    public function formatter($resource, array $options): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $resource->id,
+            'name' => $resource->name,
+            'description' => $resource->description,
+            'created_at' => $resource->created_at,
+            'updated_at' => $resource->updated_at,
+            'deleted_at' => $resource->deleted_at,
+        ];
     }
 }

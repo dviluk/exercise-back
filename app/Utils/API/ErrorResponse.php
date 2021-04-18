@@ -34,7 +34,7 @@ class ErrorResponse extends Exception implements ErrorResponseInterface
      */
     protected $extra;
 
-    public function __construct(array $extra = [], ?string $message, string $response)
+    public function __construct(array $extra = [], ?string $message = 'Error Response message', ?string $response = 'Error')
     {
         $this->response = $response;
         $this->extra = $extra;

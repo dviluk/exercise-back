@@ -1,62 +1,79 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Exercise
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Resumen
 
-## About Laravel
+Es un entrenador personal ([Trainer]) para aquellas personas que están entrando al mundo del fitness.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Conceptos
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+-   Workout (Entrenamiento)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+    Es el entrenamiento básico (planchas, sentadillas, etc).
 
-## Learning Laravel
+-   Routine (Rutina diaria)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+    Conjunto de ejercicios a ejecutar de manera secuencial.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+-   Guide (Guiá)
 
-## Laravel Sponsors
+    Es la programación de las rutinas.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Características
 
-### Premium Partners
+Para facilitar las sesiones de fitness, [Trainer] te ayuda a:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/)**
-- **[OP.GG](https://op.gg)**
+-   **Recomendarte entrenamiento según tus condiciones (físicas) o las ganas**:
 
-## Contributing
+    Mediante un quiz se recolectara información del usuario para poder ofrecerle entrenamientos adecuados. Nivel de dificultad, variación o según ubicación donde se encuentra haciendo el entrenamiento (trabajo, gym, hogar, etc).
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    También se agregaran entrenamientos según animes, películas, etc. Ejemplo el entrenamiento de one punch man o retos.
 
-## Code of Conduct
+-   **Crear entrenamientos personalizados**:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+    Cuando el usuario tenga experiencia en fitness podrá crear sus propios entrenamientos y compartilos con los demás.
 
-## Security Vulnerabilities
+-   **Ejecución de los entrenamientos**:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+    [Trainer] te guiara durante toda la sesión del entrenamiento mostrándote como se realiza (ilustraciones, videos, etc), los tiempos (ejecución y descanso), frases para alentar, entre otros.
 
-## License
+    Posiblemente se agregaran modos al [Trainer], ejemplo, [Trainer] sera mas agresivo llamandote gordo, [Trainer] que suene robotics pero divertido o cosas por el estilo si es que el usuario lo decide.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+    Challenge mode, se ejecutaran todos los ejercicios del entrenamiento según el nivel del reto (principiante, intermedio, difícil), sin limite de tiempo o cosas por el estilo.
+
+-   **Administración de los entrenamientos y resultados**:
+
+    Se registraran todos los entrenamientos realizados y resultados. Se le facilitara el llevar el control de peso, medidas y calorías que consume.
+
+-   **Guiás alimenticias**:
+
+    Mediante un quiz se recolectara información del usuario. Se le notificara que es mejor consultar un nutriologo.
+
+-   **Multiplataforma**:
+
+    Windows, Linux, iOS, Android, Web
+
+## Database
+
+-   difficulties
+-   muscles
+-   tags
+-   goals
+-   equipment
+-   workouts
+    -   workout_id: variation of exercise
+    -   cover
+    -   name
+    -   description
+    -   difficulty
+-   routines
+    -   name
+    -   description
+    -   difficulty
+-   workout_equipment
+-   workout_muscle
+-   routine_workout
+-   guides
+-   guide_routine
+-   guide_goal
+
+## TODO

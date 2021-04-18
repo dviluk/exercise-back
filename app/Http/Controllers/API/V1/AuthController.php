@@ -1,32 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\UserResource;
 use App\Models\User;
 use App\Utils\API;
 use Auth;
 use CurrentUser;
+use DB;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    public function test()
-    {
-        return API::response200();
-    }
-
     public function me()
     {
         $user = CurrentUser::get();
 
-        return API::response200([
-            'data' => [
-                'id' => (int) $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-            ]
-        ]);
+        return new UserResource($user);
     }
 
     public function register(Request $request)
@@ -37,17 +28,27 @@ class AuthController extends Controller
             'password' => 'required|string|min:6|confirmed'
         ]);
 
-        $user = User::create([
-            'name' => $attr['name'],
-            'password' => bcrypt($attr['password']),
-            'email' => $attr['email']
-        ]);
+        DB::beginTransaction();
+        try {
+            $user = User::create([
+                'name' => $attr['name'],
+                'password' => bcrypt($attr['password']),
+                'email' => $attr['email']
+            ]);
 
-        return API::response200([
-            'data' => [
-                'token' => $user->createToken('API Token')->plainTextToken
-            ]
-        ]);
+            $token = $user->createToken('API Token')->plainTextToken;
+
+            DB::commit();
+
+            return API::response200([
+                'data' => [
+                    'token' => $token,
+                ]
+            ]);
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 
     public function login(Request $request)
@@ -58,7 +59,7 @@ class AuthController extends Controller
         ]);
 
         if (!Auth::attempt($attr)) {
-            return $this->error('Credentials not match', 401);
+            return API::response401([], 'Credentials not match');
         }
 
         return API::response200([

@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Utils\API\Error404;
 use App\Utils\API\Error500;
-use App\Utils\Lang;
 use Closure;
 use DB;
 use Eloquent;
@@ -14,6 +13,9 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
+use App\Enums\ManyToManyAction;
+use App\Utils\ArrayUtils;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Throwable;
 
 /**
@@ -37,18 +39,18 @@ class Repository
      * @var \Eloquent|string
      */
     protected $model;
+
     /**
-     * @var \Eloquent
+     * Clase del modelo.
+     * 
+     * @var string
      */
-    protected $modelInstance;
+    protected $modelClass;
 
     /**
      * Indica por que columna ordenar los resultados.
      * 
-     * ['column', 'asc'|'desc', ?'localized']
-     * 
-     * (opcional) Si se indica `localized` se buscara la columna en la db según el idioma actual de 
-     * la aplicación.
+     * ['column', 'asc'|'desc']
      * 
      * Ej. Se pasa la columna `product`, se ordenara por la columna `product_en` si la
      * aplicación esta en ingles.
@@ -63,9 +65,9 @@ class Repository
     {
         $this->validateModel();
 
+        $this->modelClass = $this->model;
         // Se crea instancia del modelo
         $this->model = new $this->model;
-        $this->modelInstance = $this->model;
     }
 
     /**
@@ -115,14 +117,8 @@ class Repository
 
         $columnId = $this->model->getKeyName();
 
-        if (is_array($this->orderBy) && count($this->orderBy) >= 2) {
-            $localize = isset($this->orderBy[2]) && $this->orderBy[2] === 'localized';
-
+        if (is_array($this->orderBy) && count($this->orderBy) === 2) {
             $column = $this->orderBy[0];
-
-            if ($localize) {
-                $column = Lang::dbColumn($column);
-            }
 
             $query->orderBy($column, $this->orderBy[1]);
         }
@@ -264,8 +260,10 @@ class Repository
         }
 
         $columns = $options['columns'] ?? $this->defaultColumns;
+        $pageName = $options['pageName'] ?? 'page';
+        $page = $options['page'] ?? null;
 
-        return $query->paginate($perPage, $columns);
+        return $query->paginate($perPage, $columns, $pageName, $page);
     }
 
     /**
@@ -288,6 +286,13 @@ class Repository
      */
     public function find($id, array $options = [])
     {
+        // El id puede ser una instancia del modelo principal,
+        // eso quiere decir que se puede continuar usando el modelo
+        // anteriormente consultado.
+        if ($id instanceof $this->modelClass) {
+            return $id;
+        }
+
         $query = $this->query(array_merge($options, ['find' => $id]));
 
         $columns = $options['columns'] ?? $this->defaultColumns;
@@ -337,6 +342,8 @@ class Repository
     {
         DB::beginTransaction();
         try {
+            $data = ArrayUtils::preserveKeys($data, $this->availableInputKeys($data));
+
             $this->canCreate($data);
 
             $item = $this->model::create($data);
@@ -375,6 +382,8 @@ class Repository
     {
         DB::beginTransaction();
         try {
+            $data = ArrayUtils::preserveKeys($data, $this->availableInputKeys($data, true));
+
             $item = $this->findOrFail($id, $options);
 
             $this->canUpdate($item, $data);
@@ -415,16 +424,11 @@ class Repository
     {
         DB::beginTransaction();
         try {
-            $item = $this->find($id, $options);
-
-            // validar que el registro exista
-            if (!$item) {
-                throw new Error404();
-            }
+            $item = $this->findOrFail($id, $options);
 
             $this->canDelete($item);
 
-            $forceDelete = $options['force_delete'] ?? false;
+            $forceDelete = $options['forceDelete'] ?? false;
 
             if (in_array('Illuminate\Database\Eloquent\SoftDeletes', class_uses($item)) && $forceDelete === true) {
                 $item->forceDelete();
@@ -459,5 +463,83 @@ class Repository
         if (!is_string($this->model)) {
             throw new \Error('`$this->model` not valid:' . $this->model);
         }
+    }
+
+    /**
+     * Acciones básicas para una relación many-to-many.
+     * 
+     * @param \Illuminate\Database\Eloquent\Relations\BelongsToMany $relation 
+     * @param \App\Enums\ManyToManyAction $action 
+     * @param array $data 
+     * @param bool $isArrayOfIds Indica si $data contiene solo ids 
+     * @return array 
+     */
+    protected function manyToManyActions(BelongsToMany $relation, ManyToManyAction $action, array $data, bool $isArrayOfIds = true)
+    {
+        $isAttachAction = $action->equals(ManyToManyAction::ATTACH());
+
+        // Cuando es un AttachAction y no se tienen datos, se finaliza el proceso
+        if ($isAttachAction && count($data) === 0) {
+            return [];
+        }
+
+        $isSyncAction = $action->equals(ManyToManyAction::SYNC());
+
+        $isInsertAction = $isAttachAction || $isSyncAction;
+
+        // Cuando los datos no son un array de solo Ids, se le da formato de tal manera
+        // cumpla con [$id => [$pivotData]]
+        if (!$isArrayOfIds && $isInsertAction) {
+            $data = ArrayUtils::formatPivotData($data);
+        }
+
+        // Cuando es un AttachAction, se omiten los items que ya existen
+        if ($isAttachAction) {
+            $currentIds = $relation->pluck('id')->toArray();
+
+            if ($isArrayOfIds) {
+                $data = ArrayUtils::omitValues($data, $currentIds);
+            } else {
+                $data = ArrayUtils::omitKeys($data, $currentIds);
+            }
+        }
+
+        if ($isArrayOfIds) {
+            $changes = $data;
+        } else {
+            $changes = array_keys($data);
+        }
+
+        switch ($action) {
+            case ManyToManyAction::ATTACH():
+                $relation->attach($data);
+                break;
+            case ManyToManyAction::DETACH():
+                $relation->detach($data);
+                break;
+            case ManyToManyAction::DETACH_ALL():
+                $relation->detach();
+                break;
+            case ManyToManyAction::SYNC():
+                $changes = $relation->sync($data);
+                break;
+            default:
+                throw new Error500([], $action . ': Action not found');
+        }
+
+        return $changes;
+    }
+
+    /**
+     * Contiene los keys de los posibles valores del atributo $data
+     * en el método `create` y `update`.
+     * 
+     * @param array $data
+     * @param bool $updating Indica si el método se esta llamando desde `update`.
+     * @return array
+     */
+    protected function availableInputKeys(array $data, bool $updating = false): array
+    {
+        return [];
     }
 }

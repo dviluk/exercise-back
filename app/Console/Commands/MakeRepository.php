@@ -29,6 +29,11 @@ class MakeRepository extends GeneratorCommand
      */
     protected $type = 'class';
 
+    private function buildNamespaceFor($classPath, $namespace)
+    {
+        return $this->rootNamespace() . $namespace . '\\' . $classPath;
+    }
+
     /**
      * Execute the console command.
      *
@@ -45,6 +50,7 @@ class MakeRepository extends GeneratorCommand
             return false;
         }
 
+        $model = $this->buildNamespaceFor($model, 'Models');
         if (!class_exists($model)) {
             $this->error('Model `' . $model . '` not exist!');
             return false;
@@ -53,7 +59,7 @@ class MakeRepository extends GeneratorCommand
         $namespaceArr = explode('/', $this->getNameInput());
         $classNameIndex = count($namespaceArr) - 1;
         $className = $namespaceArr[$classNameIndex];
-        $className = $this->repositoryName($className);
+        $className = $this->buildFileName($className);
         $namespaceArr[$classNameIndex] = $className;
         $namespace = implode('\\', $namespaceArr);
 
@@ -83,7 +89,7 @@ class MakeRepository extends GeneratorCommand
         $this->info($this->type . ' created successfully.');
     }
 
-    private function repositoryName(string $name)
+    private function buildFileName(string $name)
     {
         if (strpos($name, 'Repository') === false) {
             $name .= 'Repository';
@@ -111,7 +117,7 @@ class MakeRepository extends GeneratorCommand
         $stub = str_replace('RepositoryName', $className, $stub);
         $stub = str_replace('namespace App\\Repositories;', $namespace, $stub);
 
-        $modelNamespace = $this->option('model');
+        $modelNamespace = $this->buildNamespaceFor($this->option('model'), 'Models');
         $modelNamespaceArr = explode('\\', $modelNamespace);
 
         $modelName = $modelNamespaceArr[count($modelNamespaceArr) - 1];

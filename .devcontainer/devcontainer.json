@@ -1,5 +1,5 @@
 {
-    "name": "Audits",
+    "name": "Exercise",
     "dockerComposeFile": "../docker-compose.yml",
     "service": "laravel",
     "remoteUser": "sail",
