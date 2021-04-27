@@ -21,7 +21,8 @@
         "mehedidracula.php-namespace-resolver",
         "vs-publisher-988541.apexsql-power-tools",
         "gruntfuggly.todo-tree",
-        "k--kato.intellij-idea-keybindings"
+        "k--kato.intellij-idea-keybindings",
+        "rangav.vscode-thunder-client"
     ],
     "settings": {
         "terminal.integrated.shell.linux": "/bin/bash",
