@@ -110,7 +110,7 @@ class UsersRepository extends Repository
      * @throws \Exception
      * @throws \Throwable
      */
-    public function create(array $data)
+    public function create(array $data, array $options = [])
     {
         if (isset($data['password'])) {
             $data['password'] = bcrypt($data['password']);

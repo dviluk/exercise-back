@@ -115,7 +115,7 @@ class PlansRepository extends Repository
      * @throws \Exception
      * @throws \Throwable
      */
-    public function create(array $data)
+    public function create(array $data, array $options = [])
     {
         DB::beginTransaction();
         try {

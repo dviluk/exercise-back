@@ -108,7 +108,7 @@ class GoalsRepository extends Repository
      * @throws \Exception
      * @throws \Throwable
      */
-    public function create(array $data)
+    public function create(array $data, array $options = [])
     {
         return parent::create($data);
     }

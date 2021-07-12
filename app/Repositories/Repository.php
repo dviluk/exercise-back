@@ -187,6 +187,21 @@ class Repository
     }
 
     /**
+     * Prepara los datos antes de insertar/actualizar un registro.
+     * 
+     * Se ejecuta antes de request validator.
+     * 
+     * @param array $data 
+     * @param string $method 
+     * @param array $options 
+     * @return array 
+     */
+    public function prepareData(array $data, string $method, array $options = [])
+    {
+        return $data;
+    }
+
+    /**
      * Permite encargarse de las opciones adicionales.
      *
      * @param Builder $builder
@@ -338,10 +353,12 @@ class Repository
      * @throws Exception
      * @throws Throwable
      */
-    public function create(array $data)
+    public function create(array $data, array $options = [])
     {
         DB::beginTransaction();
         try {
+            $data = $this->prepareData($data, 'create', $options);
+
             $data = ArrayUtils::preserveKeys($data, $this->availableInputKeys($data));
 
             $this->canCreate($data);
@@ -382,6 +399,8 @@ class Repository
     {
         DB::beginTransaction();
         try {
+            $data = $this->prepareData($data, 'update', $options);
+
             $data = ArrayUtils::preserveKeys($data, $this->availableInputKeys($data, true));
 
             $item = $this->findOrFail($id, $options);
