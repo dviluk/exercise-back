@@ -2,8 +2,11 @@
 
 namespace App\Repositories;
 
+use App\Enums\ManyToManyAction;
 use App\Utils\API\Error404;
 use App\Utils\API\Error500;
+use App\Utils\ArrayUtils;
+use App\Utils\LangUtils;
 use Closure;
 use DB;
 use Eloquent;
@@ -11,11 +14,9 @@ use Error;
 use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
-use App\Enums\ManyToManyAction;
-use App\Utils\ArrayUtils;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Throwable;
 
 /**
@@ -33,24 +34,22 @@ class Repository
      * protected $model = Model::class;
      * ```
      *
-     * Al instanciar el repositorio, el modelo `$this->model`
-     * se instancia.
-     *
-     * @var \Eloquent|string
+     * @var string
      */
     protected $model;
 
     /**
-     * Clase del modelo.
-     * 
-     * @var string
+     * @var \Eloquent
      */
-    protected $modelClass;
+    protected $modelInstance;
 
     /**
      * Indica por que columna ordenar los resultados.
      * 
-     * ['column', 'asc'|'desc']
+     * ['column', 'asc'|'desc', ?'localized']
+     * 
+     * (opcional) Si se indica `localized` se buscara la columna en la db según el idioma actual de 
+     * la aplicación.
      * 
      * Ej. Se pasa la columna `product`, se ordenara por la columna `product_en` si la
      * aplicación esta en ingles.
@@ -65,9 +64,8 @@ class Repository
     {
         $this->validateModel();
 
-        $this->modelClass = $this->model;
         // Se crea instancia del modelo
-        $this->model = new $this->model;
+        $this->modelInstance = new $this->model;
     }
 
     /**
@@ -113,12 +111,18 @@ class Repository
      */
     private function initQuery($options = [])
     {
-        $query = $this->model::query();
+        $query = $this->modelInstance::query();
 
-        $columnId = $this->model->getKeyName();
+        $columnId = $this->modelInstance->getKeyName();
 
-        if (is_array($this->orderBy) && count($this->orderBy) === 2) {
+        if (is_array($this->orderBy) && count($this->orderBy) >= 2) {
+            $localize = isset($this->orderBy[2]) && $this->orderBy[2] === 'localized';
+
             $column = $this->orderBy[0];
+
+            if ($localize) {
+                $column = LangUtils::dbColumn($column);
+            }
 
             $query->orderBy($column, $this->orderBy[1]);
         }
@@ -126,7 +130,7 @@ class Repository
         if ($options instanceof Closure) {
             $options($query);
         } else if (is_array($options)) {
-            if (isset($options['where'])) {
+            if (array_key_exists('where', $options)) {
                 $where = $options['where'];
                 if (is_array($where)) {
                     $query->where($where);
@@ -135,7 +139,7 @@ class Repository
                 }
             }
 
-            if (isset($options['whereIn'])) {
+            if (array_key_exists('whereIn', $options)) {
                 foreach ($options['whereIn'] as $whereIn) {
                     if (count($whereIn) === 2) {
                         $query->whereIn($whereIn[0], $whereIn[1]);
@@ -145,7 +149,7 @@ class Repository
                 }
             }
 
-            if (isset($options['with'])) {
+            if (array_key_exists('with', $options)) {
                 $with = $options['with'];
                 if (is_array($with) || is_string($with)) {
                     $query->with($with);
@@ -154,7 +158,7 @@ class Repository
                 }
             }
 
-            if (isset($options['has'])) {
+            if (array_key_exists('has', $options)) {
                 $has = $options['has'];
                 if (is_array($has)) {
                     foreach ($has as $rel => $callback) {
@@ -174,13 +178,17 @@ class Repository
 
             // en caso de que `id` no sea la llave primaria o
             // se desea utilizar otra columna para la búsqueda
-            if (isset($options['columnId'])) {
+            if (array_key_exists('columnId', $options)) {
                 $columnId = $options['columnId'];
             }
 
-            if (isset($options['find'])) {
+            if (array_key_exists('find', $options)) {
                 $query->where($columnId, $options['find']);
             }
+        }
+
+        if (in_array('Illuminate\Database\Eloquent\SoftDeletes', class_uses($this->model))) {
+            $query->whereNull('deleted_at');
         }
 
         return $query;
@@ -192,7 +200,7 @@ class Repository
      * Se ejecuta antes de request validator.
      * 
      * @param array $data 
-     * @param string $method 
+     * @param string $method
      * @param array $options 
      * @return array 
      */
@@ -304,7 +312,7 @@ class Repository
         // El id puede ser una instancia del modelo principal,
         // eso quiere decir que se puede continuar usando el modelo
         // anteriormente consultado.
-        if ($id instanceof $this->modelClass) {
+        if ($id instanceof $this->model) {
             return $id;
         }
 
@@ -313,6 +321,19 @@ class Repository
         $columns = $options['columns'] ?? $this->defaultColumns;
 
         return $query->first($columns);
+    }
+
+    /**
+     * Busca un registro por la columna name.
+     * 
+     * @param string $name 
+     * @param array $options 
+     * @return null|Eloquent
+     * @throws \Error 
+     */
+    public function findByName($name, array $options = [])
+    {
+        return $this->find($name, array_merge($options, ['columnId' => 'name']));
     }
 
     /**
@@ -357,13 +378,17 @@ class Repository
     {
         DB::beginTransaction();
         try {
-            $data = $this->prepareData($data, 'create', $options);
+            $validate = $options['validate'] ?? true;
 
             $data = ArrayUtils::preserveKeys($data, $this->availableInputKeys($data));
 
-            $this->canCreate($data);
+            $data = $this->prepareData($data, 'create', $options);
 
-            $item = $this->model::create($data);
+            if ($validate) {
+                $this->canCreate($data);
+            }
+
+            $item = $this->modelInstance::create($data);
 
             DB::commit();
 
@@ -399,13 +424,17 @@ class Repository
     {
         DB::beginTransaction();
         try {
-            $data = $this->prepareData($data, 'update', $options);
-
             $data = ArrayUtils::preserveKeys($data, $this->availableInputKeys($data, true));
+
+            $data = $this->prepareData($data, 'update' . $options);
 
             $item = $this->findOrFail($id, $options);
 
-            $this->canUpdate($item, $data);
+            $validate = $options['validate'] ?? true;
+
+            if ($validate) {
+                $this->canUpdate($item, $data);
+            }
 
             $item->update($data);
 
@@ -435,7 +464,7 @@ class Repository
      *
      * @param mixed $id
      * @param array $options
-     * @return Eloquent
+     * @return Eloquent|null
      * @throws Exception
      * @throws Throwable
      */
@@ -443,9 +472,24 @@ class Repository
     {
         DB::beginTransaction();
         try {
-            $item = $this->findOrFail($id, $options);
+            $shouldExists = $options['shouldExists'] ?? true;
 
-            $this->canDelete($item);
+            $item = $this->find($id, $options);
+
+            // validar que el registro exista
+            if (!$item) {
+                if ($shouldExists) {
+                    throw new Error404();
+                } else {
+                    return null;
+                }
+            }
+
+            $validate = $options['validate'] ?? true;
+
+            if ($validate) {
+                $this->canDelete($item);
+            }
 
             $forceDelete = $options['forceDelete'] ?? false;
 
@@ -490,10 +534,14 @@ class Repository
      * @param \Illuminate\Database\Eloquent\Relations\BelongsToMany $relation 
      * @param \App\Enums\ManyToManyAction $action 
      * @param array $data 
-     * @param bool $isArrayOfIds Indica si $data contiene solo ids 
+     * @param array $options
+     * 
+     * - (bool)   `isArrayOfIds`: default `true`
+     * - (string)   `pivotKey`: default `id`
+     * 
      * @return array 
      */
-    protected function manyToManyActions(BelongsToMany $relation, ManyToManyAction $action, array $data, bool $isArrayOfIds = true)
+    protected function manyToManyActions(BelongsToMany $relation, ManyToManyAction $action, array $data, array $options = [])
     {
         $isAttachAction = $action->equals(ManyToManyAction::ATTACH());
 
@@ -506,10 +554,13 @@ class Repository
 
         $isInsertAction = $isAttachAction || $isSyncAction;
 
+        $isArrayOfIds = $options['isArrayOfIds'] ?? true;
+        $pivotKey = $options['pivotKey'] ?? 'id';
+
         // Cuando los datos no son un array de solo Ids, se le da formato de tal manera
         // cumpla con [$id => [$pivotData]]
         if (!$isArrayOfIds && $isInsertAction) {
-            $data = ArrayUtils::formatPivotData($data);
+            $data = ArrayUtils::formatPivotData($data, $pivotKey);
         }
 
         // Cuando es un AttachAction, se omiten los items que ya existen
@@ -547,6 +598,37 @@ class Repository
         }
 
         return $changes;
+    }
+
+    /**
+     * Acción por default para modificar las relaciones de many-to-many.
+     * 
+     * @param int|\Eloquent $id 
+     * @param \App\Enums\ManyToManyAction $action
+     * @param array $data 
+     * @param array $options 
+     * @return mixed 
+     * @throws \Error 
+     * @throws \App\Utils\API\Error404 
+     * @throws \InvalidArgumentException 
+     * @throws \App\Utils\API\Error500 
+     */
+    public function defaultUpdateManyToManyRelation($id, ManyToManyAction $action, array $data = [], array $options = [])
+    {
+        $relationName = $options['relationName'];
+        $foreignKey = $options['foreignKey'];
+
+        $item = $this->findOrFail($id);
+
+        $relation = $item->{$relationName}();
+
+        $changes = $this->manyToManyActions($relation, $action, $data, $options);
+
+        if (isset($options['returnAttachedItems'])) {
+            return $relation->wherePivotIn($foreignKey, $changes)->get();
+        }
+
+        return $item;
     }
 
     /**

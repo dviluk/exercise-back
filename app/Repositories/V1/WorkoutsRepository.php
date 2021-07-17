@@ -230,7 +230,11 @@ class WorkoutsRepository extends Repository
 
         $relation = $item->muscles();
 
-        $changes = $this->manyToManyActions($relation, $action, $data, false);
+        $manyToManyOptions = [
+            'isArrayOfIds' => false,
+        ];
+
+        $changes = $this->manyToManyActions($relation, $action, $data, $manyToManyOptions);
 
         if (isset($options['returnAttachedItems'])) {
             return $relation->wherePivotIn('muscle_id', $changes)->get();

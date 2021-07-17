@@ -222,7 +222,11 @@ class RoutinesRepository extends Repository
 
         $relation = $item->workouts();
 
-        $insertedIds = $this->manyToManyActions($relation, $action, $data, false);
+        $manyToManyOptions = [
+            'isArrayOfIds' => false,
+        ];
+
+        $insertedIds = $this->manyToManyActions($relation, $action, $data, $manyToManyOptions);
 
         if (isset($options['returnAttachedItems'])) {
             return $relation->wherePivotIn('workout_id', $insertedIds)->get();

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Utils\API;
 use App\Utils\API\Error500;
+use DB;
 use Illuminate\Http\Request;
 
 class CRUDController extends Controller
@@ -19,6 +20,13 @@ class CRUDController extends Controller
      * @var \App\Utils\Json\JsonResource
      */
     protected $resource;
+
+    /**
+     * Indica si se utilizaran los métodos localizados del repositorio.
+     * 
+     * @var boolean
+     */
+    protected $localized = false;
 
     public function __construct()
     {
@@ -110,17 +118,60 @@ class CRUDController extends Controller
     }
 
     /**
+     * Retorna las opciones que se aplicaran en el método indicado.
+     * 
+     * @param mixed $method 
+     * @return array 
+     */
+    protected function options($method)
+    {
+        return [];
+    }
+
+    /**
+     * Permite ejecutar una acción antes de ejecutar el `$repo->create()` o `$repo->update()`.
+     * 
+     * @param string $method 
+     * @param array $data 
+     * @param int|null $id Se para cuando $method = 'update'
+     * @param \Eloquent|null $item Se para cuando $method = 'update'
+     * @return void 
+     */
+    protected function preAction(string $method, array $data, $id = null, $item = null): array
+    {
+        return $data;
+    }
+
+    /**
+     * Permite ejecutar una acción después de ejecutar el `$repo->create()` o `$repo->update()`.
+     * 
+     * @param string $method 
+     * @param array $data 
+     * @return void 
+     */
+    protected function postAction(string $method, $item)
+    {
+        //
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $items = $this->repo->paginated(15, [
+        $method = $this->localized  ? 'paginatedLocalized' : 'paginated';
+
+        $queryOptions = $this->_queryOptions('index', [
             'with' => $this->indexRelations(),
         ]);
 
-        return new $this->resource($items);
+        $resourceOptions = $queryOptions['resourceOptions'] ?? [];
+
+        $items = $this->repo->{$method}(15, $queryOptions);
+
+        return new $this->resource($items, [], $resourceOptions);
     }
 
     /**
@@ -131,15 +182,33 @@ class CRUDController extends Controller
      */
     public function store(Request $request)
     {
+        $method = $this->localized  ? 'createLocalized' : 'create';
+
         $request->validate($this->storeValidator($request));
 
         $data = $this->getStoreData($request);
 
-        $item = $this->repo->create($data);
+        $queryOptions = $this->_queryOptions('store');
 
-        $item->load($this->showRelations());
+        $resourceOptions = $queryOptions['resourceOptions'] ?? [];
 
-        return new $this->resource($item);
+        DB::beginTransaction();
+        try {
+            $data = $this->preAction('store', $data);
+
+            $item = $this->repo->{$method}($data);
+
+            $this->postAction('store', $item);
+
+            $item->load($this->showRelations());
+
+            DB::commit();
+
+            return new $this->resource($item, [],  $resourceOptions);
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 
     /**
@@ -148,13 +217,19 @@ class CRUDController extends Controller
      * @param  string  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $item = $this->repo->findOrFail($id, [
+        $method = $this->localized  ? 'findOrFailLocalized' : 'findOrFail';
+
+        $queryOptions = $this->_queryOptions('show', [
             'with' => $this->showRelations(),
         ]);
 
-        return new $this->resource($item);
+        $resourceOptions = $queryOptions['resourceOptions'] ?? [];
+
+        $item = $this->repo->{$method}($id, $queryOptions);
+
+        return new $this->resource($item, [], $resourceOptions);
     }
 
     /**
@@ -163,13 +238,17 @@ class CRUDController extends Controller
      * @param  string  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        $item = $this->repo->findOrFail($id, [
+        $queryOptions = $this->_queryOptions('edit', [
             'with' => $this->editRelations(),
         ]);
 
-        return new $this->resource($item);
+        $resourceOptions = $queryOptions['resourceOptions'] ?? [];
+
+        $item = $this->repo->findOrFail($id, $queryOptions);
+
+        return new $this->resource($item, [], $resourceOptions);
     }
 
     /**
@@ -181,15 +260,35 @@ class CRUDController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $method = $this->localized  ? 'updateLocalized' : 'update';
+
         $request->validate($this->updateValidator($request, $id));
 
         $data = $this->getUpdateData($request, $id);
 
-        $item = $this->repo->update($id, $data);
+        $queryOptions = $this->_queryOptions('update');
 
-        $item->load($this->showRelations());
+        $resourceOptions = $queryOptions['resourceOptions'] ?? [];
 
-        return new $this->resource($item);
+        DB::beginTransaction();
+        try {
+            $item = $this->repo->findOrFail($id);
+
+            $data = $this->preAction('update', $data, $id, $item);
+
+            $item = $this->repo->{$method}($item, $data);
+
+            $this->postAction('update', $item);
+
+            $item->load($this->showRelations());
+
+            DB::commit();
+
+            return new $this->resource($item, [], $resourceOptions);
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 
     /**
@@ -200,8 +299,22 @@ class CRUDController extends Controller
      */
     public function destroy($id)
     {
-        $this->repo->delete($id);
+        $queryOptions = $this->_queryOptions('destroy');
+
+        $this->repo->delete($id, $queryOptions);
 
         return API::response200();
+    }
+
+    /**
+     * Retorna las opciones que se pasaran a la consulta.
+     * 
+     * @param mixed $method 
+     * @param array $attach 
+     * @return array 
+     */
+    private function _queryOptions($method, $attach = [])
+    {
+        return array_merge_recursive($this->options($method), $attach);
     }
 }
