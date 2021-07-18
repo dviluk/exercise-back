@@ -22,12 +22,15 @@
         "vs-publisher-988541.apexsql-power-tools",
         "gruntfuggly.todo-tree",
         "k--kato.intellij-idea-keybindings",
-        "rangav.vscode-thunder-client"
+        "rangav.vscode-thunder-client",
+        "formulahendry.auto-close-tag",
+        "formulahendry.auto-rename-tag"
     ],
     "settings": {
-        "terminal.integrated.shell.linux": "/bin/bash",
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "editor.fontLigatures": true,
         "editor.formatOnSave": true,
-        "editor.mouseWheelZoom": true,
+        "editor.mouseWheelZoom": false,
         "cSpell.language": "en,es",
         "php.suggest.basic": false,
         "editor.defaultFormatter": "esbenp.prettier-vscode",
