@@ -1,1 +1,911 @@
-{"client":"Thunder Client","collectionName":"Exercise","dateExported":"2021-04-27T05:18:46.556Z","version":"1.0","requests":[{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Welcome","url":"{{API_HOST}}/v1","method":"GET","modified":"2021-04-27T05:16:12.115Z","created":"2021-04-27T05:12:12.874Z","_id":"838a3bd6-d734-4c34-aea3-ef4369401bb5","tests":[]},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Register","url":"{{API_HOST}}/v1/auth/register","method":"POST","modified":"2021-04-27T05:16:24.601Z","created":"2021-04-27T05:12:12.875Z","_id":"10058350-909b-41ce-b22d-ddcdc323ce36","body":{"type":"formdata","raw":"","form":[{"name":"name","value":"User"},{"name":"email","value":"user@email.com"},{"name":"password","value":"123456"},{"name":"password_confirmation","value":"123456"}]},"tests":[{"type":"set-env-var","custom":"json.data.token","action":"setto","value":"{{API_TOKEN}}"}]},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Login","url":"{{API_HOST}}/v1/auth/login","method":"POST","modified":"2021-04-27T05:16:40.007Z","created":"2021-04-27T05:12:12.876Z","_id":"635f1163-833a-412e-ad6a-e60734022e07","body":{"type":"formdata","raw":"","form":[{"name":"email","value":"user@email.com"},{"name":"password","value":"123456"}]},"tests":[{"type":"set-env-var","custom":"json.data.token","action":"setto","value":"{{API_TOKEN}}"}]},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Me","url":"{{API_HOST}}/v1/auth/me","method":"POST","modified":"2021-04-27T05:16:53.815Z","created":"2021-04-27T05:12:12.876Z","_id":"906aba61-c6d7-4d84-ae5f-ff1aa7b32693","auth":{"type":"bearer","bearer":"{{API_TOKEN}}"},"tests":[]},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Users","url":"{{API_HOST}}/v1/users","method":"GET","modified":"2021-04-27T05:12:12.877Z","created":"2021-04-27T05:12:12.877Z","_id":"b102a6d3-3887-453a-9f12-44ea771976cf"},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Logout","url":"{{API_HOST}}/v1/auth/logout","method":"POST","modified":"2021-04-27T05:12:12.877Z","created":"2021-04-27T05:12:12.877Z","_id":"fdb00f5d-226f-4e3f-bdfa-50f10ca7f27c"},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Users Store","url":"{{API_HOST}}/v1/users","method":"POST","modified":"2021-04-27T05:12:12.878Z","created":"2021-04-27T05:12:12.878Z","_id":"9161f39e-1b2b-4d0b-bdb8-96bbb5410ba7","body":{"form":[{"name":"name","value":"User"},{"name":"email","value":"user@email"},{"name":"password","value":"12345678"},{"name":"password_confirmation","value":"12345678"}],"type":"formdata"}},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Users Show","url":"{{API_HOST}}/v1/users/d12026f0-ba92-4331-bbde-d606dfc0f8d3","method":"GET","modified":"2021-04-27T05:12:12.878Z","created":"2021-04-27T05:12:12.878Z","_id":"a7df6147-ff94-4d05-aa0b-75efc616649b"},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Difficulties","url":"{{API_HOST}}/v1/difficulties","method":"GET","modified":"2021-04-27T05:12:12.879Z","created":"2021-04-27T05:12:12.879Z","_id":"1c7e60d2-5b38-4feb-91c6-2f165b237517"},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Users Update","url":"{{API_HOST}}/v1/users/d12026f0-ba92-4331-bbde-d606dfc0f8d3","method":"POST","modified":"2021-04-27T05:12:12.879Z","created":"2021-04-27T05:12:12.879Z","_id":"c4e9ecf2-cb05-48aa-87b3-0efcb3e4064e","body":{"form":[{"name":"name","value":"User"},{"name":"email","value":"user@email"},{"name":"password","value":"12345678"},{"name":"_method","value":"put"}],"type":"formdata"}},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Difficulties Store","url":"{{API_HOST}}/v1/difficulties","method":"POST","modified":"2021-04-27T05:12:12.879Z","created":"2021-04-27T05:12:12.879Z","_id":"cad9e22d-b444-485d-90b6-f399ac0afdf0","body":{"form":[{"name":"name","value":"difficulty"},{"name":"description","value":"description"}],"type":"formdata"}},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Difficulties Update","url":"{{API_HOST}}/v1/difficulties/difficulties_1","method":"POST","modified":"2021-04-27T05:12:12.880Z","created":"2021-04-27T05:12:12.880Z","_id":"88f01292-6f7e-4a89-ba7b-0db084cafbd5","body":{"form":[{"name":"name","value":"Easy"},{"name":"description","value":"description"},{"name":"_method","value":"put"}],"type":"formdata"}},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Goals","url":"{{API_HOST}}/v1/goals","method":"GET","modified":"2021-04-27T05:12:12.880Z","created":"2021-04-27T05:12:12.880Z","_id":"8e9fe8ea-51af-4502-8545-4ffcd96fa3da"},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Tags","url":"{{API_HOST}}/v1/tags","method":"GET","modified":"2021-04-27T05:12:12.881Z","created":"2021-04-27T05:12:12.881Z","_id":"9b0589e6-ca8f-4a39-bd35-23671cbad047"},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Equipment","url":"{{API_HOST}}/v1/equipment","method":"GET","modified":"2021-04-27T05:12:12.881Z","created":"2021-04-27T05:12:12.881Z","_id":"e7228d4d-6f82-4fa1-b7a6-b40d8b68a7e8"},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Muscles","url":"{{API_HOST}}/v1/muscles","method":"GET","modified":"2021-04-27T05:12:12.882Z","created":"2021-04-27T05:12:12.882Z","_id":"21e1c1d6-518a-4e09-a243-4bb5cd429b03"},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Units","url":"{{API_HOST}}/v1/units","method":"GET","modified":"2021-04-27T05:12:12.882Z","created":"2021-04-27T05:12:12.882Z","_id":"2fb2e96b-a510-42a8-96c5-5a8c0098d2e5"},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Workouts Show","url":"{{API_HOST}}/v1/workouts/d772dd6d-3dec-497a-9129-3a3330a446e1","method":"GET","modified":"2021-04-27T05:12:12.883Z","created":"2021-04-27T05:12:12.883Z","_id":"29487d24-e6dc-4a8f-8dcb-7bd153082810"},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Workouts Store","url":"{{API_HOST}}/v1/workouts","method":"POST","modified":"2021-04-27T05:12:12.883Z","created":"2021-04-27T05:12:12.883Z","_id":"bc48049b-c8c7-4574-852f-eb9991ab7e5d","body":{"form":[{"name":"difficulty_id","value":"difficulties_1"},{"name":"cover","value":"cover.jpg"},{"name":"illustration","value":"illustration.gif"},{"name":"name","value":"Workout 123456\n"},{"name":"description","value":"lorem"},{"name":"equipment[0]","value":"equipment_1"},{"name":"muscles[0][id]","value":"muscles_1"},{"name":"muscles[0][primary]","value":"1"},{"name":"","value":""}],"type":"formdata"}},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Workouts","url":"{{API_HOST}}/v1/workouts","method":"GET","modified":"2021-04-27T05:12:12.883Z","created":"2021-04-27T05:12:12.883Z","_id":"c3565b9f-50c5-430f-a6f3-fe41e26d89a0"},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Workouts Attach Equipment","url":"{{API_HOST}}/v1/workouts/d772dd6d-3dec-497a-9129-3a3330a446e1/attach/equipment","method":"POST","modified":"2021-04-27T05:12:12.884Z","created":"2021-04-27T05:12:12.884Z","_id":"4b38bd4f-89d1-43a4-bfbf-34b9d252f0f8","body":{"form":[{"name":"equipment[0]","value":"equipment_1"}],"type":"formdata"}},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Workouts Update","url":"{{API_HOST}}/v1/workouts/fa5c56da-9679-4620-b663-244bedb5bc51","method":"POST","modified":"2021-04-27T05:12:12.884Z","created":"2021-04-27T05:12:12.884Z","_id":"e455b579-55cc-49af-a769-e1a05f8df820","body":{"form":[{"name":"difficulty_id","value":"difficulties_1"},{"name":"cover","value":"cover.jpg"},{"name":"illustration","value":"illustration.gif"},{"name":"name","value":"Workout 1"},{"name":"description","value":"lorem"},{"name":"_method","value":"put"}],"type":"formdata"}},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Workouts Detach Equipment","url":"{{API_HOST}}/v1/workouts/d772dd6d-3dec-497a-9129-3a3330a446e1/detach/equipment","method":"POST","modified":"2021-04-27T05:12:12.885Z","created":"2021-04-27T05:12:12.885Z","_id":"7386f34c-5801-4868-aaed-325e507b6653","body":{"form":[{"name":"equipment[0]","value":"equipment_1"}],"type":"formdata"}},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Workouts Attach Muscles","url":"{{API_HOST}}/v1/workouts/d772dd6d-3dec-497a-9129-3a3330a446e1/attach/muscles","method":"POST","modified":"2021-04-27T05:12:12.885Z","created":"2021-04-27T05:12:12.885Z","_id":"8643a387-d992-41c3-acd1-d0e9b4bdf199","body":{"form":[{"name":"muscles[0][id]","value":"muscles_1"},{"name":"muscles[0][primary]","value":"1"}],"type":"formdata"}},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Workouts Detach All Equipment","url":"{{API_HOST}}/v1/workouts/d772dd6d-3dec-497a-9129-3a3330a446e1/detach-all/equipment","method":"POST","modified":"2021-04-27T05:12:12.885Z","created":"2021-04-27T05:12:12.885Z","_id":"a0b8014a-67d9-4be0-8189-cad63220b742","body":{"form":[],"type":"formdata"}},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Workouts Detach All Muscles","url":"{{API_HOST}}/v1/workouts/d772dd6d-3dec-497a-9129-3a3330a446e1/detach-all/muscles","method":"POST","modified":"2021-04-27T05:12:12.886Z","created":"2021-04-27T05:12:12.886Z","_id":"5650b325-5f12-4f63-822e-a708e76e796c","body":{"form":[],"type":"formdata"}},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Workouts Detach Muscles","url":"{{API_HOST}}/v1/workouts/d772dd6d-3dec-497a-9129-3a3330a446e1/detach/muscles","method":"POST","modified":"2021-04-27T05:12:12.886Z","created":"2021-04-27T05:12:12.886Z","_id":"8587c702-f483-4d3c-89bf-3bc3e49d4d93","body":{"form":[{"name":"muscles[0]","value":"muscles_1"}],"type":"formdata"}},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Routines Show","url":"{{API_HOST}}/v1/routines/2fac244d-8750-47c8-8bfd-bb71047d8d89","method":"GET","modified":"2021-04-27T05:12:12.887Z","created":"2021-04-27T05:12:12.887Z","_id":"192271f1-be3d-4b82-9025-ef5ef55ff45f"},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Routines","url":"{{API_HOST}}/v1/routines","method":"GET","modified":"2021-04-27T05:12:12.887Z","created":"2021-04-27T05:12:12.887Z","_id":"5a79928f-f7b2-45df-abd6-7f8e13fa80ed"},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Routines Store","url":"{{API_HOST}}/v1/routines","method":"POST","modified":"2021-04-27T05:12:12.887Z","created":"2021-04-27T05:12:12.887Z","_id":"b3ddb35f-17be-4588-af74-cd0971bd0100","body":{"form":[{"name":"name","value":"Routine 1"},{"name":"description","value":"-"},{"name":"workouts[0][id]","value":"fa5c56da-9679-4620-b663-244bedb5bc51"},{"name":"workouts[0][description]","value":"-"},{"name":"workouts[0][order]","value":"1"},{"name":"workouts[0][repetitions]","value":"2"},{"name":"workouts[0][quantity]","value":"10"},{"name":"workouts[0][quantity_unit_id]","value":"1ed1dc5b-26b2-45e5-a335-22e11357ac76"},{"name":"workouts[0][rest_time_between_repetitions]","value":"15"},{"name":"workouts[0][rest_time_after_workout]","value":"30"}],"type":"formdata"}},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Routines Update","url":"{{API_HOST}}/v1/routines/2fac244d-8750-47c8-8bfd-bb71047d8d89","method":"POST","modified":"2021-04-27T05:12:12.888Z","created":"2021-04-27T05:12:12.888Z","_id":"59c1ff01-c141-434d-9fca-981f1e4f61f3","body":{"form":[{"name":"name","value":"Routine 1 (edited)"},{"name":"description","value":"-"},{"name":"workouts[0][id]","value":"fa5c56da-9679-4620-b663-244bedb5bc51"},{"name":"workouts[0][description]","value":"-"},{"name":"workouts[0][order]","value":"1"},{"name":"workouts[0][repetitions]","value":"2"},{"name":"workouts[0][quantity]","value":"10"},{"name":"workouts[0][quantity_unit_id]","value":"1ed1dc5b-26b2-45e5-a335-22e11357ac76"},{"name":"workouts[0][rest_time_between_repetitions]","value":"15"},{"name":"workouts[0][rest_time_after_workout]","value":"30"},{"name":"_method","value":"put"}],"type":"formdata"}},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Plans","url":"{{API_HOST}}/v1/plans","method":"GET","modified":"2021-04-27T05:12:12.888Z","created":"2021-04-27T05:12:12.888Z","_id":"c2c64043-3d16-4fbd-9ee7-adbd6d51e5ad"},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Plans Store","url":"{{API_HOST}}/v1/plans","method":"POST","modified":"2021-04-27T05:12:12.889Z","created":"2021-04-27T05:12:12.889Z","_id":"45af96ca-7348-4513-89d3-022a1f0bbb45","body":{"form":[{"name":"name","value":"Name"},{"name":"difficulty_id","value":"difficulties_1"},{"name":"description","value":"description"},{"name":"introduction","value":"introduction"},{"name":"instructions","value":"instructions"},{"name":"goals[0]","value":"goals_1"},{"name":"routines[0]","value":"2fac244d-8750-47c8-8bfd-bb71047d8d89"}],"type":"formdata"}},{"headers":[{"name":"Accept","value":"application/json"}],"colId":"325d08f3-f73a-4e6c-ba23-e1002ad7bc94","name":"V1 Plans Show","url":"{{API_HOST}}/v1/plans","method":"GET","modified":"2021-04-27T05:12:12.889Z","created":"2021-04-27T05:12:12.889Z","_id":"d93c79ed-1478-40fd-90cb-d94c9f642c5a"}]}
+{
+    "client": "Thunder Client",
+    "collectionName": "Exercise",
+    "dateExported": "2021-07-14T06:59:35.185Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "containerId": "",
+            "sortNum": 1250,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Welcome",
+            "url": "{{API_HOST}}/v1",
+            "method": "GET",
+            "modified": "2021-07-14T06:46:49.222Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "1ba5e6fc-b840-41e5-98ef-7cfc320aa6e7",
+            "params": [],
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 2500,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Register",
+            "url": "{{API_HOST}}/v1/auth/register",
+            "method": "POST",
+            "modified": "2021-07-14T06:44:03.903Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "47a6c347-d159-4822-a766-f46fa60a3609",
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    { "name": "name", "value": "User" },
+                    { "name": "email", "value": "user@email.com" },
+                    { "name": "password", "value": "123456" },
+                    { "name": "password_confirmation", "value": "123456" }
+                ]
+            },
+            "tests": [
+                {
+                    "type": "set-env-var",
+                    "custom": "json.data.token",
+                    "action": "setto",
+                    "value": "{{API_TOKEN}}"
+                }
+            ]
+        },
+        {
+            "containerId": "",
+            "sortNum": 3750,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Login",
+            "url": "{{API_HOST}}/v1/auth/login",
+            "method": "POST",
+            "modified": "2021-07-14T06:44:56.374Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "acc0ee30-3a0f-4008-89cc-cc60f6ab2b09",
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    { "name": "email", "value": "user@email.com" },
+                    { "name": "password", "value": "123456" }
+                ]
+            },
+            "tests": [
+                {
+                    "type": "set-env-var",
+                    "custom": "json.data.token",
+                    "action": "setto",
+                    "value": "{{API_TOKEN}}"
+                }
+            ]
+        },
+        {
+            "containerId": "",
+            "sortNum": 4375,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Me",
+            "url": "{{API_HOST}}/v1/auth/me",
+            "method": "POST",
+            "modified": "2021-07-14T06:53:04.369Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "f4587486-dd81-4d83-8069-14644c31b737",
+            "params": [],
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 5000,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Logout",
+            "url": "{{API_HOST}}/v1/auth/logout",
+            "method": "POST",
+            "modified": "2021-07-14T06:43:59.816Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "60c4a286-0f37-4e5f-b5ff-6758120feb51",
+            "params": [],
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 8750,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Users",
+            "url": "{{API_HOST}}/v1/users",
+            "method": "GET",
+            "modified": "2021-07-14T06:53:09.836Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "e2b95958-71e4-4471-b329-0b941dee4648",
+            "params": [],
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 9218.8,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Users Show",
+            "url": "{{API_HOST}}/v1/users/168cfe7e-05eb-43ce-b2e1-ae6febeb1bf9",
+            "method": "GET",
+            "modified": "2021-07-14T06:53:29.683Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "3eb167bf-a607-4905-b787-38edaff1e5b9",
+            "params": [],
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 9375,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Users Store",
+            "url": "{{API_HOST}}/v1/users",
+            "method": "POST",
+            "modified": "2021-07-14T06:52:19.775Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "dc72314f-031e-4837-bb09-61cf5044d022",
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    { "name": "name", "value": "User" },
+                    { "name": "email", "value": "user@email" },
+                    { "name": "password", "value": "12345678" },
+                    { "name": "password_confirmation", "value": "12345678" }
+                ]
+            },
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 9687.5,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Users Update",
+            "url": "{{API_HOST}}/v1/users/d12026f0-ba92-4331-bbde-d606dfc0f8d3",
+            "method": "POST",
+            "modified": "2021-07-14T06:52:33.801Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "739454a3-586c-4e56-a867-f54c2bd36b89",
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    { "name": "name", "value": "User" },
+                    { "name": "email", "value": "user@email" },
+                    { "name": "password", "value": "12345678" },
+                    { "name": "_method", "value": "put" }
+                ]
+            },
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 9697.3,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Difficulties",
+            "url": "{{API_HOST}}/v1/difficulties",
+            "method": "GET",
+            "modified": "2021-07-14T06:57:13.762Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "d5d6a3e9-0410-4228-9646-fa471a446af2",
+            "params": [],
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 9702.1,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Difficulties Store",
+            "url": "{{API_HOST}}/v1/difficulties",
+            "method": "POST",
+            "modified": "2021-07-14T06:57:23.579Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "44b41c7d-f2fb-41b0-bc80-1a487066e17c",
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    { "name": "name", "value": "difficulty" },
+                    { "name": "description", "value": "description" }
+                ]
+            },
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 9704.5,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Difficulties Update",
+            "url": "{{API_HOST}}/v1/difficulties/difficulties_1",
+            "method": "POST",
+            "modified": "2021-07-14T06:57:33.977Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "9c73b160-dfea-4e00-9cb5-6b2f446e4a12",
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    { "name": "name", "value": "Easy" },
+                    { "name": "description", "value": "description" },
+                    { "name": "_method", "value": "put" }
+                ]
+            },
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 9705.1,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Units",
+            "url": "{{API_HOST}}/v1/units",
+            "method": "GET",
+            "modified": "2021-07-14T06:59:12.764Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "91da495c-f69f-47ad-94ab-3c6fc7e5adc9",
+            "params": [],
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 9705.8,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Equipment",
+            "url": "{{API_HOST}}/v1/equipment",
+            "method": "GET",
+            "modified": "2021-07-14T06:58:56.868Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "a427ad06-f572-4555-894c-3543d4b5e484",
+            "params": [],
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 9706.4,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Tags",
+            "url": "{{API_HOST}}/v1/tags",
+            "method": "GET",
+            "modified": "2021-07-14T06:59:05.197Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "dd759009-0225-4bff-8f6f-0486fe4c6417",
+            "params": [],
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 9707,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Muscles",
+            "url": "{{API_HOST}}/v1/muscles",
+            "method": "GET",
+            "modified": "2021-07-14T06:56:41.421Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "0fcaadcb-a3a2-41ef-b410-e97a2b873371",
+            "params": [],
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 9716.8,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Goals",
+            "url": "{{API_HOST}}/v1/goals",
+            "method": "GET",
+            "modified": "2021-07-14T06:56:44.147Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "056672fb-88f6-4188-ad37-8d74fc57b0c2",
+            "params": [],
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 9726.5,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Workouts",
+            "url": "{{API_HOST}}/v1/workouts",
+            "method": "GET",
+            "modified": "2021-07-14T06:55:48.722Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "e8370bf7-b912-435e-ace5-1d6426976d83",
+            "params": [],
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 9765.6,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Workouts Show",
+            "url": "{{API_HOST}}/v1/workouts/d772dd6d-3dec-497a-9129-3a3330a446e1",
+            "method": "GET",
+            "modified": "2021-07-14T06:54:28.262Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "4714dd94-6f57-4656-b7b2-ee391e8c34dc",
+            "params": [],
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 9785.2,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Workouts Store",
+            "url": "{{API_HOST}}/v1/workouts",
+            "method": "POST",
+            "modified": "2021-07-14T06:55:52.117Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "d08cdef1-6a20-4c26-b4dd-a12b8241ab0a",
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    { "name": "difficulty_id", "value": "difficulties_1" },
+                    { "name": "cover", "value": "cover.jpg" },
+                    { "name": "illustration", "value": "illustration.gif" },
+                    { "name": "name", "value": "Workout 123456\n" },
+                    { "name": "description", "value": "lorem" },
+                    { "name": "equipment[0]", "value": "equipment_1" },
+                    { "name": "muscles[0][id]", "value": "muscles_1" },
+                    { "name": "muscles[0][primary]", "value": "1" }
+                ]
+            },
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 9804.7,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Workouts Update",
+            "url": "{{API_HOST}}/v1/workouts/fa5c56da-9679-4620-b663-244bedb5bc51",
+            "method": "POST",
+            "modified": "2021-07-14T06:54:37.602Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "90229f36-56d9-43ac-855a-6627619344fc",
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    { "name": "difficulty_id", "value": "difficulties_1" },
+                    { "name": "cover", "value": "cover.jpg" },
+                    { "name": "illustration", "value": "illustration.gif" },
+                    { "name": "name", "value": "Workout 1" },
+                    { "name": "description", "value": "lorem" },
+                    { "name": "_method", "value": "put" }
+                ]
+            },
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 9843.8,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Workouts Attach Muscles",
+            "url": "{{API_HOST}}/v1/workouts/d772dd6d-3dec-497a-9129-3a3330a446e1/attach/muscles",
+            "method": "POST",
+            "modified": "2021-07-14T06:54:23.293Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "ea860813-07dc-4096-bf09-1b1d0b14cf52",
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    { "name": "muscles[0][id]", "value": "muscles_1" },
+                    { "name": "muscles[0][primary]", "value": "1" }
+                ]
+            },
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 9853.5,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Workouts Detach Equipment",
+            "url": "{{API_HOST}}/v1/workouts/d772dd6d-3dec-497a-9129-3a3330a446e1/detach/equipment",
+            "method": "POST",
+            "modified": "2021-07-14T06:55:21.806Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "a461d8f1-31fe-4c88-bc9a-f62896c7d0f6",
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [{ "name": "equipment[0]", "value": "equipment_1" }]
+            },
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 9858.4,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Workouts Detach All Equipment",
+            "url": "{{API_HOST}}/v1/workouts/d772dd6d-3dec-497a-9129-3a3330a446e1/detach-all/equipment",
+            "method": "POST",
+            "modified": "2021-07-14T06:55:28.531Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "95f3e325-e62d-4e1d-919b-2cd9807a3398",
+            "params": [],
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 9863.3,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Workouts Detach All Muscles",
+            "url": "{{API_HOST}}/v1/workouts/d772dd6d-3dec-497a-9129-3a3330a446e1/detach-all/muscles",
+            "method": "POST",
+            "modified": "2021-07-14T06:55:18.357Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "b40281e3-9b2c-4ffb-b366-7ed478c67057",
+            "params": [],
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 9882.8,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Workouts Detach Muscles",
+            "url": "{{API_HOST}}/v1/workouts/d772dd6d-3dec-497a-9129-3a3330a446e1/detach/muscles",
+            "method": "POST",
+            "modified": "2021-07-14T06:55:12.729Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "fdb0e827-397a-4a01-b28d-5671f16c1f69",
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [{ "name": "muscles[0]", "value": "muscles_1" }]
+            },
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 9921.9,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Workouts Attach Equipment",
+            "url": "{{API_HOST}}/v1/workouts/d772dd6d-3dec-497a-9129-3a3330a446e1/attach/equipment",
+            "method": "POST",
+            "modified": "2021-07-14T06:54:33.136Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "70d313ac-a598-4344-a8c4-faa1ae07f75c",
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [{ "name": "equipment[0]", "value": "equipment_1" }]
+            },
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 44960.9,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Plans",
+            "url": "{{API_HOST}}/v1/plans",
+            "method": "GET",
+            "modified": "2021-07-14T06:58:32.136Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "bcf2fa1e-edd0-4d99-b575-496f324efc01",
+            "params": [],
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 62480.4,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Plans Show",
+            "url": "{{API_HOST}}/v1/plans",
+            "method": "GET",
+            "modified": "2021-07-14T06:58:35.697Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "7cc50dbb-d730-47ba-9d4f-c0b9da685508",
+            "params": [],
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 71240.2,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Plans Store",
+            "url": "{{API_HOST}}/v1/plans",
+            "method": "POST",
+            "modified": "2021-07-14T06:58:39.883Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "d20d41e6-7e88-45a4-abed-74735773ef1a",
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    { "name": "name", "value": "Name" },
+                    { "name": "difficulty_id", "value": "difficulties_1" },
+                    { "name": "description", "value": "description" },
+                    { "name": "introduction", "value": "introduction" },
+                    { "name": "instructions", "value": "instructions" },
+                    { "name": "goals[0]", "value": "goals_1" },
+                    {
+                        "name": "routines[0]",
+                        "value": "2fac244d-8750-47c8-8bfd-bb71047d8d89"
+                    }
+                ]
+            },
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 75620.1,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Routines",
+            "url": "{{API_HOST}}/v1/routines",
+            "method": "GET",
+            "modified": "2021-07-14T06:59:18.951Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "4b3878b6-37f3-4be8-8c81-a0f8c00ed1a7",
+            "params": [],
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 80000,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Routines Show",
+            "url": "{{API_HOST}}/v1/routines/2fac244d-8750-47c8-8bfd-bb71047d8d89",
+            "method": "GET",
+            "modified": "2021-07-14T06:56:54.425Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "882cf533-2cda-439d-b3ef-d2ff823868c8",
+            "params": [],
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 85000,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Routines Store",
+            "url": "{{API_HOST}}/v1/routines",
+            "method": "POST",
+            "modified": "2021-07-14T06:56:56.297Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "47751205-92a6-4f9d-b10f-bc9c3ea8a641",
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    { "name": "name", "value": "Routine 1" },
+                    { "name": "description", "value": "-" },
+                    {
+                        "name": "workouts[0][id]",
+                        "value": "fa5c56da-9679-4620-b663-244bedb5bc51"
+                    },
+                    { "name": "workouts[0][description]", "value": "-" },
+                    { "name": "workouts[0][order]", "value": "1" },
+                    { "name": "workouts[0][repetitions]", "value": "2" },
+                    { "name": "workouts[0][quantity]", "value": "10" },
+                    {
+                        "name": "workouts[0][quantity_unit_id]",
+                        "value": "1ed1dc5b-26b2-45e5-a335-22e11357ac76"
+                    },
+                    {
+                        "name": "workouts[0][rest_time_between_repetitions]",
+                        "value": "15"
+                    },
+                    {
+                        "name": "workouts[0][rest_time_after_workout]",
+                        "value": "30"
+                    }
+                ]
+            },
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        },
+        {
+            "containerId": "",
+            "sortNum": 110000,
+            "headers": [
+                {
+                    "name": "User-Agent",
+                    "value": "Thunder Client (https://www.thunderclient.io)"
+                },
+                { "name": "Accept", "value": "application/json" }
+            ],
+            "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
+            "name": "Routines Update",
+            "url": "{{API_HOST}}/v1/routines/2fac244d-8750-47c8-8bfd-bb71047d8d89",
+            "method": "POST",
+            "modified": "2021-07-14T06:49:14.605Z",
+            "created": "2021-07-14T06:41:03.632Z",
+            "_id": "6e0c30e8-27b2-4f38-8c06-802afaa58737",
+            "params": [],
+            "body": {
+                "type": "formdata",
+                "raw": "",
+                "form": [
+                    { "name": "name", "value": "Routine 1 (edited)" },
+                    { "name": "description", "value": "-" },
+                    {
+                        "name": "workouts[0][id]",
+                        "value": "fa5c56da-9679-4620-b663-244bedb5bc51"
+                    },
+                    { "name": "workouts[0][description]", "value": "-" },
+                    { "name": "workouts[0][order]", "value": "1" },
+                    { "name": "workouts[0][repetitions]", "value": "2" },
+                    { "name": "workouts[0][quantity]", "value": "10" },
+                    {
+                        "name": "workouts[0][quantity_unit_id]",
+                        "value": "1ed1dc5b-26b2-45e5-a335-22e11357ac76"
+                    },
+                    {
+                        "name": "workouts[0][rest_time_between_repetitions]",
+                        "value": "15"
+                    },
+                    {
+                        "name": "workouts[0][rest_time_after_workout]",
+                        "value": "30"
+                    },
+                    { "name": "_method", "value": "put" }
+                ]
+            },
+            "auth": { "type": "bearer", "bearer": "{{API_TOKEN}}" },
+            "tests": []
+        }
+    ]
+}
