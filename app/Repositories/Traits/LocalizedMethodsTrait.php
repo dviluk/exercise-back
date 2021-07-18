@@ -2,9 +2,9 @@
 
 namespace App\Repositories\Traits;
 
-use App\Utils\ArrayUtils;
-use App\Utils\LangUtils;
+use Arrays;
 use DB;
+use Language;
 use Throwable;
 
 trait LocalizedMethodsTrait
@@ -142,7 +142,7 @@ trait LocalizedMethodsTrait
             $mapLocalizedKeysToTranslationsTable = $options['localizedKeysToTranslationsTable'] ?? $this->getLocalizedKeysToTranslationsTableMap();
 
             // Se extraen las traducciones del registro
-            $extractedTranslations = LangUtils::extractTranslations($data, $mapLocalizedKeysToTranslationsTable, $extraData);
+            $extractedTranslations = Language::extractTranslations($data, $mapLocalizedKeysToTranslationsTable, $extraData);
             $translations = $extractedTranslations['translations'];
             $defaultTranslations = $extractedTranslations['default_translation'];
             $currentTranslations = $extractedTranslations['current_translation'];
@@ -155,7 +155,7 @@ trait LocalizedMethodsTrait
                 }
             }
 
-            $pivotData = ArrayUtils::formatPivotData($translations, 'lang_id');
+            $pivotData = Arrays::formatPivotData($translations, 'lang_id');
 
             $item = $this->create($data);
 
@@ -205,7 +205,7 @@ trait LocalizedMethodsTrait
             $item = $this->findOrFail($id, $options);
 
             // Se extraen las traducciones del registro
-            $extractedTranslations = LangUtils::extractTranslations($data, $mapLocalizedKeysToTranslationsTable, $extraData);
+            $extractedTranslations = Language::extractTranslations($data, $mapLocalizedKeysToTranslationsTable, $extraData);
             $translations = $extractedTranslations['translations'];
             $defaultTranslations = $extractedTranslations['default_translation'];
             $currentTranslations = $extractedTranslations['current_translation'];
@@ -218,7 +218,7 @@ trait LocalizedMethodsTrait
                 }
             }
 
-            $pivotData = ArrayUtils::formatPivotData($translations, 'lang_id');
+            $pivotData = Arrays::formatPivotData($translations, 'lang_id');
 
             $this->canUpdate($item, $data);
 

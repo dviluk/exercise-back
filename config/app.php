@@ -195,6 +195,9 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         \App\Providers\CurrentUser\CurrentUserServiceProvider::class,
+        \App\Providers\Utils\ApiProvider::class,
+        \App\Providers\Utils\ArraysProvider::class,
+        \App\Providers\Utils\LangProvider::class,
     ],
 
     /*
@@ -249,6 +252,9 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'CurrentUser' => \App\Providers\CurrentUser\CurrentUserFacade::class,
+        'API' => App\Providers\Utils\ApiFacade::class,
+        'Arrays' => App\Providers\Utils\ArraysFacade::class,
+        'Language' => App\Providers\Utils\LangFacade::class,
     ],
 
 ];

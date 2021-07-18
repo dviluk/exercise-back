@@ -2,10 +2,9 @@
 
 namespace App\Utils\Json;
 
-use App\Utils\API\Error500;
+use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Support\Responsable;
-use Illuminate\Http\Resources\Json\JsonResource as JsonJsonResource;
 use Illuminate\Support\Collection;
 
 class JsonResource implements Responsable
@@ -56,7 +55,6 @@ class JsonResource implements Responsable
      * @param array $extraData Información extra para anexar.
      * @return void 
      * @throws \Illuminate\Database\Eloquent\InvalidCastException 
-     * @throws \App\Utils\API\Error500 
      */
     public function __construct($resource, array $extraData = [], array $formatterOptions = [])
     {
@@ -163,7 +161,6 @@ class JsonResource implements Responsable
      * @param mixed $resource 
      * @return array 
      * @throws \Illuminate\Database\Eloquent\InvalidCastException 
-     * @throws \App\Utils\API\Error500 
      */
     protected function formatter($resource, array $formatterOptions): array
     {
@@ -173,7 +170,7 @@ class JsonResource implements Responsable
             return $resource;
         }
 
-        throw new Error500([], '$this->resource not valid.');
+        throw new Exception('$this->resource not valid.');
     }
 
     /**

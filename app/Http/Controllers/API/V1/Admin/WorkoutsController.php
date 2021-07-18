@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\V1\Admin;
 
+use API;
 use App\Enums\ManyToManyAction;
 use App\Http\Controllers\CRUDController;
 use App\Http\Resources\V1\WorkoutResource;
@@ -10,7 +11,6 @@ use App\Models\Equipment;
 use App\Models\Muscle;
 use App\Models\Workout;
 use App\Repositories\V1\WorkoutsRepository;
-use App\Utils\API;
 use Illuminate\Http\Request;
 
 class WorkoutsController extends CRUDController

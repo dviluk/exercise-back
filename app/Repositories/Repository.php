@@ -5,8 +5,7 @@ namespace App\Repositories;
 use App\Enums\ManyToManyAction;
 use App\Utils\API\Error404;
 use App\Utils\API\Error500;
-use App\Utils\ArrayUtils;
-use App\Utils\LangUtils;
+use Arrays;
 use Closure;
 use DB;
 use Eloquent;
@@ -17,6 +16,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
+use Language;
 use Throwable;
 
 /**
@@ -121,7 +121,7 @@ class Repository
             $column = $this->orderBy[0];
 
             if ($localize) {
-                $column = LangUtils::dbColumn($column);
+                $column = Language::dbColumn($column);
             }
 
             $query->orderBy($column, $this->orderBy[1]);
@@ -380,7 +380,7 @@ class Repository
         try {
             $validate = $options['validate'] ?? true;
 
-            $data = ArrayUtils::preserveKeys($data, $this->availableInputKeys($data));
+            $data = Arrays::preserveKeys($data, $this->availableInputKeys($data));
 
             $data = $this->prepareData($data, 'create', $options);
 
@@ -424,7 +424,7 @@ class Repository
     {
         DB::beginTransaction();
         try {
-            $data = ArrayUtils::preserveKeys($data, $this->availableInputKeys($data, true));
+            $data = Arrays::preserveKeys($data, $this->availableInputKeys($data, true));
 
             $data = $this->prepareData($data, 'update' . $options);
 
@@ -560,7 +560,7 @@ class Repository
         // Cuando los datos no son un array de solo Ids, se le da formato de tal manera
         // cumpla con [$id => [$pivotData]]
         if (!$isArrayOfIds && $isInsertAction) {
-            $data = ArrayUtils::formatPivotData($data, $pivotKey);
+            $data = Arrays::formatPivotData($data, $pivotKey);
         }
 
         // Cuando es un AttachAction, se omiten los items que ya existen
@@ -568,9 +568,9 @@ class Repository
             $currentIds = $relation->pluck('id')->toArray();
 
             if ($isArrayOfIds) {
-                $data = ArrayUtils::omitValues($data, $currentIds);
+                $data = Arrays::omitValues($data, $currentIds);
             } else {
-                $data = ArrayUtils::omitKeys($data, $currentIds);
+                $data = Arrays::omitKeys($data, $currentIds);
             }
         }
 

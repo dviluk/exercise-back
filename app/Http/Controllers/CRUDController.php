@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Utils\API;
+use API;
 use App\Utils\API\Error500;
 use DB;
 use Illuminate\Http\Request;

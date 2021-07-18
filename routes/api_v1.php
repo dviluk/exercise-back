@@ -11,7 +11,6 @@ use App\Http\Controllers\API\V1\Admin\UnitsController;
 use App\Http\Controllers\API\V1\Admin\UsersController;
 use App\Http\Controllers\API\V1\Admin\WorkoutsController;
 use App\Http\Controllers\API\V1\AuthController;
-use App\Utils\API;
 use Illuminate\Support\Facades\Route;
 
 /*

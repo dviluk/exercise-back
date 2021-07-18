@@ -5,7 +5,6 @@ namespace App\Utils;
 use App\Utils\API\ErrorResponseInterface;
 use \Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 
 /**
  * Contiene método útiles para realizar peticiones.
@@ -18,9 +17,9 @@ class API
      * @param string $message Mensaje descriptivo de la acción realizada
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function response200($extra = [], $message = 'Success')
+    public function response200($extra = [], $message = 'Success')
     {
-        return self::prepareResponse(200, $message, $extra);
+        return $this->prepareResponse(200, $message, $extra);
     }
 
     /**
@@ -29,9 +28,9 @@ class API
      * @param string $message Mensaje descriptivo de la acción realizada
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function response201($extra = [], $message = 'Created')
+    public function response201($extra = [], $message = 'Created')
     {
-        return self::prepareResponse(200, $message, $extra);
+        return $this->prepareResponse(200, $message, $extra);
     }
 
     /**
@@ -40,9 +39,9 @@ class API
      * @param string $message Mensaje descriptivo de la acción realizada
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function response400($extra = [], $message = 'Bad Request')
+    public function response400($extra = [], $message = 'Bad Request')
     {
-        return self::prepareResponse(400, $message, $extra);
+        return $this->prepareResponse(400, $message, $extra);
     }
 
     /**
@@ -51,9 +50,9 @@ class API
      * @param string $message Mensaje descriptivo de la acción realizada
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function response401($extra = [], $message = 'Unauthenticated')
+    public function response401($extra = [], $message = 'Unauthenticated')
     {
-        return self::prepareResponse(401, $message, $extra);
+        return $this->prepareResponse(401, $message, $extra);
     }
 
     /**
@@ -62,9 +61,9 @@ class API
      * @param string $message Mensaje descriptivo de la acción realizada
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function response403($extra = [], $message = 'Forbidden')
+    public function response403($extra = [], $message = 'Forbidden')
     {
-        return self::prepareResponse(403, $message, $extra);
+        return $this->prepareResponse(403, $message, $extra);
     }
 
     /**
@@ -73,9 +72,9 @@ class API
      * @param string $message Mensaje descriptivo de la acción realizada
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function response404($extra = [], $message = 'Not Found')
+    public function response404($extra = [], $message = 'Not Found')
     {
-        return self::prepareResponse(404, $message, $extra);
+        return $this->prepareResponse(404, $message, $extra);
     }
 
     /**
@@ -84,9 +83,9 @@ class API
      * @param string $message Mensaje descriptivo de la acción realizada
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function response422($errors = [], $message = 'Datos incorrectos')
+    public function response422($errors = [], $message = 'Datos incorrectos')
     {
-        return self::prepareResponse(422, $message, [
+        return $this->prepareResponse(422, $message, [
             'errors' => $errors
         ]);
     }
@@ -97,9 +96,9 @@ class API
      * @param string $message Mensaje descriptivo de la acción realizada
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function response500($extra = [], $message = 'Internal Server Error')
+    public function response500($extra = [], $message = 'Internal Server Error')
     {
-        return self::prepareResponse(500, $message, $extra);
+        return $this->prepareResponse(500, $message, $extra);
     }
 
     /**
@@ -114,11 +113,11 @@ class API
      *
      * @return void
      */
-    private static function prepareResponse($code, $status, $extra = [])
+    private function prepareResponse($code, $status, $extra = [])
     {
         $response = ['message' => $status];
         if (count($extra) > 0) $response = array_merge($response, $extra);
-        return self::json($response, $code);
+        return $this->json($response, $code);
     }
 
 
@@ -130,7 +129,7 @@ class API
      * 
      * @return \Illuminate\Http\Response
      */
-    public static function json($response, $status = 200, $headers = [])
+    public function json($response, $status = 200, $headers = [])
     {
         return response()->json($response, $status, $headers);
     }
@@ -141,7 +140,7 @@ class API
      * @param array|Collection $data
      * @param \Closure $formatter
      */
-    public static function formatResponse($data = [], ?\Closure $formatter = null)
+    public function formatResponse($data = [], ?\Closure $formatter = null)
     {
         $formatted = [];
 
@@ -149,19 +148,8 @@ class API
             return [];
         }
 
-        // if (!$formatter)
-        //     throw new \Exception('el parámetro $formatter es requerido');
-
         if (is_array($data) || $data instanceof Collection) { // $data es una lista
             foreach ($data as $item) {
-                // if ($item instanceof \Eloquent) { // $data es un modelo
-                //     $relations = $item->getRelations();
-                //     $item = $item->toArray();
-                //     $item = array_merge($item, $relations);
-                // } else if ($data instanceof \stdClass) { // $data es un objeto
-                //     $item = (array)$item;
-                // }
-
                 if (is_null($item) && $item instanceof \Eloquent) {
                     $formatted[] = $item->toArray();
                 } else {
@@ -169,12 +157,6 @@ class API
                 }
             }
         } else {
-            // if ($data instanceof \Eloquent) { // $data es un modelo
-            //     $data = $data->toArray();
-            // } else if ($data instanceof \stdClass) { // $data es un objeto
-            //     $data = (array)$data;
-            // }
-
             if (is_null($data) && $data instanceof \Eloquent) {
                 $formatted = $data->toArray();
             } else {
@@ -191,11 +173,11 @@ class API
      * @param Illuminate\Contracts\Pagination\LengthAwarePaginator $data Paginator
      * @param \Closure $formatter función que se encargara del formateo de recursos
      */
-    public static function paginate(LengthAwarePaginator $data, \Closure $formatter = null, $extra = null)
+    public function paginate(LengthAwarePaginator $data, \Closure $formatter = null, $extra = null)
     {
         $response = [
             'total' => $data->total(),
-            'data' => self::formatResponse($data->items(), $formatter),
+            'data' => $this->formatResponse($data->items(), $formatter),
 
             'per_page' => $data->perPage(),
             'current_page' => $data->currentPage(),
@@ -209,14 +191,14 @@ class API
             'last_url' => $data->url($data->lastPage()),
             'first_url' => $data->url(1),
 
-            'filters' => request()->filtros,
+            'filters' => request()->filters,
         ];
 
         if ($extra && is_array($extra)) {
             $response['extra'] = $extra;
         }
 
-        return self::response200($response);
+        return $this->response200($response);
     }
 
     /**
@@ -225,7 +207,7 @@ class API
      * @param \Exception|\Throwable $e
      * @return \Illuminate\Http\JsonResponse
      */
-    public static function exceptionResponse($e)
+    public function exceptionResponse($e)
     {
         if ($e instanceof ErrorResponseInterface) {
             $status = $e->getStatus();
@@ -235,26 +217,26 @@ class API
             if (request()->ajax()) {
                 switch ($status) {
                     case 400:
-                        return self::response400($extra, $response);
+                        return $this->response400($extra, $response);
                     case 401:
-                        return self::response401($extra, $response);
+                        return $this->response401($extra, $response);
                     case 403:
-                        return self::response403($extra, $response);
+                        return $this->response403($extra, $response);
                     case 404:
-                        return self::response404($extra, $response);
+                        return $this->response404($extra, $response);
                     case 419:
-                        return self::response400($extra, $response);
+                        return $this->response400($extra, $response);
                     case 422:
-                        return self::response422($extra, $response);
+                        return $this->response422($extra, $response);
                     case 500:
-                        return self::response500($extra, $response);
+                        return $this->response500($extra, $response);
                 }
             } else {
                 return abort($status, $response);
             }
         }
 
-        return self::json([
+        return $this->json([
             'error' => $e->getMessage()
         ], 500);
     }

@@ -2,7 +2,7 @@
 
 namespace App\Exceptions;
 
-use App\Utils\API;
+use Api;
 use App\Utils\API\ErrorResponse;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;

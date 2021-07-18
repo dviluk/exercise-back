@@ -4,9 +4,9 @@ namespace App\Repositories\V1;
 
 use App\Models\Workout;
 use App\Repositories\Repository;
-use App\Utils\ArrayUtils;
 use DB;
 use App\Enums\ManyToManyAction;
+use Arrays;
 
 class WorkoutsRepository extends Repository
 {
@@ -122,12 +122,12 @@ class WorkoutsRepository extends Repository
     {
         DB::beginTransaction();
         try {
-            $data = ArrayUtils::preserveKeys($data, $this->availableInputKeys($data));
+            $data = Arrays::preserveKeys($data, $this->availableInputKeys($data));
 
             $muscles = $data['muscles'];
             $equipment = $data['equipment'];
 
-            $data = ArrayUtils::omitKeys($data, [
+            $data = Arrays::omitKeys($data, [
                 'muscles',
                 'equipment',
             ]);
@@ -160,12 +160,12 @@ class WorkoutsRepository extends Repository
     {
         DB::beginTransaction();
         try {
-            $data = ArrayUtils::preserveKeys($data, $this->availableInputKeys($data, true));
+            $data = Arrays::preserveKeys($data, $this->availableInputKeys($data, true));
 
             $muscles = $data['muscles'] ?? [];
             $equipment = $data['equipment'] ?? [];
 
-            $data = ArrayUtils::omitKeys($data, [
+            $data = Arrays::omitKeys($data, [
                 'muscles',
                 'equipment',
             ]);

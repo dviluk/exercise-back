@@ -5,8 +5,8 @@ namespace App\Repositories\V1;
 use App\Enums\ManyToManyAction;
 use DB;
 use App\Models\Routine;
-use App\Utils\ArrayUtils;
 use App\Repositories\Repository;
+use Arrays;
 
 class RoutinesRepository extends Repository
 {
@@ -117,11 +117,11 @@ class RoutinesRepository extends Repository
     {
         DB::beginTransaction();
         try {
-            $data = ArrayUtils::preserveKeys($data, $this->availableInputKeys($data));
+            $data = Arrays::preserveKeys($data, $this->availableInputKeys($data));
 
             $pivot = $data['workouts'];
 
-            $data = ArrayUtils::omitKeys($data, ['workouts']);
+            $data = Arrays::omitKeys($data, ['workouts']);
 
             /** @var Routine */
             $item = parent::create($data);
@@ -151,10 +151,10 @@ class RoutinesRepository extends Repository
     {
         DB::beginTransaction();
         try {
-            $data = ArrayUtils::preserveKeys($data, $this->availableInputKeys($data, true));
+            $data = Arrays::preserveKeys($data, $this->availableInputKeys($data, true));
 
             $pivot = $data['workouts'] ?? [];
-            $data = ArrayUtils::omitKeys($data, ['workouts']);
+            $data = Arrays::omitKeys($data, ['workouts']);
 
             /** @var Routine */
             $item = parent::update($id, $data, $options);

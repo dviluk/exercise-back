@@ -12,7 +12,7 @@ class LangUtils
      * @param boolean $fromRequest Indica si el idioma esta especificado en la petición
      * @return string
      */
-    public static function getCurrent($fromRequest = false)
+    public function getCurrent($fromRequest = false)
     {
         if ($fromRequest) {
             return request()->app_lang ?? 'en';
@@ -26,7 +26,7 @@ class LangUtils
      * 
      * @return array 
      */
-    public static function all()
+    public function all()
     {
         return ['en'];
     }
@@ -37,12 +37,12 @@ class LangUtils
      * 
      * @return array 
      */
-    public static function allByKey()
+    public function allByKey()
     {
-        return array_flip(self::all());
+        return array_flip($this->all());
     }
 
-    public static function primaryLang()
+    public function primaryLang()
     {
         return 'en';
     }
@@ -54,11 +54,11 @@ class LangUtils
      * @param mixed $rules 
      * @return array 
      */
-    public static function inputRulesLocalized($inputName, $rules, ?array $langs = null)
+    public function inputRulesLocalized($inputName, $rules, ?array $langs = null)
     {
         $inputRules = [];
 
-        $currentLangs = $langs ?? self::all();
+        $currentLangs = $langs ?? $this->all();
 
         foreach ($currentLangs as $lang) {
             $inputLocalized = "{$inputName}_{$lang}";
@@ -80,11 +80,11 @@ class LangUtils
      * @param mixed $inputName 
      * @return array 
      */
-    public static function inputNameLocalized($inputName, ?array $langs = null)
+    public function inputNameLocalized($inputName, ?array $langs = null)
     {
         $inputs = [];
 
-        $currentLangs = $langs ?? self::all();
+        $currentLangs = $langs ?? $this->all();
 
         foreach ($currentLangs as $lang) {
             $inputs[] = "{$inputName}_{$lang}";
@@ -102,14 +102,14 @@ class LangUtils
      * @param array $otherInputs 
      * @return array 
      */
-    public static function combineLocalizedInputNames(array $inputsToLocalize, array $otherInputs = [], ?array $langs = null)
+    public function combineLocalizedInputNames(array $inputsToLocalize, array $otherInputs = [], ?array $langs = null)
     {
         $inputs = [];
 
-        $currentLangs = $langs ?? self::all();
+        $currentLangs = $langs ?? $this->all();
 
         foreach ($inputsToLocalize as $input) {
-            $inputs = array_merge($inputs, self::inputNameLocalized($input, $currentLangs));
+            $inputs = array_merge($inputs, $this->inputNameLocalized($input, $currentLangs));
         }
 
         $inputs = array_merge($inputs, $otherInputs);
@@ -126,14 +126,14 @@ class LangUtils
      * @param array $otherInputsRules 
      * @return array 
      */
-    public static function combineLocalizedInputRules(array $inputsToLocalize, array $otherInputsRules = [], ?array $langs = null)
+    public function combineLocalizedInputRules(array $inputsToLocalize, array $otherInputsRules = [], ?array $langs = null)
     {
         $inputRules = [];
 
-        $currentLangs = $langs ?? self::all();
+        $currentLangs = $langs ?? $this->all();
 
         foreach ($inputsToLocalize as $input => $rules) {
-            $inputRules = array_merge($inputRules, self::inputRulesLocalized($input, $rules, $currentLangs));
+            $inputRules = array_merge($inputRules, $this->inputRulesLocalized($input, $rules, $currentLangs));
         }
 
         $inputRules = array_merge($inputRules, $otherInputsRules);
@@ -164,11 +164,11 @@ class LangUtils
      * @param array $extraData 
      * @return array 
      */
-    public static function extractTranslations($data, array $keys = [], array $extraData = [])
+    public function extractTranslations($data, array $keys = [], array $extraData = [])
     {
-        $langs = self::all();
-        $currentLang = self::getCurrent();
-        $primaryLang = self::primaryLang();
+        $langs = $this->all();
+        $currentLang = $this->getCurrent();
+        $primaryLang = $this->primaryLang();
 
         $keyValues = [];
 
@@ -216,9 +216,9 @@ class LangUtils
      * @param string $columnNameWithoutLang
      * @return string
      */
-    public static function dbColumn($columnNameWithoutLang)
+    public function dbColumn($columnNameWithoutLang)
     {
-        $currentLang = self::getCurrent();
+        $currentLang = $this->getCurrent();
         return "{$columnNameWithoutLang}_{$currentLang}";
     }
 
@@ -233,7 +233,7 @@ class LangUtils
      * @return array 
      * @throws \Illuminate\Contracts\Container\BindingResolutionException 
      */
-    public static function localizeKeyInArray($collection, $key, $keyInDictionary)
+    public function localizeKeyInArray($collection, $key, $keyInDictionary)
     {
         $localized = [];
 

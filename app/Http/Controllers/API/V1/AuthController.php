@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\API\V1;
 
+use API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\UserResource;
 use App\Models\User;
-use App\Utils\API;
 use Auth;
 use CurrentUser;
 use DB;

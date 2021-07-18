@@ -5,7 +5,7 @@ namespace App\Repositories\V1;
 use App\Enums\ManyToManyAction;
 use App\Models\Plan;
 use App\Repositories\Repository;
-use App\Utils\ArrayUtils;
+use Arrays;
 use DB;
 
 class PlansRepository extends Repository
@@ -122,7 +122,7 @@ class PlansRepository extends Repository
             $routines = $data['routines'];
             $goals = $data['goals'];
 
-            $data = ArrayUtils::omitKeys($data, [
+            $data = Arrays::omitKeys($data, [
                 'routines',
                 'goals'
             ]);
@@ -159,7 +159,7 @@ class PlansRepository extends Repository
             $routines = $data['routines'] ?? [];
             $goals = $data['goals'] ?? [];
 
-            $data = ArrayUtils::omitKeys($data, [
+            $data = Arrays::omitKeys($data, [
                 'routines',
                 'goals'
             ]);
