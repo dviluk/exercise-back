@@ -31,7 +31,7 @@
         "editor.fontLigatures": true,
         "editor.formatOnSave": true,
         "editor.mouseWheelZoom": false,
-        "cSpell.language": "en,es",
+        "cSpell.language": "en_us,es-es",
         "php.suggest.basic": false,
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "blade.format.enable": true,
