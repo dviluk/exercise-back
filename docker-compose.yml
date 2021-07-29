@@ -16,9 +16,9 @@ services:
     volumes:
       - vscode-ext:/home/sail/.vscode-server/extensions
       - vscode-ext-insiders:/home/sail/.vscode-server-insiders/extensions
-      - vendor:/var/www/html/vendor
-      - node-modules:/var/www/html/node_modules
-      - ".:/var/www/html"
+      - vendor:/home/sail/exercise/vendor
+      - node-modules:/home/sail/exercise/node_modules
+      - ".:/home/sail/exercise"
     networks:
       - sail
     depends_on:

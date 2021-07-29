@@ -3,7 +3,7 @@
     "dockerComposeFile": "../docker-compose.yml",
     "service": "laravel",
     "remoteUser": "sail",
-    "workspaceFolder": "/var/www/html",
+    "workspaceFolder": "/home/sail/exercise",
     "extensions": [
         "felixfbecker.php-debug",
         "neilbrayfield.php-docblocker",
@@ -30,7 +30,7 @@
         "terminal.integrated.defaultProfile.linux": "bash",
         "editor.fontLigatures": true,
         "editor.formatOnSave": true,
-        "editor.mouseWheelZoom": false,
+        "editor.mouseWheelZoom": true,
         "cSpell.language": "en_us,es-es",
         "php.suggest.basic": false,
         "editor.defaultFormatter": "esbenp.prettier-vscode",

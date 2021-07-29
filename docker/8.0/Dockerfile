@@ -5,8 +5,6 @@ LABEL maintainer="Taylor Otwell"
 ARG WWWGROUP=1000
 ARG WWWUSER=1000
 
-WORKDIR /var/www/html
-
 ENV DEBIAN_FRONTEND noninteractive
 ENV TZ=UTC
 
@@ -59,16 +57,19 @@ RUN wget https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/inst
 
 RUN mkdir -p /home/sail/.vscode-server/extensions \
     /home/sail/.vscode-server-insiders/extensions \
+    /home/sail/exercise \
     && chown -R sail:${WWWGROUP} /home/sail/.vscode-server-insiders/extensions \
     /home/sail/.vscode-server/extensions
 
 USER root
 
-RUN mkdir -p /var/www/html/node_modules \
-    /var/www/html/vendor \
-    && chown -R ${WWWUSER}:${WWWGROUP} /var/www/html/node_modules \
-    /var/www/html/vendor
+RUN mkdir -p /home/sail/exercise/node_modules \
+    /home/sail/exercise/vendor \
+    && chown -R ${WWWUSER}:${WWWGROUP} /home/sail/exercise/node_modules \
+    /home/sail/exercise/vendor
 
 EXPOSE 8000
+
+WORKDIR /home/sail/exercise
 
 ENTRYPOINT ["start-container"]
