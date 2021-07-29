@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use API;
 use App\Utils\API\Error500;
-use DB;
 use Illuminate\Http\Request;
 
 class CRUDController extends Controller
@@ -50,7 +50,7 @@ class CRUDController extends Controller
      */
     protected function updateValidator(Request $request, string $id): array
     {
-        return [];
+        return $this->repo->inputRules($request, 'update', $id);
     }
 
     /**
@@ -62,7 +62,7 @@ class CRUDController extends Controller
      */
     protected function getUpdateData(Request $request, string $id): array
     {
-        return [];
+        return $request->all();
     }
 
     /**
@@ -73,7 +73,7 @@ class CRUDController extends Controller
      */
     protected function storeValidator(Request $request): array
     {
-        return [];
+        return $this->repo->inputRules($request, 'create');
     }
 
     /**
@@ -84,35 +84,16 @@ class CRUDController extends Controller
      */
     protected function getStoreData(Request $request): array
     {
-        return [];
+        return $request->all();
     }
 
     /**
-     * Relaciones a cargar al consultar el listado.
+     * Indica las relaciones que se cargaran según el método indicado.
      * 
+     * @param string $method 
      * @return array 
      */
-    protected function indexRelations()
-    {
-        return [];
-    }
-
-    /**
-     * Relaciones a cargar al consultar 1 elemento.
-     * 
-     * @return array 
-     */
-    protected function showRelations()
-    {
-        return [];
-    }
-
-    /**
-     * Relaciones a cargar al consultar 1 elemento a editar.
-     * 
-     * @return array 
-     */
-    protected function editRelations()
+    protected function loadRelations(string $method)
     {
         return [];
     }
@@ -123,7 +104,7 @@ class CRUDController extends Controller
      * @param mixed $method 
      * @return array 
      */
-    protected function options($method)
+    protected function options(string $method)
     {
         return [];
     }
@@ -164,7 +145,7 @@ class CRUDController extends Controller
         $method = $this->localized  ? 'paginatedLocalized' : 'paginated';
 
         $queryOptions = $this->_queryOptions('index', [
-            'with' => $this->indexRelations(),
+            'with' => $this->loadRelations('index'),
         ]);
 
         $resourceOptions = $queryOptions['resourceOptions'] ?? [];
@@ -200,7 +181,7 @@ class CRUDController extends Controller
 
             $this->postAction('store', $item);
 
-            $item->load($this->showRelations());
+            $item->load($this->loadRelations('show'));
 
             DB::commit();
 
@@ -222,7 +203,7 @@ class CRUDController extends Controller
         $method = $this->localized  ? 'findOrFailLocalized' : 'findOrFail';
 
         $queryOptions = $this->_queryOptions('show', [
-            'with' => $this->showRelations(),
+            'with' => $this->loadRelations('show'),
         ]);
 
         $resourceOptions = $queryOptions['resourceOptions'] ?? [];
@@ -241,7 +222,7 @@ class CRUDController extends Controller
     public function edit(Request $request, $id)
     {
         $queryOptions = $this->_queryOptions('edit', [
-            'with' => $this->editRelations(),
+            'with' => $this->loadRelations('edit'),
         ]);
 
         $resourceOptions = $queryOptions['resourceOptions'] ?? [];
@@ -280,7 +261,7 @@ class CRUDController extends Controller
 
             $this->postAction('update', $item);
 
-            $item->load($this->showRelations());
+            $item->load($this->loadRelations('show'));
 
             DB::commit();
 

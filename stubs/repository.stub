@@ -4,6 +4,8 @@ namespace App\Repositories;
 
 use App\Repositories\Repository;
 use {ModelNamespace};
+use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 
 class RepositoryName extends Repository
 {
@@ -15,16 +17,37 @@ class RepositoryName extends Repository
     protected $model = {ModelName}::class;
 
     /**
-     * Contiene los keys de los posibles valores del atributo $data
-     * en el método `create` y `update`.
+    * Contiene los keys de los posibles valores del atributo $data
+    * en el método `create` y `update`.
+    * 
+    * @param array $data
+    * @param string $method Indica el método donde se esta llamando.
+    * @param array $options
+    * @return array
+    */
+    protected function availableInputKeys(array $data, string $method, array $options = [])
+    {
+        return [
+            'name',
+        ];
+    }
+
+    /**
+     * Reglas que se aplicaran a los inputs.
      * 
-     * @param array $data
-     * @param bool $updating Indica si el método se esta llamando desde `update`.
+     * @param \Illuminate\Http\Request $request
+     * @param string $method Indica el método donde se esta llamando.
+     * @param mixed $id
+     * @param array $options
      * @return array
      */
-    protected function availableInputKeys(array $data, bool $updating = false): array
+    public function inputRules(Request $request, string $method, $id = null, array $options = [])
     {
-        return [];
+        $rules = [
+            'name' => 'required',
+        ];
+
+        return $rules;
     }
 
     /**
@@ -59,6 +82,18 @@ class RepositoryName extends Repository
     public function canDelete($item)
     {
         //
+    }
+
+    /**
+     * Permite encargarse de las opciones adicionales.
+     *
+     * @param Builder $builder
+     * @param array $options
+     * @return Builder
+     */
+    public function handleOptions(Builder $builder, array $options = [])
+    {
+        return $builder;
     }
 
     /**
@@ -102,11 +137,15 @@ class RepositoryName extends Repository
      * Crea un nuevo registro.
      *
      * @param array $data Contiene los campos a insertar en la tabla del modelo.
+     *
+     * - (string)   `data.name`
+     * 
+     * @param array $options
      * @return {ModelName}
      * @throws \Exception
      * @throws \Throwable
      */
-    public function create(array $data)
+    public function create(array $data, array $options = [])
     {
         return parent::create($data);
     }
@@ -116,6 +155,9 @@ class RepositoryName extends Repository
      *
      * @param int $id
      * @param array $data Contiene los campos a actualizar.
+     *
+     * - (string)   `data.name`
+     * 
      * @param array $options
      * @return {ModelName}
      * @throws \Exception

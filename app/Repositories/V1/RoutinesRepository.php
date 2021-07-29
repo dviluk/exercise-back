@@ -5,8 +5,11 @@ namespace App\Repositories\V1;
 use App\Enums\ManyToManyAction;
 use DB;
 use App\Models\Routine;
+use App\Models\Unit;
+use App\Models\Workout;
 use App\Repositories\Repository;
 use Arrays;
+use Illuminate\Http\Request;
 
 class RoutinesRepository extends Repository
 {
@@ -22,16 +25,49 @@ class RoutinesRepository extends Repository
      * en el método `create` y `update`.
      * 
      * @param array $data
-     * @param bool $updating Indica si el método se esta llamando desde `update`.
+     * @param string $method Indica el método donde se esta llamando.
+     * @param array $options
      * @return array
      */
-    protected function availableInputKeys(array $data, bool $updating = false): array
+    protected function availableInputKeys(array $data, string $method, array $options = [])
     {
         return [
             'name',
             'description',
             'workouts',
         ];
+    }
+
+    /**
+     * Reglas que se aplicaran a los inputs.
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param string $method Indica el método donde se esta llamando.
+     * @param mixed $id
+     * @param array $options
+     * @return array
+     */
+    public function inputRules(Request $request, string $method, $id = null, array $options = [])
+    {
+        $rules = [
+            'name' => 'required',
+            'description' => 'required',
+            'workouts' => 'required|array|min:1',
+            'workouts.*.id' => 'exists:' . Workout::class . ',id',
+            'workouts.*.description' => 'nullable',
+            'workouts.*.order' => 'integer',
+            'workouts.*.repetitions' => 'integer',
+            'workouts.*.quantity' => 'integer',
+            'workouts.*.quantity_unit_id' => 'exists:' . Unit::class . ',id',
+            'workouts.*.rest_time_between_repetitions' => 'integer',
+            'workouts.*.rest_time_after_workout' => 'integer',
+        ];
+
+        if ($method === 'update') {
+            $rules['workouts'] = str_replace('required', 'nullable', $rules['workouts']);
+        }
+
+        return $rules;
     }
 
     /**
@@ -109,6 +145,14 @@ class RoutinesRepository extends Repository
      * Crea un nuevo registro.
      *
      * @param array $data Contiene los campos a insertar en la tabla del modelo.
+     * 
+     * - (string)   `data.name`
+     * - (string)   `data.description`
+     * 
+     * Opcionales
+     * 
+     * - (array)    `data.workouts`
+     * 
      * @return Routine
      * @throws \Exception
      * @throws \Throwable
@@ -117,9 +161,9 @@ class RoutinesRepository extends Repository
     {
         DB::beginTransaction();
         try {
-            $data = Arrays::preserveKeys($data, $this->availableInputKeys($data));
+            $data = Arrays::preserveKeys($data, $this->availableInputKeys($data, 'create'));
 
-            $pivot = $data['workouts'];
+            $pivot = $data['workouts'] ?? [];
 
             $data = Arrays::omitKeys($data, ['workouts']);
 
@@ -151,15 +195,19 @@ class RoutinesRepository extends Repository
     {
         DB::beginTransaction();
         try {
-            $data = Arrays::preserveKeys($data, $this->availableInputKeys($data, true));
+            $data = Arrays::preserveKeys($data, $this->availableInputKeys($data, 'update'));
 
-            $pivot = $data['workouts'] ?? [];
-            $data = Arrays::omitKeys($data, ['workouts']);
+            $workouts = $data['workouts'] ?? null;
+            $data = Arrays::omitKeys($data, [
+                'workouts'
+            ]);
 
             /** @var Routine */
             $item = parent::update($id, $data, $options);
 
-            $this->updateWorkouts($item, ManyToManyAction::SYNC(), $pivot);
+            if (!is_null($workouts)) {
+                $this->updateWorkouts($item, ManyToManyAction::SYNC(), $workouts);
+            }
 
             DB::commit();
 

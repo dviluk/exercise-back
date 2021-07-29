@@ -50,22 +50,24 @@ Para facilitar las sesiones de fitness, [Trainer] te ayuda a:
 
 -   **Multiplataforma**:
 
-    Windows, Linux, iOS, Android, Web
+    Windows, Linux, iOS, Android, Web.
+
+    Prioridad: Android y Web.
 
 ## Database
 
 -   difficulties
 -   muscles
--   tags
+-   tags (PARA DESPUÉS)
 -   goals
 -   equipment
 -   workouts
--   routines
 -   workout_equipment
 -   workout_muscle
+-   routines
 -   routine_workout
--   guides
--   guide_routine
--   guide_goal
+-   plans
+-   plan_routine
+-   plan_goal (LOS GOALS SERÁN(?) DIFERENTES A LOS DEL WORKOUT)
 
 ## TODO

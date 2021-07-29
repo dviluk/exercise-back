@@ -3,10 +3,14 @@
 namespace App\Repositories\V1;
 
 use App\Enums\ManyToManyAction;
+use App\Models\Difficulty;
+use App\Models\Goal;
 use App\Models\Plan;
+use App\Models\Routine;
 use App\Repositories\Repository;
 use Arrays;
 use DB;
+use Illuminate\Http\Request;
 
 class PlansRepository extends Repository
 {
@@ -22,10 +26,11 @@ class PlansRepository extends Repository
      * en el método `create` y `update`.
      * 
      * @param array $data
-     * @param bool $updating Indica si el método se esta llamando desde `update`.
+     * @param string $method Indica el método donde se esta llamando.
+     * @param array $options
      * @return array
      */
-    protected function availableInputKeys(array $data, bool $updating = false): array
+    protected function availableInputKeys(array $data, string $method, array $options = [])
     {
         return [
             'name',
@@ -34,6 +39,37 @@ class PlansRepository extends Repository
             'description',
             'instructions',
         ];
+    }
+
+    /**
+     * Reglas que se aplicaran a los inputs.
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param string $method Indica el método donde se esta llamando.
+     * @param mixed $id
+     * @param array $options
+     * @return array
+     */
+    public function inputRules(Request $request, string $method, $id = null, array $options = [])
+    {
+        $rules = [
+            'name' => 'required',
+            'difficulty_id' => 'required|exists:' . Difficulty::class . ',id',
+            'introduction' => 'required',
+            'description' => 'required',
+            'instructions' => 'required',
+            'goals' => 'required|array',
+            'goals.*' => 'exists:' . Goal::class . ',id',
+            'routines' => 'required|array',
+            'routines.*' => 'exists:' . Routine::class . ',id',
+        ];
+
+        if ($method === 'update') {
+            $rules['goals'] = str_replace('required', 'nullable', $rules['goals']);
+            $rules['routines'] = str_replace('required', 'nullable', $rules['routines']);
+        }
+
+        return $rules;
     }
 
     /**

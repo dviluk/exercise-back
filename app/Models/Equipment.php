@@ -13,6 +13,6 @@ class Equipment extends BaseModel
 
     public function workouts()
     {
-        return $this->hasMany(Workout::class, 'difficulty_id');
+        return $this->hasMany(Workout::class, 'equipment_id');
     }
 }

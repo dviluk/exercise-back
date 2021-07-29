@@ -4,6 +4,7 @@ namespace App\Repositories\V1;
 
 use App\Models\User;
 use App\Repositories\Repository;
+use Illuminate\Http\Request;
 
 class UsersRepository extends Repository
 {
@@ -19,16 +20,42 @@ class UsersRepository extends Repository
      * en el método `create` y `update`.
      * 
      * @param array $data
-     * @param bool $updating Indica si el método se esta llamando desde `update`.
+     * @param string $method Indica el método donde se esta llamando.
+     * @param array $options
      * @return array
      */
-    protected function availableInputKeys(array $data, bool $updating = false): array
+    protected function availableInputKeys(array $data, string $method, array $options = [])
     {
         return [
             'name',
             'email',
             'password',
         ];
+    }
+
+    /**
+     * Reglas que se aplicaran a los inputs.
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param string $method Indica el método donde se esta llamando.
+     * @param mixed $id
+     * @param array $options
+     * @return array
+     */
+    public function inputRules(Request $request, string $method, $id = null, array $options = [])
+    {
+        $rules = [
+            'name' => 'required',
+            'email' => 'required|email|unique:' . User::class . ',email',
+            'password' => 'required|confirmed|min:8',
+        ];
+
+        if ($method === 'update') {
+            $rules['email'] = $rules['email'] . ',' . $id . ',id';
+            $rules['password'] = str_replace('required', 'nullable', $rules['password']);
+        }
+
+        return $rules;
     }
 
     /**
@@ -106,13 +133,18 @@ class UsersRepository extends Repository
      * Crea un nuevo registro.
      *
      * @param array $data Contiene los campos a insertar en la tabla del modelo.
+     * 
+     * - (string)   `data.name`
+     * - (string)   `data.email`
+     * - (string)   `data.password`
+     * 
      * @return User
      * @throws \Exception
      * @throws \Throwable
      */
     public function create(array $data, array $options = [])
     {
-        if (isset($data['password'])) {
+        if (array_key_exists('password', $data)) {
             $data['password'] = bcrypt($data['password']);
         }
 
@@ -124,6 +156,11 @@ class UsersRepository extends Repository
      *
      * @param int $id
      * @param array $data Contiene los campos a actualizar.
+     * 
+     * - (string)   `data.name`
+     * - (string)   `data.email`
+     * - (string)   `data.password`
+     * 
      * @param array $options
      * @return User
      * @throws \Exception
@@ -131,7 +168,7 @@ class UsersRepository extends Repository
      */
     public function update($id, array $data, array $options = [])
     {
-        if (isset($data['password'])) {
+        if (array_key_exists('password', $data)) {
             $data['password'] = bcrypt($data['password']);
         }
 

@@ -4,6 +4,7 @@ namespace App\Repositories\V1;
 
 use App\Models\Goal;
 use App\Repositories\Repository;
+use Illuminate\Http\Request;
 
 class GoalsRepository extends Repository
 {
@@ -19,14 +20,38 @@ class GoalsRepository extends Repository
      * en el método `create` y `update`.
      * 
      * @param array $data
-     * @param bool $updating Indica si el método se esta llamando desde `update`.
+     * @param string $method Indica el método donde se esta llamando.
+     * @param array $options
      * @return array
      */
-    protected function availableInputKeys(array $data, bool $updating = false): array
+    protected function availableInputKeys(array $data, string $method, array $options = [])
     {
         return [
             'name',
         ];
+    }
+
+    /**
+     * Reglas que se aplicaran a los inputs.
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param string $method Indica el método donde se esta llamando.
+     * @param mixed $id
+     * @param array $options
+     * @return array
+     */
+    public function inputRules(Request $request, string $method, $id = null, array $options = [])
+    {
+        $rules = [
+            'name' => 'required|unique:' . Goal::class . ',name',
+            'description' => 'required',
+        ];
+
+        if ($method === 'update') {
+            $rules['name'] = $rules['name'] . ',' . $id . ',id';
+        }
+
+        return $rules;
     }
 
     /**
@@ -104,6 +129,9 @@ class GoalsRepository extends Repository
      * Crea un nuevo registro.
      *
      * @param array $data Contiene los campos a insertar en la tabla del modelo.
+     * 
+     * - (string)   `data.name`
+     * 
      * @return Goal
      * @throws \Exception
      * @throws \Throwable
@@ -118,6 +146,9 @@ class GoalsRepository extends Repository
      *
      * @param int $id
      * @param array $data Contiene los campos a actualizar.
+     * 
+     * - (string)   `data.name`
+     * 
      * @param array $options
      * @return Goal
      * @throws \Exception

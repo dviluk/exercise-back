@@ -14,6 +14,7 @@ use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use Language;
@@ -216,7 +217,7 @@ class Repository
      * @param array $options
      * @return Builder
      */
-    public function handleOptions(Builder $builder, array $options = []): Builder
+    public function handleOptions(Builder $builder, array $options = [])
     {
         return $builder;
     }
@@ -227,7 +228,7 @@ class Repository
      * @param Builder $builder 
      * @return Builder 
      */
-    public function modifyQuery(Builder $builder): Builder
+    public function modifyQuery(Builder $builder)
     {
         return $builder;
     }
@@ -239,7 +240,7 @@ class Repository
      * @return Builder
      * @throws Error
      */
-    public function query(array $options = []): Builder
+    public function query(array $options = [])
     {
         $query = $this->initQuery($options);
 
@@ -294,7 +295,7 @@ class Repository
      *
      * @return array
      */
-    public function paginationOptions(): array
+    public function paginationOptions()
     {
         return [15, 25, 30, 50, 100];
     }
@@ -370,6 +371,7 @@ class Repository
      * Crea un nuevo registro.
      *
      * @param array $data Contiene los campos a insertar en la tabla del modelo.
+     * @param array $options
      * @return Eloquent
      * @throws Exception
      * @throws Throwable
@@ -380,7 +382,7 @@ class Repository
         try {
             $validate = $options['validate'] ?? true;
 
-            $data = Arrays::preserveKeys($data, $this->availableInputKeys($data));
+            $data = Arrays::preserveKeys($data, $this->availableInputKeys($data, 'create'));
 
             $data = $this->prepareData($data, 'create', $options);
 
@@ -424,7 +426,7 @@ class Repository
     {
         DB::beginTransaction();
         try {
-            $data = Arrays::preserveKeys($data, $this->availableInputKeys($data, true));
+            $data = Arrays::preserveKeys($data, $this->availableInputKeys($data, 'update'));
 
             $data = $this->prepareData($data, 'update' . $options);
 
@@ -636,10 +638,25 @@ class Repository
      * en el método `create` y `update`.
      * 
      * @param array $data
-     * @param bool $updating Indica si el método se esta llamando desde `update`.
+     * @param string $method Indica el método donde se esta llamando.
+     * @param array $options
      * @return array
      */
-    protected function availableInputKeys(array $data, bool $updating = false): array
+    protected function availableInputKeys(array $data, string $method, array $options = [])
+    {
+        return [];
+    }
+
+    /**
+     * Reglas que se aplicaran a los inputs.
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param string $method Indica el método donde se esta llamando.
+     * @param mixed $id
+     * @param array $options
+     * @return array
+     */
+    public function inputRules(Request $request, string $method, $id = null, array $options = [])
     {
         return [];
     }

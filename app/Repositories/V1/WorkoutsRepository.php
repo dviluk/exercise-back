@@ -6,7 +6,11 @@ use App\Models\Workout;
 use App\Repositories\Repository;
 use DB;
 use App\Enums\ManyToManyAction;
+use App\Models\Difficulty;
+use App\Models\Equipment;
+use App\Models\Muscle;
 use Arrays;
+use Illuminate\Http\Request;
 
 class WorkoutsRepository extends Repository
 {
@@ -22,10 +26,11 @@ class WorkoutsRepository extends Repository
      * en el método `create` y `update`.
      * 
      * @param array $data
-     * @param bool $updating Indica si el método se esta llamando desde `update`.
+     * @param string $method Indica el método donde se esta llamando.
+     * @param array $options
      * @return array
      */
-    protected function availableInputKeys(array $data, bool $updating = false): array
+    protected function availableInputKeys(array $data, string $method, array $options = [])
     {
         return [
             'workout_id',
@@ -34,9 +39,46 @@ class WorkoutsRepository extends Repository
             'illustration',
             'name',
             'description',
+            // Son opcionales
             'muscles',
             'equipment',
         ];
+    }
+
+    /**
+     * Reglas que se aplicaran a los inputs.
+     * 
+     * @param \Illuminate\Http\Request $request
+     * @param string $method Indica el método donde se esta llamando.
+     * @param mixed $id
+     * @param array $options
+     * @return array
+     */
+    public function inputRules(Request $request, string $method, $id = null, array $options = [])
+    {
+        $rules = [
+            'workout_id' => 'nullable|exists:' . Workout::class . ',id',
+            'difficulty_id' => 'required|exists:' . Difficulty::class . ',id',
+            'cover' => 'required',
+            'illustration' => 'required',
+            'name' => 'required|unique:' . Workout::class . ',name',
+            'description' => 'required',
+            // Equipment
+            'equipment' => 'required|array',
+            'equipment.*' => 'exists:' . Equipment::class . ',id',
+            // Muscles
+            'muscles' => 'required|array',
+            'muscles.*.id' => 'required|exists:' . Muscle::class . ',id',
+            'muscles.*.primary' => 'required|boolean',
+        ];
+
+        if ($method === 'update') {
+            $rules['name'] = $rules['name'] . ',' . $id . ',id';
+            $rules['muscles'] = str_replace('required', 'nullable', $rules['muscles']);
+            $rules['equipment'] = str_replace('required', 'nullable', $rules['equipment']);
+        }
+
+        return $rules;
     }
 
     /**
@@ -114,6 +156,19 @@ class WorkoutsRepository extends Repository
      * Crea un nuevo registro.
      *
      * @param array $data Contiene los campos a insertar en la tabla del modelo.
+     * 
+     * - (string)   `data.workout_id`: 
+     * - (string)   `data.difficulty_id`: 
+     * - (file)     `data.cover`: 
+     * - (file)     `data.illustration`: 
+     * - (string)   `data.name`: 
+     * - (string)   `data.description`: 
+     * 
+     * Opcionales: 
+     * 
+     * - (array)    `data.muscles`: Revisar `$this->updateMuscles()`
+     * - (array)    `data.equipment`: Revisar `$this->updateEquipment()`
+     * 
      * @return Workout
      * @throws \Exception
      * @throws \Throwable
@@ -122,10 +177,10 @@ class WorkoutsRepository extends Repository
     {
         DB::beginTransaction();
         try {
-            $data = Arrays::preserveKeys($data, $this->availableInputKeys($data));
+            $data = Arrays::preserveKeys($data, $this->availableInputKeys($data, 'create'));
 
-            $muscles = $data['muscles'];
-            $equipment = $data['equipment'];
+            $muscles = $data['muscles'] ?? [];
+            $equipment = $data['equipment'] ?? [];
 
             $data = Arrays::omitKeys($data, [
                 'muscles',
@@ -149,6 +204,20 @@ class WorkoutsRepository extends Repository
     /**
      * Actualiza un registro.
      *
+     * - (string)   `data.workout_id`: 
+     * - (string)   `data.difficulty_id`: 
+     * - (file)     `data.cover`: 
+     * - (file)     `data.illustration`: 
+     * - (string)   `data.name`: 
+     * - (string)   `data.description`: 
+     * 
+     * Opcionales: 
+     * 
+     * - (array)    `data.muscles`: Revisar `$this->updateMuscles()`
+     *                              Si se pasa un arreglo vació se eliminan todos los items asociados.
+     * - (array)    `data.equipment`: Revisar `$this->updateEquipment()`
+     *                                Si se pasa un arreglo vació se eliminan todos los items asociados.
+     * 
      * @param int $id
      * @param array $data Contiene los campos a actualizar.
      * @param array $options
@@ -160,10 +229,10 @@ class WorkoutsRepository extends Repository
     {
         DB::beginTransaction();
         try {
-            $data = Arrays::preserveKeys($data, $this->availableInputKeys($data, true));
+            $data = Arrays::preserveKeys($data, $this->availableInputKeys($data, 'update'));
 
-            $muscles = $data['muscles'] ?? [];
-            $equipment = $data['equipment'] ?? [];
+            $muscles = $data['muscles'] ?? null;
+            $equipment = $data['equipment'] ?? null;
 
             $data = Arrays::omitKeys($data, [
                 'muscles',
@@ -172,8 +241,13 @@ class WorkoutsRepository extends Repository
 
             $item = parent::update($id, $data, $options);
 
-            $this->updateEquipment($item, ManyToManyAction::SYNC(), $equipment);
-            $this->updateMuscles($item, ManyToManyAction::SYNC(), $muscles);
+            if (!is_null($equipment)) {
+                $this->updateEquipment($item, ManyToManyAction::SYNC(), $equipment);
+            }
+
+            if (!is_null($muscles)) {
+                $this->updateMuscles($item, ManyToManyAction::SYNC(), $muscles);
+            }
 
             DB::commit();
 
@@ -218,7 +292,7 @@ class WorkoutsRepository extends Repository
      * 
      * - (bool) returnAttachedItems: Indica si se retornaran los items agregados.
      * 
-     * @return Workout|\Illuminate\Support\Collection|\App\Models\Muscle[]
+     * @return Workout|\App\Models\Muscle[]
      * @throws \Error 
      * @throws \App\Utils\API\Error404 
      * @throws \InvalidArgumentException 
@@ -256,7 +330,7 @@ class WorkoutsRepository extends Repository
      * 
      * - (bool) returnAttachedItems: Indica si se retornaran los items agregados.
      * 
-     * @return Workout|\Illuminate\Support\Collection|\App\Models\Equipment[]
+     * @return Workout|\App\Models\Equipment[]
      * @throws \Error 
      * @throws \App\Utils\API\Error404 
      * @throws \InvalidArgumentException 

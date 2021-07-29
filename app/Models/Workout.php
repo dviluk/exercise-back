@@ -16,9 +16,7 @@ class Workout extends BaseModel
     ];
 
     /**
-     * Si existe, el workout actual es una variación de otro workout. 
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo 
+     * Si existe, el workout actual es una variación de otro workout.
      */
     public function workout()
     {

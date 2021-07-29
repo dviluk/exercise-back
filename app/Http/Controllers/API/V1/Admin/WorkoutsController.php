@@ -6,10 +6,8 @@ use API;
 use App\Enums\ManyToManyAction;
 use App\Http\Controllers\CRUDController;
 use App\Http\Resources\V1\WorkoutResource;
-use App\Models\Difficulty;
 use App\Models\Equipment;
 use App\Models\Muscle;
-use App\Models\Workout;
 use App\Repositories\V1\WorkoutsRepository;
 use Illuminate\Http\Request;
 
@@ -28,108 +26,32 @@ class WorkoutsController extends CRUDController
     protected $resource = WorkoutResource::class;
 
     /**
-     * Validate store request input.
+     * Indica las relaciones que se cargaran según el método indicado.
      * 
-     * @param \Illuminate\Http\Request $request 
+     * @param string $method 
      * @return array 
      */
-    protected function storeValidator(Request $request): array
+    protected function loadRelations(string $method)
     {
-        return [
-            'workout_id' => 'nullable|exists:' . Workout::class . ',id',
-            'difficulty_id' => 'required|exists:' . Difficulty::class . ',id',
-            'cover' => 'required',
-            'illustration' => 'required',
-            'name' => 'required|unique:' . Workout::class . ',name',
-            'description' => 'required',
-            // Equipment
-            'equipment' => 'required|array',
-            'equipment.*' => 'exists:' . Equipment::class . ',id',
-            // Muscles
-            'muscles' => 'required|array',
-            'muscles.*.id' => 'required|exists:' . Muscle::class . ',id',
-            'muscles.*.primary' => 'required|boolean',
-        ];
-    }
+        $relations = [];
 
-    /**
-     * Get data from store request.
-     * 
-     * @param \Illuminate\Http\Request $request 
-     * @return array 
-     */
-    protected function getStoreData(Request $request): array
-    {
-        return $request->all();
-    }
+        if ($method === 'index') {
+            $relations = [
+                'workout',
+                'difficulty',
+            ];
+        }
 
-    /**
-     * Get data from update request.
-     * 
-     * @param \Illuminate\Http\Request $request 
-     * @param string $id 
-     * @return array 
-     */
-    protected function updateValidator(Request $request, string $id): array
-    {
-        $validations = $this->storeValidator($request);
+        if ($method === 'show' || $method === 'edit') {
+            $relations = [
+                'workout',
+                'difficulty',
+                'muscles',
+                'equipment',
+            ];
+        }
 
-        $validations['name'] = $validations['name'] . ',' . $id . ',id';
-
-        $validations['muscles'] = str_replace('required', 'nullable', $validations['muscles']);
-        $validations['equipment'] = str_replace('required', 'nullable', $validations['equipment']);
-
-        return $validations;
-    }
-
-    /**
-     * Get data from update request.
-     * 
-     * @param \Illuminate\Http\Request $request 
-     * @param string $id 
-     * @return array 
-     */
-    protected function getUpdateData(Request $request, string $id): array
-    {
-        return $this->getStoreData($request);
-    }
-
-    /**
-     * Relaciones a cargar al consultar el listado.
-     * 
-     * @return array 
-     */
-    protected function indexRelations()
-    {
-        return [
-            'workout',
-            'difficulty',
-        ];
-    }
-
-    /**
-     * Relaciones a cargar al consultar 1 elemento.
-     * 
-     * @return array 
-     */
-    protected function showRelations()
-    {
-        return [
-            'workout',
-            'difficulty',
-            'muscles',
-            'equipment',
-        ];
-    }
-
-    /**
-     * Relaciones a cargar al consultar 1 elemento a editar.
-     * 
-     * @return array 
-     */
-    protected function editRelations()
-    {
-        return $this->showRelations();
+        return $relations;
     }
 
     /**
