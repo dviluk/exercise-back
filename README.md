@@ -14,7 +14,7 @@ Es un entrenador personal ([Trainer]) para aquellas personas que están entrando
 
     Conjunto de ejercicios a ejecutar de manera secuencial.
 
--   Guide (Guiá)
+-   Plan
 
     Es la programación de las rutinas.
 
@@ -68,6 +68,6 @@ Para facilitar las sesiones de fitness, [Trainer] te ayuda a:
 -   routine_workout
 -   plans
 -   plan_routine
--   plan_goal (LOS GOALS SERÁN(?) DIFERENTES A LOS DEL WORKOUT)
+-   plan_goal (LOS GOALS SERÁN DIFERENTES A LOS DEL WORKOUT?)
 
 ## TODO
