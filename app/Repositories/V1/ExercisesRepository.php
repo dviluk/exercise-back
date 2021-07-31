@@ -2,7 +2,7 @@
 
 namespace App\Repositories\V1;
 
-use App\Models\Workout;
+use App\Models\Exercise;
 use App\Repositories\Repository;
 use DB;
 use App\Enums\ManyToManyAction;
@@ -12,14 +12,14 @@ use App\Models\Muscle;
 use Arrays;
 use Illuminate\Http\Request;
 
-class WorkoutsRepository extends Repository
+class ExercisesRepository extends Repository
 {
     /**
      * Classname del modelo principal del repositorio (Model::class).
      *
      * @var string
      */
-    protected $model = Workout::class;
+    protected $model = Exercise::class;
 
     /**
      * Contiene los keys de los posibles valores del atributo $data
@@ -33,7 +33,7 @@ class WorkoutsRepository extends Repository
     protected function availableInputKeys(array $data, string $method, array $options = [])
     {
         return [
-            'workout_id',
+            'exercise_id',
             'difficulty_id',
             'cover',
             'illustration',
@@ -57,11 +57,11 @@ class WorkoutsRepository extends Repository
     public function inputRules(Request $request, string $method, $id = null, array $options = [])
     {
         $rules = [
-            'workout_id' => 'nullable|exists:' . Workout::class . ',id',
+            'exercise_id' => 'nullable|exists:' . Exercise::class . ',id',
             'difficulty_id' => 'required|exists:' . Difficulty::class . ',id',
             'cover' => 'required',
             'illustration' => 'required',
-            'name' => 'required|unique:' . Workout::class . ',name',
+            'name' => 'required|unique:' . Exercise::class . ',name',
             'description' => 'required',
             // Equipment
             'equipment' => 'required|array',
@@ -95,7 +95,7 @@ class WorkoutsRepository extends Repository
     /**
      * Valida si se puede editar el registro.
      * 
-     * @param Workout $item 
+     * @param Exercise $item 
      * @param null|array $data 
      * @return void 
      */
@@ -107,7 +107,7 @@ class WorkoutsRepository extends Repository
     /**
      * Valida si se puede eliminar el registro.
      * 
-     * @param Workout $item 
+     * @param Exercise $item 
      * @return void 
      */
     public function canDelete($item)
@@ -119,7 +119,7 @@ class WorkoutsRepository extends Repository
      * Consulta todos los registros.
      *
      * @param array $options Las mismas opciones que en `Repository::prepareQuery($options)`
-     * @return \Illuminate\Support\Collection|Workout[]
+     * @return \Illuminate\Support\Collection|Exercise[]
      * @throws \Error
      */
     public function all(array $options = [])
@@ -132,7 +132,7 @@ class WorkoutsRepository extends Repository
      *
      * @param int $id
      * @param array $options Las mismas opciones que en `Repository::prepareQuery($options)`
-     * @return null|Workout
+     * @return null|Exercise
      * @throws \Error
      */
     public function find($id, array $options = [])
@@ -145,7 +145,7 @@ class WorkoutsRepository extends Repository
      *
      * @param int $id
      * @param array $options
-     * @return Workout
+     * @return Exercise
      */
     public function findOrFail($id, array $options = [])
     {
@@ -157,7 +157,7 @@ class WorkoutsRepository extends Repository
      *
      * @param array $data Contiene los campos a insertar en la tabla del modelo.
      * 
-     * - (string)   `data.workout_id`: 
+     * - (string)   `data.exercise_id`: 
      * - (string)   `data.difficulty_id`: 
      * - (file)     `data.cover`: 
      * - (file)     `data.illustration`: 
@@ -169,7 +169,7 @@ class WorkoutsRepository extends Repository
      * - (array)    `data.muscles`: Revisar `$this->updateMuscles()`
      * - (array)    `data.equipment`: Revisar `$this->updateEquipment()`
      * 
-     * @return Workout
+     * @return Exercise
      * @throws \Exception
      * @throws \Throwable
      */
@@ -204,7 +204,7 @@ class WorkoutsRepository extends Repository
     /**
      * Actualiza un registro.
      *
-     * - (string)   `data.workout_id`: 
+     * - (string)   `data.exercise_id`: 
      * - (string)   `data.difficulty_id`: 
      * - (file)     `data.cover`: 
      * - (file)     `data.illustration`: 
@@ -221,7 +221,7 @@ class WorkoutsRepository extends Repository
      * @param int $id
      * @param array $data Contiene los campos a actualizar.
      * @param array $options
-     * @return Workout
+     * @return Exercise
      * @throws \Exception
      * @throws \Throwable
      */
@@ -263,7 +263,7 @@ class WorkoutsRepository extends Repository
      *
      * @param int $id
      * @param array $options
-     * @return Workout
+     * @return Exercise
      * @throws \Exception
      * @throws \Throwable
      */
@@ -292,7 +292,7 @@ class WorkoutsRepository extends Repository
      * 
      * - (bool) returnAttachedItems: Indica si se retornaran los items agregados.
      * 
-     * @return Workout|\App\Models\Muscle[]
+     * @return Exercise|\App\Models\Muscle[]
      * @throws \Error 
      * @throws \App\Utils\API\Error404 
      * @throws \InvalidArgumentException 
@@ -330,7 +330,7 @@ class WorkoutsRepository extends Repository
      * 
      * - (bool) returnAttachedItems: Indica si se retornaran los items agregados.
      * 
-     * @return Workout|\App\Models\Equipment[]
+     * @return Exercise|\App\Models\Equipment[]
      * @throws \Error 
      * @throws \App\Utils\API\Error404 
      * @throws \InvalidArgumentException 

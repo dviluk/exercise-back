@@ -5,25 +5,25 @@ namespace App\Http\Controllers\API\V1\Admin;
 use API;
 use App\Enums\ManyToManyAction;
 use App\Http\Controllers\CRUDController;
-use App\Http\Resources\V1\WorkoutResource;
+use App\Http\Resources\V1\ExerciseResource;
 use App\Models\Equipment;
 use App\Models\Muscle;
-use App\Repositories\V1\WorkoutsRepository;
+use App\Repositories\V1\ExercisesRepository;
 use Illuminate\Http\Request;
 
-class WorkoutsController extends CRUDController
+class ExercisesController extends CRUDController
 {
     /**
      * Instancia del repositorio.
      * 
-     * @var \App\Repositories\V1\WorkoutsRepository
+     * @var \App\Repositories\V1\ExercisesRepository
      */
-    protected $repo = WorkoutsRepository::class;
+    protected $repo = ExercisesRepository::class;
 
     /**
-     * @var \App\Http\Resources\V1\WorkoutResource
+     * @var \App\Http\Resources\V1\ExerciseResource
      */
-    protected $resource = WorkoutResource::class;
+    protected $resource = ExerciseResource::class;
 
     /**
      * Indica las relaciones que se cargaran según el método indicado.
@@ -37,14 +37,14 @@ class WorkoutsController extends CRUDController
 
         if ($method === 'index') {
             $relations = [
-                'workout',
+                'exercise',
                 'difficulty',
             ];
         }
 
         if ($method === 'show' || $method === 'edit') {
             $relations = [
-                'workout',
+                'exercise',
                 'difficulty',
                 'muscles',
                 'equipment',

@@ -34,10 +34,10 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Exercise[] $exercises
+ * @property-read int|null $exercises_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Routine[] $routines
  * @property-read int|null $routines_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Workout[] $workouts
- * @property-read int|null $workouts_count
  * @method static \Illuminate\Database\Eloquent\Builder|Difficulty newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Difficulty newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Difficulty query()
@@ -61,8 +61,8 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Workout[] $workouts
- * @property-read int|null $workouts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Exercise[] $exercises
+ * @property-read int|null $exercises_count
  * @method static \Illuminate\Database\Eloquent\Builder|Equipment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Equipment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Equipment query()
@@ -74,6 +74,25 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Equipment whereUpdatedAt($value)
  */
 	class Equipment extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
+ * App\Models\Exercise
+ *
+ * @property-read \App\Models\Difficulty $difficulty
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Equipment[] $equipment
+ * @property-read int|null $equipment_count
+ * @property-read Exercise $exercise
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Muscle[] $muscles
+ * @property-read int|null $muscles_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Routine[] $routines
+ * @property-read int|null $routines_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Exercise newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Exercise newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Exercise query()
+ */
+	class Exercise extends \Eloquent {}
 }
 
 namespace App\Models{
@@ -111,8 +130,8 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Workout[] $workouts
- * @property-read int|null $workouts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Exercise[] $exercises
+ * @property-read int|null $exercises_count
  * @method static \Illuminate\Database\Eloquent\Builder|Muscle newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Muscle newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Muscle query()
@@ -203,8 +222,8 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Workout[] $workouts
- * @property-read int|null $workouts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Exercise[] $exercises
+ * @property-read int|null $exercises_count
  * @method static \Illuminate\Database\Eloquent\Builder|Routine newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Routine newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Routine query()
@@ -228,10 +247,10 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Exercise[] $exercises
+ * @property-read int|null $exercises_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Routine[] $routines
  * @property-read int|null $routines_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Workout[] $workouts
- * @property-read int|null $workouts_count
  * @method static \Illuminate\Database\Eloquent\Builder|Tag newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tag newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tag query()
@@ -302,44 +321,5 @@ namespace App\Models{
  * @method static \Illuminate\Database\Query\Builder|User withoutTrashed()
  */
 	class User extends \Eloquent {}
-}
-
-namespace App\Models{
-/**
- * App\Models\Workout
- *
- * @property string $id
- * @property string|null $workout_id
- * @property string $difficulty_id
- * @property string $cover
- * @property string $illustration
- * @property string $name
- * @property string $description
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \App\Models\Difficulty $difficulty
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Equipment[] $equipment
- * @property-read int|null $equipment_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Muscle[] $muscles
- * @property-read int|null $muscles_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Routine[] $routines
- * @property-read int|null $routines_count
- * @property-read Workout|null $workout
- * @method static \Illuminate\Database\Eloquent\Builder|Workout newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Workout newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Workout query()
- * @method static \Illuminate\Database\Eloquent\Builder|Workout whereCover($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Workout whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Workout whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Workout whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Workout whereDifficultyId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Workout whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Workout whereIllustration($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Workout whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Workout whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Workout whereWorkoutId($value)
- */
-	class Workout extends \Eloquent {}
 }
 

@@ -4,12 +4,12 @@ namespace App\Http\Resources\V1;
 
 use App\Utils\Json\JsonResource;
 
-class WorkoutResource extends JsonResource
+class ExerciseResource extends JsonResource
 {
     /**
      * Da formato al recurso.
      * 
-     * @param \App\Models\Workout $resource 
+     * @param \App\Models\Exercise $resource 
      * @param array $options 
      * @return array 
      */
@@ -17,7 +17,7 @@ class WorkoutResource extends JsonResource
     {
         $format = [
             'id' => $resource->id,
-            'workout_id' => $resource->workout_id,
+            'exercise_id' => $resource->exercise_id,
             'difficulty_id' => $resource->difficulty_id,
             'cover' => $resource->cover,
             'illustration' => $resource->illustration,
@@ -28,8 +28,8 @@ class WorkoutResource extends JsonResource
             'deleted_at' => $resource->deleted_at,
         ];
 
-        if ($resource->relationLoaded('workout')) {
-            $format['workout'] = $resource->workout->name ?? null;
+        if ($resource->relationLoaded('exercise')) {
+            $format['exercise'] = $resource->exercise->name ?? null;
         }
 
         if ($resource->relationLoaded('difficulty')) {
@@ -41,7 +41,7 @@ class WorkoutResource extends JsonResource
         }
 
         if ($resource->relationLoaded('muscles')) {
-            $format['muscles'] = (new MuscleResource($resource->muscles, [], ['embed' => true, 'workoutMuscle' => true]))->toArray();
+            $format['muscles'] = (new MuscleResource($resource->muscles, [], ['embed' => true, 'exerciseMuscle' => true]))->toArray();
         }
 
         return $format;

@@ -11,8 +11,8 @@ class Equipment extends BaseModel
         'description',
     ];
 
-    public function workouts()
+    public function exercises()
     {
-        return $this->hasMany(Workout::class, 'equipment_id');
+        return $this->hasMany(Exercise::class, 'equipment_id');
     }
 }

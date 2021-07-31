@@ -439,8 +439,8 @@
                 { "name": "Accept", "value": "application/json" }
             ],
             "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
-            "name": "Workouts",
-            "url": "{{API_HOST}}/v1/workouts",
+            "name": "Exercises",
+            "url": "{{API_HOST}}/v1/exercises",
             "method": "GET",
             "modified": "2021-07-14T06:55:48.722Z",
             "created": "2021-07-14T06:41:03.632Z",
@@ -460,8 +460,8 @@
                 { "name": "Accept", "value": "application/json" }
             ],
             "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
-            "name": "Workouts Show",
-            "url": "{{API_HOST}}/v1/workouts/d772dd6d-3dec-497a-9129-3a3330a446e1",
+            "name": "Exercises Show",
+            "url": "{{API_HOST}}/v1/exercises/d772dd6d-3dec-497a-9129-3a3330a446e1",
             "method": "GET",
             "modified": "2021-07-14T06:54:28.262Z",
             "created": "2021-07-14T06:41:03.632Z",
@@ -481,8 +481,8 @@
                 { "name": "Accept", "value": "application/json" }
             ],
             "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
-            "name": "Workouts Store",
-            "url": "{{API_HOST}}/v1/workouts",
+            "name": "Exercises Store",
+            "url": "{{API_HOST}}/v1/exercises",
             "method": "POST",
             "modified": "2021-07-14T06:55:52.117Z",
             "created": "2021-07-14T06:41:03.632Z",
@@ -495,7 +495,7 @@
                     { "name": "difficulty_id", "value": "difficulties_1" },
                     { "name": "cover", "value": "cover.jpg" },
                     { "name": "illustration", "value": "illustration.gif" },
-                    { "name": "name", "value": "Workout 123456\n" },
+                    { "name": "name", "value": "Exercise 123456\n" },
                     { "name": "description", "value": "lorem" },
                     { "name": "equipment[0]", "value": "equipment_1" },
                     { "name": "muscles[0][id]", "value": "muscles_1" },
@@ -516,8 +516,8 @@
                 { "name": "Accept", "value": "application/json" }
             ],
             "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
-            "name": "Workouts Update",
-            "url": "{{API_HOST}}/v1/workouts/fa5c56da-9679-4620-b663-244bedb5bc51",
+            "name": "Exercises Update",
+            "url": "{{API_HOST}}/v1/exercises/fa5c56da-9679-4620-b663-244bedb5bc51",
             "method": "POST",
             "modified": "2021-07-14T06:54:37.602Z",
             "created": "2021-07-14T06:41:03.632Z",
@@ -530,7 +530,7 @@
                     { "name": "difficulty_id", "value": "difficulties_1" },
                     { "name": "cover", "value": "cover.jpg" },
                     { "name": "illustration", "value": "illustration.gif" },
-                    { "name": "name", "value": "Workout 1" },
+                    { "name": "name", "value": "Exercise 1" },
                     { "name": "description", "value": "lorem" },
                     { "name": "_method", "value": "put" }
                 ]
@@ -549,8 +549,8 @@
                 { "name": "Accept", "value": "application/json" }
             ],
             "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
-            "name": "Workouts Attach Muscles",
-            "url": "{{API_HOST}}/v1/workouts/d772dd6d-3dec-497a-9129-3a3330a446e1/attach/muscles",
+            "name": "Exercises Attach Muscles",
+            "url": "{{API_HOST}}/v1/exercises/d772dd6d-3dec-497a-9129-3a3330a446e1/attach/muscles",
             "method": "POST",
             "modified": "2021-07-14T06:54:23.293Z",
             "created": "2021-07-14T06:41:03.632Z",
@@ -578,8 +578,8 @@
                 { "name": "Accept", "value": "application/json" }
             ],
             "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
-            "name": "Workouts Detach Equipment",
-            "url": "{{API_HOST}}/v1/workouts/d772dd6d-3dec-497a-9129-3a3330a446e1/detach/equipment",
+            "name": "Exercises Detach Equipment",
+            "url": "{{API_HOST}}/v1/exercises/d772dd6d-3dec-497a-9129-3a3330a446e1/detach/equipment",
             "method": "POST",
             "modified": "2021-07-14T06:55:21.806Z",
             "created": "2021-07-14T06:41:03.632Z",
@@ -604,8 +604,8 @@
                 { "name": "Accept", "value": "application/json" }
             ],
             "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
-            "name": "Workouts Detach All Equipment",
-            "url": "{{API_HOST}}/v1/workouts/d772dd6d-3dec-497a-9129-3a3330a446e1/detach-all/equipment",
+            "name": "Exercises Detach All Equipment",
+            "url": "{{API_HOST}}/v1/exercises/d772dd6d-3dec-497a-9129-3a3330a446e1/detach-all/equipment",
             "method": "POST",
             "modified": "2021-07-14T06:55:28.531Z",
             "created": "2021-07-14T06:41:03.632Z",
@@ -625,8 +625,8 @@
                 { "name": "Accept", "value": "application/json" }
             ],
             "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
-            "name": "Workouts Detach All Muscles",
-            "url": "{{API_HOST}}/v1/workouts/d772dd6d-3dec-497a-9129-3a3330a446e1/detach-all/muscles",
+            "name": "Exercises Detach All Muscles",
+            "url": "{{API_HOST}}/v1/exercises/d772dd6d-3dec-497a-9129-3a3330a446e1/detach-all/muscles",
             "method": "POST",
             "modified": "2021-07-14T06:55:18.357Z",
             "created": "2021-07-14T06:41:03.632Z",
@@ -646,8 +646,8 @@
                 { "name": "Accept", "value": "application/json" }
             ],
             "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
-            "name": "Workouts Detach Muscles",
-            "url": "{{API_HOST}}/v1/workouts/d772dd6d-3dec-497a-9129-3a3330a446e1/detach/muscles",
+            "name": "Exercises Detach Muscles",
+            "url": "{{API_HOST}}/v1/exercises/d772dd6d-3dec-497a-9129-3a3330a446e1/detach/muscles",
             "method": "POST",
             "modified": "2021-07-14T06:55:12.729Z",
             "created": "2021-07-14T06:41:03.632Z",
@@ -672,8 +672,8 @@
                 { "name": "Accept", "value": "application/json" }
             ],
             "colId": "1a37c075-f876-4fe1-8da9-71e67945f8ba",
-            "name": "Workouts Attach Equipment",
-            "url": "{{API_HOST}}/v1/workouts/d772dd6d-3dec-497a-9129-3a3330a446e1/attach/equipment",
+            "name": "Exercises Attach Equipment",
+            "url": "{{API_HOST}}/v1/exercises/d772dd6d-3dec-497a-9129-3a3330a446e1/attach/equipment",
             "method": "POST",
             "modified": "2021-07-14T06:54:33.136Z",
             "created": "2021-07-14T06:41:03.632Z",
@@ -833,23 +833,23 @@
                     { "name": "name", "value": "Routine 1" },
                     { "name": "description", "value": "-" },
                     {
-                        "name": "workouts[0][id]",
+                        "name": "exercises[0][id]",
                         "value": "fa5c56da-9679-4620-b663-244bedb5bc51"
                     },
-                    { "name": "workouts[0][description]", "value": "-" },
-                    { "name": "workouts[0][order]", "value": "1" },
-                    { "name": "workouts[0][repetitions]", "value": "2" },
-                    { "name": "workouts[0][quantity]", "value": "10" },
+                    { "name": "exercises[0][description]", "value": "-" },
+                    { "name": "exercises[0][order]", "value": "1" },
+                    { "name": "exercises[0][repetitions]", "value": "2" },
+                    { "name": "exercises[0][quantity]", "value": "10" },
                     {
-                        "name": "workouts[0][quantity_unit_id]",
+                        "name": "exercises[0][quantity_unit_id]",
                         "value": "1ed1dc5b-26b2-45e5-a335-22e11357ac76"
                     },
                     {
-                        "name": "workouts[0][rest_time_between_repetitions]",
+                        "name": "exercises[0][rest_time_between_repetitions]",
                         "value": "15"
                     },
                     {
-                        "name": "workouts[0][rest_time_after_workout]",
+                        "name": "exercises[0][rest_time_after_exercise]",
                         "value": "30"
                     }
                 ]
@@ -882,23 +882,23 @@
                     { "name": "name", "value": "Routine 1 (edited)" },
                     { "name": "description", "value": "-" },
                     {
-                        "name": "workouts[0][id]",
+                        "name": "exercises[0][id]",
                         "value": "fa5c56da-9679-4620-b663-244bedb5bc51"
                     },
-                    { "name": "workouts[0][description]", "value": "-" },
-                    { "name": "workouts[0][order]", "value": "1" },
-                    { "name": "workouts[0][repetitions]", "value": "2" },
-                    { "name": "workouts[0][quantity]", "value": "10" },
+                    { "name": "exercises[0][description]", "value": "-" },
+                    { "name": "exercises[0][order]", "value": "1" },
+                    { "name": "exercises[0][repetitions]", "value": "2" },
+                    { "name": "exercises[0][quantity]", "value": "10" },
                     {
-                        "name": "workouts[0][quantity_unit_id]",
+                        "name": "exercises[0][quantity_unit_id]",
                         "value": "1ed1dc5b-26b2-45e5-a335-22e11357ac76"
                     },
                     {
-                        "name": "workouts[0][rest_time_between_repetitions]",
+                        "name": "exercises[0][rest_time_between_repetitions]",
                         "value": "15"
                     },
                     {
-                        "name": "workouts[0][rest_time_after_workout]",
+                        "name": "exercises[0][rest_time_after_exercise]",
                         "value": "30"
                     },
                     { "name": "_method", "value": "put" }

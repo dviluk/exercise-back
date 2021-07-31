@@ -6,7 +6,7 @@ Es un entrenador personal ([Trainer]) para aquellas personas que están entrando
 
 ## Conceptos
 
--   Workout (Entrenamiento)
+-   Ejercicio (Exercise)
 
     Es el entrenamiento básico (planchas, sentadillas, etc).
 
@@ -61,11 +61,11 @@ Para facilitar las sesiones de fitness, [Trainer] te ayuda a:
 -   tags (PARA DESPUÉS)
 -   goals
 -   equipment
--   workouts
--   workout_equipment
--   workout_muscle
+-   exercises
+-   exercise_equipment
+-   exercise_muscle
 -   routines
--   routine_workout
+-   routine_exercise
 -   plans
 -   plan_routine
 -   plan_goal (LOS GOALS SERÁN DIFERENTES A LOS DEL WORKOUT?)

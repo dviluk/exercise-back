@@ -21,7 +21,7 @@ class MuscleResource extends JsonResource
                 'name' => $resource->name,
             ];
 
-            if ($resource->relationLoaded('pivot') && isset($options['workoutMuscle'])) {
+            if ($resource->relationLoaded('pivot') && isset($options['exerciseMuscle'])) {
                 $format['primary'] = $resource->pivot->primary == 1;
             }
 

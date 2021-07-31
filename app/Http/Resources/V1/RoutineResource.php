@@ -32,20 +32,20 @@ class RoutineResource extends JsonResource
             'deleted_at' => $resource->deleted_at,
         ];
 
-        if ($resource->relationLoaded('workouts')) {
-            $format['workouts'] = [];
-            foreach ($resource->workouts as $workout) {
-                $format['workouts'][] = [
-                    'id' => $workout->id,
-                    'name' => $workout->name,
-                    'description' => $workout->description,
-                    'order' => (int) $workout->pivot->order,
-                    'repetitions' => (int) $workout->pivot->repetitions,
-                    'quantity' => (int) $workout->pivot->quantity,
+        if ($resource->relationLoaded('exercises')) {
+            $format['exercises'] = [];
+            foreach ($resource->exercises as $exercise) {
+                $format['exercises'][] = [
+                    'id' => $exercise->id,
+                    'name' => $exercise->name,
+                    'description' => $exercise->description,
+                    'order' => (int) $exercise->pivot->order,
+                    'repetitions' => (int) $exercise->pivot->repetitions,
+                    'quantity' => (int) $exercise->pivot->quantity,
                     // TODO: Eager load pivot relationships
-                    'quantity_unit_id' => $workout->pivot->quantity_unit_id,
-                    'rest_time_between_repetitions' => $workout->pivot->rest_time_between_repetitions,
-                    'rest_time_after_workout' => $workout->pivot->rest_time_after_workout,
+                    'quantity_unit_id' => $exercise->pivot->quantity_unit_id,
+                    'rest_time_between_repetitions' => $exercise->pivot->rest_time_between_repetitions,
+                    'rest_time_after_exercise' => $exercise->pivot->rest_time_after_exercise,
                 ];
             }
         }

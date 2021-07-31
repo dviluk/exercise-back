@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTableWorkoutEquipment extends Migration
+class CreateTableExerciseMuscle extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,17 @@ class CreateTableWorkoutEquipment extends Migration
      */
     public function up()
     {
-        Schema::create('workout_equipment', function (Blueprint $table) {
-            $table->uuid('workout_id');
-            $table->uuid('equipment_id');
+        Schema::create('exercise_muscle', function (Blueprint $table) {
+            $table->uuid('exercise_id');
+            $table->uuid('muscle_id');
+            $table->boolean('primary');
 
-            $table->foreign('workout_id')
-                ->references('id')->on('workouts')
+            $table->foreign('exercise_id')
+                ->references('id')->on('exercises')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->foreign('equipment_id')
-                ->references('id')->on('equipment')
+            $table->foreign('muscle_id')
+                ->references('id')->on('muscles')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
         });
@@ -35,6 +36,6 @@ class CreateTableWorkoutEquipment extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('workout_equipment');
+        Schema::dropIfExists('exercise_mucle');
     }
 }

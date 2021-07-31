@@ -11,9 +11,9 @@ class Routine extends BaseModel
         'description',
     ];
 
-    public function workouts()
+    public function exercises()
     {
-        return $this->belongsToMany(Workout::class, 'routine_workout', 'routine_id', 'workout_id')
+        return $this->belongsToMany(Exercise::class, 'routine_exercise', 'routine_id', 'exercise_id')
             ->withPivot([
                 'description',
                 'order',
@@ -21,7 +21,7 @@ class Routine extends BaseModel
                 'quantity',
                 'quantity_unit_id',
                 'rest_time_between_repetitions',
-                'rest_time_after_workout'
+                'rest_time_after_exercise'
             ]);
     }
 }

@@ -6,7 +6,7 @@ use App\Enums\ManyToManyAction;
 use DB;
 use App\Models\Routine;
 use App\Models\Unit;
-use App\Models\Workout;
+use App\Models\Exercise;
 use App\Repositories\Repository;
 use Arrays;
 use Illuminate\Http\Request;
@@ -34,7 +34,7 @@ class RoutinesRepository extends Repository
         return [
             'name',
             'description',
-            'workouts',
+            'exercises',
         ];
     }
 
@@ -52,19 +52,19 @@ class RoutinesRepository extends Repository
         $rules = [
             'name' => 'required',
             'description' => 'required',
-            'workouts' => 'required|array|min:1',
-            'workouts.*.id' => 'exists:' . Workout::class . ',id',
-            'workouts.*.description' => 'nullable',
-            'workouts.*.order' => 'integer',
-            'workouts.*.repetitions' => 'integer',
-            'workouts.*.quantity' => 'integer',
-            'workouts.*.quantity_unit_id' => 'exists:' . Unit::class . ',id',
-            'workouts.*.rest_time_between_repetitions' => 'integer',
-            'workouts.*.rest_time_after_workout' => 'integer',
+            'exercises' => 'required|array|min:1',
+            'exercises.*.id' => 'exists:' . Exercise::class . ',id',
+            'exercises.*.description' => 'nullable',
+            'exercises.*.order' => 'integer',
+            'exercises.*.repetitions' => 'integer',
+            'exercises.*.quantity' => 'integer',
+            'exercises.*.quantity_unit_id' => 'exists:' . Unit::class . ',id',
+            'exercises.*.rest_time_between_repetitions' => 'integer',
+            'exercises.*.rest_time_after_exercise' => 'integer',
         ];
 
         if ($method === 'update') {
-            $rules['workouts'] = str_replace('required', 'nullable', $rules['workouts']);
+            $rules['exercises'] = str_replace('required', 'nullable', $rules['exercises']);
         }
 
         return $rules;
@@ -151,7 +151,7 @@ class RoutinesRepository extends Repository
      * 
      * Opcionales
      * 
-     * - (array)    `data.workouts`
+     * - (array)    `data.exercises`
      * 
      * @return Routine
      * @throws \Exception
@@ -163,14 +163,14 @@ class RoutinesRepository extends Repository
         try {
             $data = Arrays::preserveKeys($data, $this->availableInputKeys($data, 'create'));
 
-            $pivot = $data['workouts'] ?? [];
+            $pivot = $data['exercises'] ?? [];
 
-            $data = Arrays::omitKeys($data, ['workouts']);
+            $data = Arrays::omitKeys($data, ['exercises']);
 
             /** @var Routine */
             $item = parent::create($data);
 
-            $this->updateWorkouts($item, ManyToManyAction::ATTACH(), $pivot);
+            $this->updateExercise($item, ManyToManyAction::ATTACH(), $pivot);
 
             DB::commit();
 
@@ -197,16 +197,16 @@ class RoutinesRepository extends Repository
         try {
             $data = Arrays::preserveKeys($data, $this->availableInputKeys($data, 'update'));
 
-            $workouts = $data['workouts'] ?? null;
+            $exercises = $data['exercises'] ?? null;
             $data = Arrays::omitKeys($data, [
-                'workouts'
+                'exercises'
             ]);
 
             /** @var Routine */
             $item = parent::update($id, $data, $options);
 
-            if (!is_null($workouts)) {
-                $this->updateWorkouts($item, ManyToManyAction::SYNC(), $workouts);
+            if (!is_null($exercises)) {
+                $this->updateExercise($item, ManyToManyAction::SYNC(), $exercises);
             }
 
             DB::commit();
@@ -233,7 +233,7 @@ class RoutinesRepository extends Repository
     }
 
     /**
-     * Actualiza los workouts asociados.
+     * Actualiza los exercises asociados.
      * 
      * @param mixed $id 
      * @param \App\Enums\ManyToManyAction $action 
@@ -241,34 +241,34 @@ class RoutinesRepository extends Repository
      * 
      * attach|sync
      * 
-     * - (string)   `data.*.id`: workout id
+     * - (string)   `data.*.id`: exercise id
      * - (string)   `data.*.description` 
      * - (int)      `data.*.order` 
      * - (int)      `data.*.repetitions` 
      * - (int)      `data.*.quantity` 
      * - (string)   `data.*.quantity_unit_id` 
      * - (int)      `data.*.rest_time_between_repetitions` 
-     * - (string)   `data.*.rest_time_after_workouts`
+     * - (string)   `data.*.rest_time_after_exercises`
      * 
      * detach 
      * 
-     * - (string) `data.*`: workout id.
+     * - (string) `data.*`: exercise id.
      * 
      * @param array $options 
      * 
      * - (bool) returnAttachedItems: Indica si se retornaran los items agregados.
      * 
-     * @return Routine|\Illuminate\Support\Collection|\App\Models\Workout[]
+     * @return Routine|\Illuminate\Support\Collection|\App\Models\Exercise[]
      * @throws \Error 
      * @throws \App\Utils\API\Error404 
      * @throws \InvalidArgumentException 
      * @throws \App\Utils\API\Error500 
      */
-    public function updateWorkouts($id, ManyToManyAction $action, array $data = [], array $options = [])
+    public function updateExercise($id, ManyToManyAction $action, array $data = [], array $options = [])
     {
         $item = $this->findOrFail($id);
 
-        $relation = $item->workouts();
+        $relation = $item->exercises();
 
         $manyToManyOptions = [
             'isArrayOfIds' => false,
@@ -277,7 +277,7 @@ class RoutinesRepository extends Repository
         $insertedIds = $this->manyToManyActions($relation, $action, $data, $manyToManyOptions);
 
         if (isset($options['returnAttachedItems'])) {
-            return $relation->wherePivotIn('workout_id', $insertedIds)->get();
+            return $relation->wherePivotIn('exercise_id', $insertedIds)->get();
         }
 
         return $item;

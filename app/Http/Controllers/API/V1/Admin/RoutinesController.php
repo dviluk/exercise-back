@@ -32,7 +32,7 @@ class RoutinesController extends CRUDController
 
         if ($method === 'show' || $method === 'edit') {
             $relations = [
-                'workouts',
+                'exercises',
             ];
         }
 

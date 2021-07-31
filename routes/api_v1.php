@@ -9,7 +9,7 @@ use App\Http\Controllers\API\V1\Admin\RoutinesController;
 use App\Http\Controllers\API\V1\Admin\TagsController;
 use App\Http\Controllers\API\V1\Admin\UnitsController;
 use App\Http\Controllers\API\V1\Admin\UsersController;
-use App\Http\Controllers\API\V1\Admin\WorkoutsController;
+use App\Http\Controllers\API\V1\Admin\ExercisesController;
 use App\Http\Controllers\API\V1\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -48,19 +48,19 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::resource('muscles', MusclesController::class);
     });
 
-    Route::post('workouts/{workout}/attach/equipment', [WorkoutsController::class, 'attachEquipment']);
-    Route::post('workouts/{workout}/detach/equipment', [WorkoutsController::class, 'detachEquipment']);
-    Route::post('workouts/{workout}/detach-all/equipment', [WorkoutsController::class, 'detachAllEquipment']);
+    Route::post('exercises/{exercise}/attach/equipment', [ExercisesController::class, 'attachEquipment']);
+    Route::post('exercises/{exercise}/detach/equipment', [ExercisesController::class, 'detachEquipment']);
+    Route::post('exercises/{exercise}/detach-all/equipment', [ExercisesController::class, 'detachAllEquipment']);
 
-    Route::post('workouts/{workout}/attach/muscles', [WorkoutsController::class, 'attachMuscles']);
-    Route::post('workouts/{workout}/detach/muscles', [WorkoutsController::class, 'detachMuscles']);
-    Route::post('workouts/{workout}/detach-all/muscles', [WorkoutsController::class, 'detachAllMuscles']);
+    Route::post('exercises/{exercise}/attach/muscles', [ExercisesController::class, 'attachMuscles']);
+    Route::post('exercises/{exercise}/detach/muscles', [ExercisesController::class, 'detachMuscles']);
+    Route::post('exercises/{exercise}/detach-all/muscles', [ExercisesController::class, 'detachAllMuscles']);
 
-    Route::resource('workouts', WorkoutsController::class);
+    Route::resource('exercises', ExercisesController::class);
 
-    Route::post('routines/{routine}/attach/workouts', [RoutinesController::class, 'attachWorkouts']);
-    Route::post('routines/{routine}/detach/workouts', [RoutinesController::class, 'detachWorkouts']);
-    Route::post('routines/{routine}/detach-all/workouts', [RoutinesController::class, 'detachAllWorkouts']);
+    Route::post('routines/{routine}/attach/exercises', [RoutinesController::class, 'attachExercises']);
+    Route::post('routines/{routine}/detach/exercises', [RoutinesController::class, 'detachExercises']);
+    Route::post('routines/{routine}/detach-all/exercises', [RoutinesController::class, 'detachAllExercises']);
 
     Route::resource('routines', RoutinesController::class);
 

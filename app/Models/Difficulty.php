@@ -11,9 +11,9 @@ class Difficulty extends BaseModel
         'description',
     ];
 
-    public function workouts()
+    public function exercises()
     {
-        return $this->hasMany(Workout::class, 'difficulty_id');
+        return $this->hasMany(Exercise::class, 'difficulty_id');
     }
 
     public function routines()
