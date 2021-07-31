@@ -45,13 +45,29 @@ class MusclesSeeder extends Seeder
                 'name' => 'Shoulders',
                 'description' => '',
             ],
+            [
+                'id' => 'muscles_7',
+                'name' => 'Chest',
+                'description' => '',
+            ],
+            [
+                'id' => 'muscles_8',
+                'name' => 'Abs',
+                'description' => '',
+            ],
+            [
+                'id' => 'muscles_9',
+                'name' => 'Triceps',
+                'description' => '',
+            ],
         ];
 
         foreach ($items as $item) {
             $exists = Muscle::where('name', $item['name'])->exists();
 
             if (!$exists) {
-                Muscle::create($item);
+                $created = Muscle::create($item);
+                $this->command->info("{$created->name} creado.");
             }
         }
     }

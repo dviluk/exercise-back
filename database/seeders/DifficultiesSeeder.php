@@ -35,7 +35,8 @@ class DifficultiesSeeder extends Seeder
         foreach ($items as $item) {
             $exists = Difficulty::where('name', $item['name'])->exists();
             if (!$exists) {
-                Difficulty::create($item);
+                $created = Difficulty::create($item);
+                $this->command->info("{$created->name} creado.");
             }
         }
     }

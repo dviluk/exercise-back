@@ -31,7 +31,8 @@ class GoalsSeeder extends Seeder
             $exists = Goal::where('name', $item['name'])->exists();
 
             if (!$exists) {
-                Goal::create($item);
+                $created = Goal::create($item);
+                $this->command->info("{$created->name} creado.");
             }
         }
     }

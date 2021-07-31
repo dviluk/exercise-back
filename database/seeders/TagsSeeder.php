@@ -31,7 +31,8 @@ class TagsSeeder extends Seeder
             $exists = Tag::where('name', $item['name'])->exists();
 
             if (!$exists) {
-                Tag::create($item);
+                $created = Tag::create($item);
+                $this->command->info("{$created->name} creado.");
             }
         }
     }

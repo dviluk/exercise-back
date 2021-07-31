@@ -28,7 +28,8 @@ class UnitsSeeder extends Seeder
         foreach ($items as $item) {
             $exists = Unit::where('name', $item['name'])->exists();
             if (!$exists) {
-                Unit::create($item);
+                $created = Unit::create($item);
+                $this->command->info("{$created->name} creado.");
             }
         }
     }
