@@ -36,8 +36,6 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Exercise[] $exercises
  * @property-read int|null $exercises_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Routine[] $routines
- * @property-read int|null $routines_count
  * @method static \Illuminate\Database\Eloquent\Builder|Difficulty newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Difficulty newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Difficulty query()
@@ -86,8 +84,6 @@ namespace App\Models{
  * @property-read Exercise $exercise
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Muscle[] $muscles
  * @property-read int|null $muscles_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Routine[] $routines
- * @property-read int|null $routines_count
  * @method static \Illuminate\Database\Eloquent\Builder|Exercise newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Exercise newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Exercise query()
@@ -105,8 +101,6 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Routine[] $routines
- * @property-read int|null $routines_count
  * @method static \Illuminate\Database\Eloquent\Builder|Goal newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Goal newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Goal query()
@@ -191,8 +185,6 @@ namespace App\Models{
  * @property-read \App\Models\Difficulty $difficulty
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Goal[] $goals
  * @property-read int|null $goals_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Routine[] $routines
- * @property-read int|null $routines_count
  * @method static \Illuminate\Database\Eloquent\Builder|Plan newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Plan newQuery()
  * @method static \Illuminate\Database\Query\Builder|Plan onlyTrashed()
@@ -214,31 +206,6 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Routine
- *
- * @property string $id
- * @property string $name
- * @property string $description
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Exercise[] $exercises
- * @property-read int|null $exercises_count
- * @method static \Illuminate\Database\Eloquent\Builder|Routine newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Routine newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Routine query()
- * @method static \Illuminate\Database\Eloquent\Builder|Routine whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Routine whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Routine whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Routine whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Routine whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Routine whereUpdatedAt($value)
- */
-	class Routine extends \Eloquent {}
-}
-
-namespace App\Models{
-/**
  * App\Models\Tag
  *
  * @property string $id
@@ -249,8 +216,6 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Exercise[] $exercises
  * @property-read int|null $exercises_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Routine[] $routines
- * @property-read int|null $routines_count
  * @method static \Illuminate\Database\Eloquent\Builder|Tag newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tag newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tag query()

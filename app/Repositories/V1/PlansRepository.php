@@ -6,7 +6,6 @@ use App\Enums\ManyToManyAction;
 use App\Models\Difficulty;
 use App\Models\Goal;
 use App\Models\Plan;
-use App\Models\Routine;
 use App\Repositories\Repository;
 use Arrays;
 use DB;
@@ -60,13 +59,10 @@ class PlansRepository extends Repository
             'instructions' => 'required',
             'goals' => 'required|array',
             'goals.*' => 'exists:' . Goal::class . ',id',
-            'routines' => 'required|array',
-            'routines.*' => 'exists:' . Routine::class . ',id',
         ];
 
         if ($method === 'update') {
             $rules['goals'] = str_replace('required', 'nullable', $rules['goals']);
-            $rules['routines'] = str_replace('required', 'nullable', $rules['routines']);
         }
 
         return $rules;
@@ -155,11 +151,9 @@ class PlansRepository extends Repository
     {
         DB::beginTransaction();
         try {
-            $routines = $data['routines'];
             $goals = $data['goals'];
 
             $data = Arrays::omitKeys($data, [
-                'routines',
                 'goals'
             ]);
 
@@ -167,7 +161,6 @@ class PlansRepository extends Repository
             $item = parent::create($data);
 
             $this->updateGoals($item, ManyToManyAction::ATTACH(), $goals);
-            $this->updateRoutines($item, ManyToManyAction::ATTACH(), $routines);
 
             DB::commit();
 
@@ -192,11 +185,9 @@ class PlansRepository extends Repository
     {
         DB::beginTransaction();
         try {
-            $routines = $data['routines'] ?? [];
             $goals = $data['goals'] ?? [];
 
             $data = Arrays::omitKeys($data, [
-                'routines',
                 'goals'
             ]);
 
@@ -204,7 +195,6 @@ class PlansRepository extends Repository
             $item = parent::update($id, $data, $options);
 
             $this->updateGoals($item, ManyToManyAction::SYNC(), $goals);
-            $this->updateRoutines($item, ManyToManyAction::SYNC(), $routines);
 
             DB::commit();
 
@@ -255,37 +245,6 @@ class PlansRepository extends Repository
 
         if (isset($options['returnAttachedItems'])) {
             return $relation->wherePivotIn('goal_id', $changes)->get();
-        }
-
-        return $item;
-    }
-
-    /**
-     * Actualiza los goals asociados.
-     * 
-     * @param mixed $id 
-     * @param \App\Enums\ManyToManyAction $action 
-     * @param array $data 
-     * 
-     * - (string)   `data.*` Id del goal
-     * 
-     * @param array $options 
-     * @return \Illuminate\Database\Eloquent\Collection|\App\Models\Plan 
-     * @throws \Error 
-     * @throws \App\Utils\API\Error404 
-     * @throws \InvalidArgumentException 
-     * @throws \App\Utils\API\Error500 
-     */
-    public function updateRoutines($id, ManyToManyAction $action, array $data = [], array $options = [])
-    {
-        $item = $this->findOrFail($id);
-
-        $relation = $item->routines();
-
-        $changes = $this->manyToManyActions($relation, $action, $data);
-
-        if (isset($options['returnAttachedItems'])) {
-            return $relation->wherePivotIn('routine_id', $changes)->get();
         }
 
         return $item;

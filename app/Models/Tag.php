@@ -15,9 +15,4 @@ class Tag extends BaseModel
     {
         return $this->hasMany(Exercise::class, 'difficulty_id');
     }
-
-    public function routines()
-    {
-        return $this->hasMany(Routine::class, 'difficulty_id');
-    }
 }

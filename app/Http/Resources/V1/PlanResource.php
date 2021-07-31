@@ -35,10 +35,6 @@ class PlanResource extends JsonResource
             $formatted['goals'] = (new GoalResource($resource->goals, [], ['embed' => true]))->toArray();
         }
 
-        if ($resource->relationLoaded('routines')) {
-            $formatted['routines'] = (new RoutineResource($resource->routines, [], ['embed' => true]))->toArray();
-        }
-
         return $formatted;
     }
 }

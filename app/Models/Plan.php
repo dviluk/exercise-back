@@ -27,9 +27,4 @@ class Plan extends BaseModel
     {
         return $this->belongsToMany(Goal::class, 'plan_goal', 'plan_id', 'goal_id');
     }
-
-    public function routines()
-    {
-        return $this->belongsToMany(Routine::class, 'plan_routine', 'plan_id', 'routine_id');
-    }
 }

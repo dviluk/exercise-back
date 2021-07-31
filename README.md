@@ -10,10 +10,6 @@ Es un entrenador personal ([Trainer]) para aquellas personas que están entrando
 
     Es el entrenamiento básico (planchas, sentadillas, etc).
 
--   Routine (Rutina diaria)
-
-    Conjunto de ejercicios a ejecutar de manera secuencial.
-
 -   Plan
 
     Es la programación de las rutinas.
@@ -64,10 +60,7 @@ Para facilitar las sesiones de fitness, [Trainer] te ayuda a:
 -   exercises
 -   exercise_equipment
 -   exercise_muscle
--   routines
--   routine_exercise
 -   plans
--   plan_routine
 -   plan_goal (LOS GOALS SERÁN DIFERENTES A LOS DEL WORKOUT?)
 
 ## TODO

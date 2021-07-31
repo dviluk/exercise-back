@@ -5,7 +5,6 @@ use App\Http\Controllers\API\V1\Admin\EquipmentController;
 use App\Http\Controllers\API\V1\Admin\GoalsController;
 use App\Http\Controllers\API\V1\Admin\MusclesController;
 use App\Http\Controllers\API\V1\Admin\PlansController;
-use App\Http\Controllers\API\V1\Admin\RoutinesController;
 use App\Http\Controllers\API\V1\Admin\TagsController;
 use App\Http\Controllers\API\V1\Admin\UnitsController;
 use App\Http\Controllers\API\V1\Admin\UsersController;
@@ -57,12 +56,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('exercises/{exercise}/detach-all/muscles', [ExercisesController::class, 'detachAllMuscles']);
 
     Route::resource('exercises', ExercisesController::class);
-
-    Route::post('routines/{routine}/attach/exercises', [RoutinesController::class, 'attachExercises']);
-    Route::post('routines/{routine}/detach/exercises', [RoutinesController::class, 'detachExercises']);
-    Route::post('routines/{routine}/detach-all/exercises', [RoutinesController::class, 'detachAllExercises']);
-
-    Route::resource('routines', RoutinesController::class);
 
     Route::resource('plans', PlansController::class);
 

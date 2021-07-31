@@ -38,9 +38,4 @@ class Exercise extends BaseModel
         return $this->belongsToMany(Muscle::class, 'exercise_muscle', 'exercise_id', 'muscle_id')
             ->withPivot(['primary']);
     }
-
-    public function routines()
-    {
-        return $this->belongsToMany(Routine::class, 'routine_exercise', 'exercise_id', 'routine_id');
-    }
 }

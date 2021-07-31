@@ -20,7 +20,6 @@ class DatabaseSeeder extends Seeder
         $this->call(GoalsSeeder::class);
         $this->call(EquipmentSeeder::class);
         $this->call(ExercisesSeeder::class);
-        $this->call(RoutinesSeeder::class);
         $this->call(UnitsSeeder::class);
     }
 }

@@ -9,9 +9,4 @@ class Goal extends BaseModel
     protected $fillable = [
         'name',
     ];
-
-    public function routines()
-    {
-        return $this->hasMany(Routine::class, 'difficulty_id');
-    }
 }

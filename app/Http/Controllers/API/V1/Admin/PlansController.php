@@ -40,7 +40,6 @@ class PlansController extends CRUDController
             $relations = [
                 'difficulty',
                 'goals',
-                'routines',
             ];
         }
 
