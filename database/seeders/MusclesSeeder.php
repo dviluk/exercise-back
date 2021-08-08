@@ -17,22 +17,22 @@ class MusclesSeeder extends Seeder
         $items = [
             [
                 'id' => 'muscles_1',
-                'name' => 'Lower Back',
+                'name' => 'Abs',
                 'description' => '',
             ],
             [
                 'id' => 'muscles_2',
-                'name' => 'Upper Back',
+                'name' => 'Biceps',
                 'description' => '',
             ],
             [
                 'id' => 'muscles_3',
-                'name' => 'Lower Traps',
+                'name' => 'Calves',
                 'description' => '',
             ],
             [
                 'id' => 'muscles_4',
-                'name' => 'Biceps',
+                'name' => 'Chest',
                 'description' => '',
             ],
             [
@@ -42,22 +42,52 @@ class MusclesSeeder extends Seeder
             ],
             [
                 'id' => 'muscles_6',
-                'name' => 'Shoulders',
+                'name' => 'Glutes & Hip Flexors',
                 'description' => '',
             ],
             [
                 'id' => 'muscles_7',
-                'name' => 'Chest',
+                'name' => 'Hamstrings',
                 'description' => '',
             ],
             [
                 'id' => 'muscles_8',
-                'name' => 'Abs',
+                'name' => 'Lower Back',
                 'description' => '',
             ],
             [
                 'id' => 'muscles_9',
+                'name' => 'Middle Back / Lats',
+                'description' => '',
+            ],
+            [
+                'id' => 'muscles_10',
+                'name' => 'Neck & Upper Traps',
+                'description' => '',
+            ],
+            [
+                'id' => 'muscles_11',
+                'name' => 'Obliques',
+                'description' => '',
+            ],
+            [
+                'id' => 'muscles_12',
+                'name' => 'Quadriceps',
+                'description' => '',
+            ],
+            [
+                'id' => 'muscles_13',
+                'name' => 'Shoulders',
+                'description' => '',
+            ],
+            [
+                'id' => 'muscles_14',
                 'name' => 'Triceps',
+                'description' => '',
+            ],
+            [
+                'id' => 'muscles_15',
+                'name' => 'Upper Back & Lower Traps',
                 'description' => '',
             ],
         ];

@@ -13,12 +13,14 @@ class CreateTableExercises extends Migration
      */
     public function up()
     {
-        Schema::create('exercise', function (Blueprint $table) {
+        Schema::create('exercises', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('exercise_id')->nullable();
+            // Se usara una tabla pivote para ver los ejercicios alternativos
+            // $table->uuid('exercise_id')->nullable();
             $table->uuid('difficulty_id');
-            $table->string('cover');
+            // Es la imagen que se mostrara
             $table->string('illustration');
+            $table->string('image');
             $table->string('name');
             $table->text('description');
             $table->timestamps();

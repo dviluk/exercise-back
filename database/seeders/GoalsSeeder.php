@@ -17,12 +17,27 @@ class GoalsSeeder extends Seeder
         $items = [
             [
                 'id' => 'goals_1',
-                'name' => 'Fat loss',
+                'name' => 'Lose fat',
                 'description' => '',
             ],
             [
                 'id' => 'goals_2',
                 'name' => 'Get toned',
+                'description' => '',
+            ],
+            [
+                'id' => 'goals_3',
+                'name' => 'Gain muscle',
+                'description' => '',
+            ],
+            [
+                'id' => 'goals_4',
+                'name' => 'Increase Endurance',
+                'description' => '',
+            ],
+            [
+                'id' => 'goals_5',
+                'name' => 'Increase flexibility',
                 'description' => '',
             ],
         ];

@@ -3,7 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\Exercise;
+use Faker\Generator as Faker;
+use Illuminate\Container\Container;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\File;
 
 class ExercisesSeeder extends Seeder
 {
@@ -14,6 +17,9 @@ class ExercisesSeeder extends Seeder
      */
     public function run()
     {
+        /** @var Faker */
+        $faker = Container::getInstance()->make(Faker::class);
+
         $items = [
             [
                 'name' => 'Dumbbell Flat Bench Press',
@@ -34,10 +40,33 @@ class ExercisesSeeder extends Seeder
             ]
         ];
 
+        $imagesDir =  storage_path('app/public/exercises/images');
+        $illustrationsDir =  storage_path('app/public/exercises/illustrations');
+
+        if (!File::exists($imagesDir)) {
+            File::makeDirectory($imagesDir, 493, true);
+        }
+
+        if (!File::exists($illustrationsDir)) {
+            File::makeDirectory($illustrationsDir, 493, true);
+        }
+
         foreach ($items as $item) {
             $exists = Exercise::where('name', $item['name'])->exists();
 
-            if ($exists) {
+            if (!$exists) {
+                $image = $faker->image($imagesDir, 400, 400, null, true, false, $item['name']);
+                $image = explode('/', $image);
+                $image = $image[count($image) - 1];
+
+                $item['image'] = $image;
+
+                $illustration = $faker->image($illustrationsDir, 400, 400, null, true, false, $item['name']);
+                $illustration = explode('/', $illustration);
+                $illustration = $illustration[count($illustration) - 1];
+
+                $item['illustration'] = $illustration;
+
                 $muscles = $item['muscles'];
                 unset($item['muscles']);
 
