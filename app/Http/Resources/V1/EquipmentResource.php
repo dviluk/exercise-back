@@ -24,6 +24,7 @@ class EquipmentResource extends JsonResource
 
         return [
             'id' => $resource->id,
+            'image' => $resource->image,
             'name' => $resource->name,
             'description' => $resource->description,
             'created_at' => $resource->created_at,

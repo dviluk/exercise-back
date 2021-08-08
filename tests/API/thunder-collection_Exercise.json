@@ -493,7 +493,7 @@
                 "raw": "",
                 "form": [
                     { "name": "difficulty_id", "value": "difficulties_1" },
-                    { "name": "cover", "value": "cover.jpg" },
+                    { "name": "image", "value": "image.jpg" },
                     { "name": "illustration", "value": "illustration.gif" },
                     { "name": "name", "value": "Exercise 123456\n" },
                     { "name": "description", "value": "lorem" },
@@ -528,7 +528,7 @@
                 "raw": "",
                 "form": [
                     { "name": "difficulty_id", "value": "difficulties_1" },
-                    { "name": "cover", "value": "cover.jpg" },
+                    { "name": "image", "value": "image.jpg" },
                     { "name": "illustration", "value": "illustration.gif" },
                     { "name": "name", "value": "Exercise 1" },
                     { "name": "description", "value": "lorem" },

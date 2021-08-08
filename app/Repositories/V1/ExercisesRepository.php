@@ -35,7 +35,7 @@ class ExercisesRepository extends Repository
         return [
             'exercise_id',
             'difficulty_id',
-            'cover',
+            'image',
             'illustration',
             'name',
             'description',
@@ -59,8 +59,8 @@ class ExercisesRepository extends Repository
         $rules = [
             'exercise_id' => 'nullable|exists:' . Exercise::class . ',id',
             'difficulty_id' => 'required|exists:' . Difficulty::class . ',id',
-            'cover' => 'required',
-            'illustration' => 'required',
+            'image' => 'required|image',
+            'illustration' => 'required|image',
             'name' => 'required|unique:' . Exercise::class . ',name',
             'description' => 'required',
             // Equipment
@@ -159,7 +159,7 @@ class ExercisesRepository extends Repository
      * 
      * - (string)   `data.exercise_id`: 
      * - (string)   `data.difficulty_id`: 
-     * - (file)     `data.cover`: 
+     * - (file)     `data.image`: 
      * - (file)     `data.illustration`: 
      * - (string)   `data.name`: 
      * - (string)   `data.description`: 
@@ -175,6 +175,7 @@ class ExercisesRepository extends Repository
      */
     public function create(array $data, array $options = [])
     {
+        // TODO: Guardar imagen e ilustración
         DB::beginTransaction();
         try {
             $data = Arrays::preserveKeys($data, $this->availableInputKeys($data, 'create'));
@@ -206,7 +207,7 @@ class ExercisesRepository extends Repository
      *
      * - (string)   `data.exercise_id`: 
      * - (string)   `data.difficulty_id`: 
-     * - (file)     `data.cover`: 
+     * - (file)     `data.image`: 
      * - (file)     `data.illustration`: 
      * - (string)   `data.name`: 
      * - (string)   `data.description`: 

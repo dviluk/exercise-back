@@ -28,6 +28,7 @@ class EquipmentRepository extends Repository
     {
         return [
             'name',
+            'image',
             'description',
         ];
     }
@@ -45,6 +46,7 @@ class EquipmentRepository extends Repository
     {
         $rules = [
             'name' => 'required|unique:' . Equipment::class . ',name',
+            'image' => 'required|image',
             'description' => 'required',
         ];
 
@@ -140,6 +142,7 @@ class EquipmentRepository extends Repository
      */
     public function create(array $data, array $options = [])
     {
+        // TODO: Guardar imagen
         return parent::create($data);
     }
 

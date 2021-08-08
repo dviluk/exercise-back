@@ -54,6 +54,7 @@ namespace App\Models{
  * App\Models\Equipment
  *
  * @property string $id
+ * @property string $image
  * @property string $name
  * @property string $description
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -68,6 +69,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Equipment whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Equipment whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Equipment whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Equipment whereImage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Equipment whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Equipment whereUpdatedAt($value)
  */
@@ -78,6 +80,15 @@ namespace App\Models{
 /**
  * App\Models\Exercise
  *
+ * @property string $id
+ * @property string $difficulty_id
+ * @property string $illustration
+ * @property string $image
+ * @property string $name
+ * @property string $description
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \App\Models\Difficulty $difficulty
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Equipment[] $equipment
  * @property-read int|null $equipment_count
@@ -87,6 +98,15 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Exercise newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Exercise newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Exercise query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Exercise whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Exercise whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Exercise whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Exercise whereDifficultyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Exercise whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Exercise whereIllustration($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Exercise whereImage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Exercise whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Exercise whereUpdatedAt($value)
  */
 	class Exercise extends \Eloquent {}
 }

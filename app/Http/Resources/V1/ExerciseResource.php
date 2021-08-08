@@ -19,7 +19,7 @@ class ExerciseResource extends JsonResource
             'id' => $resource->id,
             'exercise_id' => $resource->exercise_id,
             'difficulty_id' => $resource->difficulty_id,
-            'cover' => $resource->cover,
+            'image' => $resource->image,
             'illustration' => $resource->illustration,
             'name' => $resource->name,
             'description' => $resource->description,

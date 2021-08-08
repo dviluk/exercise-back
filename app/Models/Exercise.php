@@ -9,7 +9,7 @@ class Exercise extends BaseModel
     protected $fillable = [
         'exercise_id',
         'difficulty_id',
-        'cover',
+        'image',
         'illustration',
         'name',
         'description',
