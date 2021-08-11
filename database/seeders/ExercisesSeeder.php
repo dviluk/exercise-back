@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Exercise;
+use App\Repositories\V1\ExercisesRepository;
 use Faker\Generator as Faker;
 use Illuminate\Container\Container;
 use Illuminate\Database\Seeder;
@@ -34,11 +34,32 @@ class ExercisesSeeder extends Seeder
                 Repeat
             ',
                 'difficulty_id' => 'difficulties_1',
+                'equipment' => [
+                    'equipment_6', 'equipment_7', 'equipment_8', 'equipment_9'
+                ],
                 'muscles' => [
-                    'muscles_6', 'muscles_7', 'muscles_8', 'muscles_9'
+                    [
+                        'id' => 'muscles_6',
+                        'primary' => true,
+                    ],
+                    [
+                        'id' => 'muscles_7',
+                        'primary' => false,
+                    ],
+                    [
+                        'id' => 'muscles_8',
+                        'primary' => false,
+                    ],
+                    [
+                        'id' => 'muscles_9',
+                        'primary' => false,
+                    ],
                 ],
             ]
         ];
+
+        $repo = new ExercisesRepository;
+        $repo->setIgnoreValidations(true);
 
         $imagesDir =  storage_path('app/public/exercises/images');
         $illustrationsDir =  storage_path('app/public/exercises/illustrations');
@@ -52,7 +73,7 @@ class ExercisesSeeder extends Seeder
         }
 
         foreach ($items as $item) {
-            $exists = Exercise::where('name', $item['name'])->exists();
+            $exists = $repo->query()->where('name', $item['name'])->exists();
 
             if (!$exists) {
                 $image = $faker->image($imagesDir, 400, 400, null, true, false, $item['name']);
@@ -67,12 +88,7 @@ class ExercisesSeeder extends Seeder
 
                 $item['illustration'] = $illustration;
 
-                $muscles = $item['muscles'];
-                unset($item['muscles']);
-
-                $created = Exercise::create($item);
-
-                $created->muscles()->attach($muscles);
+                $created = $repo->create($item);
 
                 $this->command->info("{$created->name} creado!.");
             }

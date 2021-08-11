@@ -26,10 +26,16 @@ class MusclesRepository extends Repository
      */
     protected function availableInputKeys(array $data, string $method, array $options = [])
     {
-        return [
+        $inputs = [
             'name',
             'description',
         ];
+
+        if (array_key_exists('customId', $options)) {
+            $inputs[] = 'id';
+        }
+
+        return $inputs;
     }
 
     /**
@@ -140,7 +146,7 @@ class MusclesRepository extends Repository
      */
     public function create(array $data, array $options = [])
     {
-        return parent::create($data);
+        return parent::create($data, $options);
     }
 
     /**

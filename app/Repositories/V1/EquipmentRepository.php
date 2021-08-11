@@ -26,11 +26,17 @@ class EquipmentRepository extends Repository
      */
     protected function availableInputKeys(array $data, string $method, array $options = [])
     {
-        return [
+        $inputs = [
             'name',
             'image',
             'description',
         ];
+
+        if (array_key_exists('customId', $options)) {
+            $inputs[] = 'id';
+        }
+
+        return $inputs;
     }
 
     /**
@@ -143,7 +149,7 @@ class EquipmentRepository extends Repository
     public function create(array $data, array $options = [])
     {
         // TODO: Guardar imagen
-        return parent::create($data);
+        return parent::create($data, $options);
     }
 
     /**

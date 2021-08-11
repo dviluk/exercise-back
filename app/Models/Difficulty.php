@@ -7,6 +7,7 @@ class Difficulty extends BaseModel
     protected $table = 'difficulties';
 
     protected $fillable = [
+        'slug',
         'name',
         'description',
     ];

@@ -148,7 +148,7 @@ class UsersRepository extends Repository
             $data['password'] = bcrypt($data['password']);
         }
 
-        return parent::create($data);
+        return parent::create($data, $options);
     }
 
     /**

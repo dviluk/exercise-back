@@ -198,6 +198,7 @@ return [
         \App\Providers\Utils\ApiProvider::class,
         \App\Providers\Utils\ArraysProvider::class,
         \App\Providers\Utils\LangProvider::class,
+        \App\Providers\Utils\StringProvider::class,
     ],
 
     /*
@@ -255,6 +256,7 @@ return [
         'API' => App\Providers\Utils\ApiFacade::class,
         'Arrays' => App\Providers\Utils\ArraysFacade::class,
         'Language' => App\Providers\Utils\LangFacade::class,
+        'Strings' => App\Providers\Utils\StringFacade::class,
     ],
 
 ];

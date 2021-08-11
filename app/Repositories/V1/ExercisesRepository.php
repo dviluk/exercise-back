@@ -163,9 +163,6 @@ class ExercisesRepository extends Repository
      * - (file)     `data.illustration`: 
      * - (string)   `data.name`: 
      * - (string)   `data.description`: 
-     * 
-     * Opcionales: 
-     * 
      * - (array)    `data.muscles`: Revisar `$this->updateMuscles()`
      * - (array)    `data.equipment`: Revisar `$this->updateEquipment()`
      * 
@@ -190,8 +187,11 @@ class ExercisesRepository extends Repository
 
             $item = parent::create($data);
 
+            $musclesOptions = [
+                'isArrayOfIds' => false,
+            ];
             $this->updateEquipment($item, ManyToManyAction::ATTACH(), $equipment);
-            $this->updateMuscles($item, ManyToManyAction::ATTACH(), $muscles);
+            $this->updateMuscles($item, ManyToManyAction::ATTACH(), $muscles, $musclesOptions);
 
             DB::commit();
 
@@ -242,13 +242,11 @@ class ExercisesRepository extends Repository
 
             $item = parent::update($id, $data, $options);
 
-            if (!is_null($equipment)) {
-                $this->updateEquipment($item, ManyToManyAction::SYNC(), $equipment);
-            }
-
-            if (!is_null($muscles)) {
-                $this->updateMuscles($item, ManyToManyAction::SYNC(), $muscles);
-            }
+            $musclesOptions = [
+                'isArrayOfIds' => false,
+            ];
+            $this->updateEquipment($item, ManyToManyAction::SYNC(), $equipment);
+            $this->updateMuscles($item, ManyToManyAction::SYNC(), $muscles, $musclesOptions);
 
             DB::commit();
 

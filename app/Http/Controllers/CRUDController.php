@@ -226,6 +226,7 @@ class CRUDController extends Controller
         ]);
 
         $resourceOptions = $queryOptions['resourceOptions'] ?? [];
+        $resourceOptions['editing'] = true;
 
         $item = $this->repo->findOrFail($id, $queryOptions);
 

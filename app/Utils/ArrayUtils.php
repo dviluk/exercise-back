@@ -11,7 +11,7 @@ class ArrayUtils
      * @param \Closure $attach 
      * @return array 
      */
-    public static function arrayValuesAsKeysWithData(array $array, \Closure $attach)
+    public function arrayValuesAsKeysWithData(array $array, \Closure $attach)
     {
         $pivot = [];
 
@@ -29,7 +29,7 @@ class ArrayUtils
      * @param array $keysToOmit 
      * @return array 
      */
-    public static function omitKeys(array $array, array $keysToOmit)
+    public function omitKeys(array $array, array $keysToOmit)
     {
         return array_diff_key($array, array_flip($keysToOmit));
     }
@@ -40,7 +40,7 @@ class ArrayUtils
      * @param array $keysToPreserve 
      * @return array 
      */
-    public static function preserveKeys(array $array, array $keysToPreserve)
+    public function preserveKeys(array $array, array $keysToPreserve)
     {
         return array_intersect_key($array, array_flip($keysToPreserve));
     }
@@ -52,7 +52,7 @@ class ArrayUtils
      * @param array $valuesToOmit 
      * @return array 
      */
-    public static function omitValues(array $array, array $valuesToOmit)
+    public function omitValues(array $array, array $valuesToOmit)
     {
         return array_diff($array, $valuesToOmit);
     }
@@ -65,7 +65,7 @@ class ArrayUtils
      * @param null|array $attachExtraData 
      * @return array 
      */
-    public static function formatPivotData(array $array, string $pivotKey = 'id', ?array $attachExtraData = null)
+    public function formatPivotData(array $array, string $pivotKey = 'id', ?array $attachExtraData = null)
     {
         $data = [];
 

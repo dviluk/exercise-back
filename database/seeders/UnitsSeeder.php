@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Unit;
+use App\Repositories\V1\UnitsRepository;
 use Illuminate\Database\Seeder;
 
 class UnitsSeeder extends Seeder
@@ -16,19 +16,24 @@ class UnitsSeeder extends Seeder
     {
         $items = [
             [
-                'name' => 'Seconds',
-                'description' => '-',
+                'symbol' => 's',
+                'name' => 'seconds',
+                'display_name' => 's',
             ],
             [
-                'name' => 'time',
-                'description' => '-',
+                'symbol' => 'm',
+                'name' => 'minutes',
+                'display_name' => 'm',
             ],
         ];
 
+        $repo = new UnitsRepository;
+        $repo->setIgnoreValidations(true);
+
         foreach ($items as $item) {
-            $exists = Unit::where('name', $item['name'])->exists();
+            $exists = $repo->query()->where('name', $item['name'])->exists();
             if (!$exists) {
-                $created = Unit::create($item);
+                $created = $repo->create($item);
                 $this->command->info("{$created->name} creado.");
             }
         }

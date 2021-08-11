@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Equipment;
+use App\Repositories\V1\EquipmentRepository;
 use Faker\Generator as Faker;
 use Illuminate\Container\Container;
 use Illuminate\Database\Seeder;
@@ -24,99 +24,83 @@ class EquipmentSeeder extends Seeder
             [
                 'id' => 'equipment_1',
                 'name' => 'Full Gym',
-                'description' => '',
             ],
             [
                 'id' => 'equipment_2',
                 'name' => 'No equipment',
-                'description' => '',
             ],
             [
                 'id' => 'equipment_3',
                 'name' => 'Agility Ladder',
-                'description' => '',
             ],
             [
                 'id' => 'equipment_4',
                 'name' => 'Barbell / EZ-Bar',
-                'description' => '',
             ],
             [
                 'id' => 'equipment_5',
                 'name' => 'Battle Rope',
-                'description' => '',
             ],
             [
                 'id' => 'equipment_6',
                 'name' => 'Bosu ball',
-                'description' => '',
             ],
             [
                 'id' => 'equipment_7',
                 'name' => 'Cable station',
-                'description' => '',
             ],
             [
                 'id' => 'equipment_8',
                 'name' => 'Climbing Rope',
-                'description' => '',
             ],
             [
                 'id' => 'equipment_9',
                 'name' => 'Dumbbells',
-                'description' => '',
             ],
             [
                 'id' => 'equipment_10',
                 'name' => 'Foam roller',
-                'description' => '',
             ],
             [
                 'id' => 'equipment_11',
                 'name' => 'Gymnastic Rings',
-                'description' => '',
             ],
             [
                 'id' => 'equipment_12',
                 'name' => 'Kettlebells',
-                'description' => '',
             ],
             [
                 'id' => 'equipment_13',
                 'name' => 'Medicine ball',
-                'description' => '',
             ],
             [
                 'id' => 'equipment_14',
                 'name' => 'Powerbag / Sandbag',
-                'description' => '',
             ],
             [
                 'id' => 'equipment_15',
                 'name' => 'Resistance bands',
-                'description' => '',
             ],
             [
                 'id' => 'equipment_16',
                 'name' => 'Sled',
-                'description' => '',
             ],
             [
                 'id' => 'equipment_17',
                 'name' => 'Suspension straps / TRX',
-                'description' => '',
             ],
             [
                 'id' => 'equipment_18',
                 'name' => 'Swiss / Exercise ball',
-                'description' => '',
             ],
             [
                 'id' => 'equipment_19',
                 'name' => 'Water Bottles',
-                'description' => '',
             ],
         ];
+
+        $repo = new EquipmentRepository;
+        $repo->setIgnoreValidations(true);
 
         $imagesDir =  storage_path('app/public/equipments/images');
 
@@ -125,7 +109,7 @@ class EquipmentSeeder extends Seeder
         }
 
         foreach ($items as $item) {
-            $exists = Equipment::where('name', $item['name'])->exists();
+            $exists = $repo->query()->where('name', $item['name'])->exists();
 
             if (!$exists) {
                 $image = $faker->image($imagesDir, 400, 400, null, true, false, $item['name']);
@@ -134,7 +118,7 @@ class EquipmentSeeder extends Seeder
 
                 $item['image'] = $image;
 
-                $created = Equipment::create($item);
+                $created = $repo->create($item, ['customId' => true]);
                 $this->command->info("{$created->name} creado.");
             }
         }

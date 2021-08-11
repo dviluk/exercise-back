@@ -17,7 +17,7 @@ class CreateTableEquipment extends Migration
             $table->uuid('id')->primary();
             $table->string('image');
             $table->string('name');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

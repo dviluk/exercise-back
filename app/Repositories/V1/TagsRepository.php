@@ -140,7 +140,7 @@ class TagsRepository extends Repository
      */
     public function create(array $data, array $options = [])
     {
-        return parent::create($data);
+        return parent::create($data, $options);
     }
 
     /**

@@ -27,7 +27,9 @@ class UnitsRepository extends Repository
     protected function availableInputKeys(array $data, string $method, array $options = [])
     {
         return [
+            'symbol',
             'name',
+            'display_name',
             'description',
         ];
     }
@@ -45,7 +47,8 @@ class UnitsRepository extends Repository
     {
         $rules = [
             'name' => 'required|unique:' . Unit::class . ',name',
-            'description' => 'required',
+            'symbol' => 'required',
+            'display_name' => 'required',
         ];
 
         if ($method === 'update') {
@@ -140,7 +143,7 @@ class UnitsRepository extends Repository
      */
     public function create(array $data, array $options = [])
     {
-        return parent::create($data);
+        return parent::create($data, $options);
     }
 
     /**

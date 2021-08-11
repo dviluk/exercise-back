@@ -53,6 +53,8 @@ Para facilitar las sesiones de fitness, [Trainer] te ayuda a:
 ## Database
 
 -   difficulties
+    -   slug
+    -   name
 -   muscles
 -   tags (PARA DESPUÉS)
 -   goals
@@ -61,6 +63,17 @@ Para facilitar las sesiones de fitness, [Trainer] te ayuda a:
 -   exercise_equipment
 -   exercise_muscle
 -   plans
--   plan_goal (LOS GOALS SERÁN DIFERENTES A LOS DEL WORKOUT?)
+-   plan_goal
+-   plan_groups
+-   plan_exercise_group
+    -   plan_id
+    -   exercise_group_id
+    -   day
+    -   week
+-   plan_exercise (Se puede combinar grupos con exercises)
+    -   plan_id
+    -   exercise_id
+    -   day
+    -   week
 
 ## TODO

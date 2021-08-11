@@ -26,6 +26,13 @@ use Throwable;
 class Repository
 {
     /**
+     * Si es verdadero todas las validaciones de los métodos can[Method] se omitirán.
+     * 
+     * @var bool
+     */
+    private $ignoreAllValidations = false;
+
+    /**
      * Modelo principal de repositorio.
      *
      * En la clase hijo se debe declarar la clase del modelo
@@ -382,11 +389,11 @@ class Repository
         try {
             $validate = $options['validate'] ?? true;
 
-            $data = Arrays::preserveKeys($data, $this->availableInputKeys($data, 'create'));
+            $data = Arrays::preserveKeys($data, $this->availableInputKeys($data, 'create', $options));
 
             $data = $this->prepareData($data, 'create', $options);
 
-            if ($validate) {
+            if ($validate && $this->ignoreAllValidations === false) {
                 $this->canCreate($data);
             }
 
@@ -426,7 +433,7 @@ class Repository
     {
         DB::beginTransaction();
         try {
-            $data = Arrays::preserveKeys($data, $this->availableInputKeys($data, 'update'));
+            $data = Arrays::preserveKeys($data, $this->availableInputKeys($data, 'update', $options));
 
             $data = $this->prepareData($data, 'update' . $options);
 
@@ -434,7 +441,7 @@ class Repository
 
             $validate = $options['validate'] ?? true;
 
-            if ($validate) {
+            if ($validate && $this->ignoreAllValidations === false) {
                 $this->canUpdate($item, $data);
             }
 
@@ -489,7 +496,7 @@ class Repository
 
             $validate = $options['validate'] ?? true;
 
-            if ($validate) {
+            if ($validate && $this->ignoreAllValidations === false) {
                 $this->canDelete($item);
             }
 
@@ -535,7 +542,7 @@ class Repository
      * 
      * @param \Illuminate\Database\Eloquent\Relations\BelongsToMany $relation 
      * @param \App\Enums\ManyToManyAction $action 
-     * @param array $data 
+     * @param array|null $data 
      * @param array $options
      * 
      * - (bool)   `isArrayOfIds`: default `true`
@@ -543,8 +550,14 @@ class Repository
      * 
      * @return array 
      */
-    protected function manyToManyActions(BelongsToMany $relation, ManyToManyAction $action, array $data, array $options = [])
+    protected function manyToManyActions(BelongsToMany $relation, ManyToManyAction $action, $data, array $options = [])
     {
+        if (is_null($data)) {
+            return [];
+        } else if (!is_array($data)) {
+            throw new Error500([], '$data is not valid');
+        }
+
         $isAttachAction = $action->equals(ManyToManyAction::ATTACH());
 
         // Cuando es un AttachAction y no se tienen datos, se finaliza el proceso
@@ -558,6 +571,11 @@ class Repository
 
         $isArrayOfIds = $options['isArrayOfIds'] ?? true;
         $pivotKey = $options['pivotKey'] ?? 'id';
+
+        // Detach solo recibe ids
+        if ($action->equals(ManyToManyAction::DETACH())) {
+            $isArrayOfIds = true;
+        }
 
         // Cuando los datos no son un array de solo Ids, se le da formato de tal manera
         // cumpla con [$id => [$pivotData]]
@@ -659,5 +677,10 @@ class Repository
     public function inputRules(Request $request, string $method, $id = null, array $options = [])
     {
         return [];
+    }
+
+    public function setIgnoreValidations(bool $ignore = false)
+    {
+        $this->ignoreAllValidations = $ignore;
     }
 }

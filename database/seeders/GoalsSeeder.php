@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Goal;
+use App\Repositories\V1\GoalsRepository;
 use Illuminate\Database\Seeder;
 
 class GoalsSeeder extends Seeder
@@ -18,35 +18,33 @@ class GoalsSeeder extends Seeder
             [
                 'id' => 'goals_1',
                 'name' => 'Lose fat',
-                'description' => '',
             ],
             [
                 'id' => 'goals_2',
                 'name' => 'Get toned',
-                'description' => '',
             ],
             [
                 'id' => 'goals_3',
                 'name' => 'Gain muscle',
-                'description' => '',
             ],
             [
                 'id' => 'goals_4',
                 'name' => 'Increase Endurance',
-                'description' => '',
             ],
             [
                 'id' => 'goals_5',
                 'name' => 'Increase flexibility',
-                'description' => '',
             ],
         ];
 
+        $repo = new GoalsRepository;
+        $repo->setIgnoreValidations(true);
+
         foreach ($items as $item) {
-            $exists = Goal::where('name', $item['name'])->exists();
+            $exists = $repo->query()->where('name', $item['name'])->exists();
 
             if (!$exists) {
-                $created = Goal::create($item);
+                $created = $repo->create($item, ['customId' => true]);
                 $this->command->info("{$created->name} creado.");
             }
         }

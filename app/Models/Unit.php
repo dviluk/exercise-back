@@ -7,7 +7,8 @@ class Unit extends BaseModel
     protected $table = 'units';
 
     protected $fillable = [
+        'symbol',
         'name',
-        'description',
+        'display_name',
     ];
 }

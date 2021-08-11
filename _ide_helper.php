@@ -14964,7 +14964,8 @@
          */ 
         public static function arrayValuesAsKeysWithData($array, $attach)
         {
-                        return \App\Utils\ArrayUtils::arrayValuesAsKeysWithData($array, $attach);
+                        /** @var \App\Utils\ArrayUtils $instance */
+                        return $instance->arrayValuesAsKeysWithData($array, $attach);
         }
                     /**
          * Retorna un arreglo sin los keys especificados.
@@ -14976,7 +14977,8 @@
          */ 
         public static function omitKeys($array, $keysToOmit)
         {
-                        return \App\Utils\ArrayUtils::omitKeys($array, $keysToOmit);
+                        /** @var \App\Utils\ArrayUtils $instance */
+                        return $instance->omitKeys($array, $keysToOmit);
         }
                     /**
          * Retorna un arreglo con solo los elementos de los keys especificado.
@@ -14988,7 +14990,8 @@
          */ 
         public static function preserveKeys($array, $keysToPreserve)
         {
-                        return \App\Utils\ArrayUtils::preserveKeys($array, $keysToPreserve);
+                        /** @var \App\Utils\ArrayUtils $instance */
+                        return $instance->preserveKeys($array, $keysToPreserve);
         }
                     /**
          * Retorna un arreglo sin los valores especificados.
@@ -15000,7 +15003,8 @@
          */ 
         public static function omitValues($array, $valuesToOmit)
         {
-                        return \App\Utils\ArrayUtils::omitValues($array, $valuesToOmit);
+                        /** @var \App\Utils\ArrayUtils $instance */
+                        return $instance->omitValues($array, $valuesToOmit);
         }
                     /**
          * Extrae el id pivote y lo usa como key de los elementos.
@@ -15013,7 +15017,8 @@
          */ 
         public static function formatPivotData($array, $pivotKey = 'id', $attachExtraData = null)
         {
-                        return \App\Utils\ArrayUtils::formatPivotData($array, $pivotKey, $attachExtraData);
+                        /** @var \App\Utils\ArrayUtils $instance */
+                        return $instance->formatPivotData($array, $pivotKey, $attachExtraData);
         }
          
     }
@@ -15184,6 +15189,23 @@
         {
                         /** @var \App\Utils\LangUtils $instance */
                         return $instance->localizeKeyInArray($collection, $key, $keyInDictionary);
+        }
+         
+    }
+            /**
+     * 
+     *
+     */ 
+        class StringFacade {
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function toSlug($name)
+        {
+                        /** @var \App\Utils\StringUtils $instance */
+                        return $instance->toSlug($name);
         }
          
     }
@@ -18648,6 +18670,7 @@ namespace  {
             class API extends \App\Providers\Utils\ApiFacade {}
             class Arrays extends \App\Providers\Utils\ArraysFacade {}
             class Language extends \App\Providers\Utils\LangFacade {}
+            class Strings extends \App\Providers\Utils\StringFacade {}
             class Flare extends \Facade\Ignition\Facades\Flare {}
      
 }

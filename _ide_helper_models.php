@@ -29,8 +29,9 @@ namespace App\Models{
  * App\Models\Difficulty
  *
  * @property string $id
+ * @property string $slug
  * @property string $name
- * @property string $description
+ * @property string|null $description
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -44,6 +45,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Difficulty whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Difficulty whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Difficulty whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Difficulty whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Difficulty whereUpdatedAt($value)
  */
 	class Difficulty extends \Eloquent {}
@@ -56,7 +58,7 @@ namespace App\Models{
  * @property string $id
  * @property string $image
  * @property string $name
- * @property string $description
+ * @property string|null $description
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -117,7 +119,7 @@ namespace App\Models{
  *
  * @property string $id
  * @property string $name
- * @property string $description
+ * @property string|null $description
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -140,7 +142,7 @@ namespace App\Models{
  *
  * @property string $id
  * @property string $name
- * @property string $description
+ * @property string|null $description
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -230,7 +232,7 @@ namespace App\Models{
  *
  * @property string $id
  * @property string $name
- * @property string $description
+ * @property string|null $description
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -254,8 +256,9 @@ namespace App\Models{
  * App\Models\Unit
  *
  * @property string $id
+ * @property string $symbol
  * @property string $name
- * @property string $description
+ * @property string $display_name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -264,9 +267,10 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Unit query()
  * @method static \Illuminate\Database\Eloquent\Builder|Unit whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Unit whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Unit whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit whereDisplayName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Unit whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Unit whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit whereSymbol($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Unit whereUpdatedAt($value)
  */
 	class Unit extends \Eloquent {}

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Difficulty;
+use App\Repositories\V1\DifficultiesRepository;
 use Illuminate\Database\Seeder;
 
 class DifficultiesSeeder extends Seeder
@@ -18,24 +18,25 @@ class DifficultiesSeeder extends Seeder
             [
                 'id' => 'difficulties_1',
                 'name' => 'Easy',
-                'description' => '',
             ],
             [
                 'id' => 'difficulties_2',
                 'name' => 'Intermediate',
-                'description' => '',
             ],
             [
                 'id' => 'difficulties_3',
                 'name' => 'Difficult',
-                'description' => '',
             ],
         ];
 
+        $repo = new DifficultiesRepository;
+        $repo->setIgnoreValidations(true);
+
         foreach ($items as $item) {
-            $exists = Difficulty::where('name', $item['name'])->exists();
+            $exists = $repo->query()->where('name', $item['name'])->exists();
+
             if (!$exists) {
-                $created = Difficulty::create($item);
+                $created = $repo->create($item, ['customId' => true]);
                 $this->command->info("{$created->name} creado.");
             }
         }

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Tag;
+use App\Repositories\V1\TagsRepository;
 use Illuminate\Database\Seeder;
 
 class TagsSeeder extends Seeder
@@ -18,20 +18,21 @@ class TagsSeeder extends Seeder
             [
                 'id' => 'tags_1',
                 'name' => 'Tag 1',
-                'description' => '',
             ],
             [
                 'id' => 'tags_2',
                 'name' => 'Tag 2',
-                'description' => '',
             ],
         ];
 
+        $repo = new TagsRepository;
+        $repo->setIgnoreValidations(true);
+
         foreach ($items as $item) {
-            $exists = Tag::where('name', $item['name'])->exists();
+            $exists = $repo->query()->where('name', $item['name'])->exists();
 
             if (!$exists) {
-                $created = Tag::create($item);
+                $created = $repo->create($item);
                 $this->command->info("{$created->name} creado.");
             }
         }

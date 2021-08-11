@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Muscle;
+use App\Repositories\V1\MusclesRepository;
 use Illuminate\Database\Seeder;
 
 class MusclesSeeder extends Seeder
@@ -18,85 +18,73 @@ class MusclesSeeder extends Seeder
             [
                 'id' => 'muscles_1',
                 'name' => 'Abs',
-                'description' => '',
             ],
             [
                 'id' => 'muscles_2',
                 'name' => 'Biceps',
-                'description' => '',
             ],
             [
                 'id' => 'muscles_3',
                 'name' => 'Calves',
-                'description' => '',
             ],
             [
                 'id' => 'muscles_4',
                 'name' => 'Chest',
-                'description' => '',
             ],
             [
                 'id' => 'muscles_5',
                 'name' => 'Forearms',
-                'description' => '',
             ],
             [
                 'id' => 'muscles_6',
                 'name' => 'Glutes & Hip Flexors',
-                'description' => '',
             ],
             [
                 'id' => 'muscles_7',
                 'name' => 'Hamstrings',
-                'description' => '',
             ],
             [
                 'id' => 'muscles_8',
                 'name' => 'Lower Back',
-                'description' => '',
             ],
             [
                 'id' => 'muscles_9',
                 'name' => 'Middle Back / Lats',
-                'description' => '',
             ],
             [
                 'id' => 'muscles_10',
                 'name' => 'Neck & Upper Traps',
-                'description' => '',
             ],
             [
                 'id' => 'muscles_11',
                 'name' => 'Obliques',
-                'description' => '',
             ],
             [
                 'id' => 'muscles_12',
                 'name' => 'Quadriceps',
-                'description' => '',
             ],
             [
                 'id' => 'muscles_13',
                 'name' => 'Shoulders',
-                'description' => '',
             ],
             [
                 'id' => 'muscles_14',
                 'name' => 'Triceps',
-                'description' => '',
             ],
             [
                 'id' => 'muscles_15',
                 'name' => 'Upper Back & Lower Traps',
-                'description' => '',
             ],
         ];
 
+        $repo = new MusclesRepository;
+        $repo->setIgnoreValidations(true);
+
         foreach ($items as $item) {
-            $exists = Muscle::where('name', $item['name'])->exists();
+            $exists = $repo->query()->where('name', $item['name'])->exists();
 
             if (!$exists) {
-                $created = Muscle::create($item);
+                $created = $repo->create($item, ['customId' => true]);
                 $this->command->info("{$created->name} creado.");
             }
         }

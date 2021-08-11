@@ -5,6 +5,7 @@ namespace App\Repositories\V1;
 use App\Models\Difficulty;
 use App\Repositories\Repository;
 use Illuminate\Http\Request;
+use Strings;
 
 class DifficultiesRepository extends Repository
 {
@@ -14,6 +15,25 @@ class DifficultiesRepository extends Repository
      * @var string
      */
     protected $model = Difficulty::class;
+
+    /**
+     * Prepara los datos antes de insertar/actualizar un registro.
+     * 
+     * Se ejecuta antes de request validator.
+     * 
+     * @param array $data 
+     * @param string $method
+     * @param array $options 
+     * @return array 
+     */
+    public function prepareData(array $data, string $method, array $options = [])
+    {
+        if (!array_key_exists('slug', $data)) {
+            $data['slug'] = Strings::toSlug($data['name']);
+        }
+
+        return $data;
+    }
 
     /**
      * Contiene los keys de los posibles valores del atributo $data
@@ -26,10 +46,17 @@ class DifficultiesRepository extends Repository
      */
     protected function availableInputKeys(array $data, string $method, array $options = [])
     {
-        return [
+        $inputs = [
+            'slug',
             'name',
             'description',
         ];
+
+        if (array_key_exists('customId', $options)) {
+            $inputs[] = 'id';
+        }
+
+        return $inputs;
     }
 
     /**
@@ -45,6 +72,7 @@ class DifficultiesRepository extends Repository
     {
         $rules = [
             'name' => 'required|unique:' . Difficulty::class . ',name',
+            'slug' => 'required',
             'description' => 'required',
         ];
 
@@ -140,7 +168,7 @@ class DifficultiesRepository extends Repository
      */
     public function create(array $data, array $options = [])
     {
-        return parent::create($data);
+        return parent::create($data, $options);
     }
 
     /**
