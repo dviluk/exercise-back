@@ -7,21 +7,12 @@ class Exercise extends BaseModel
     protected $table = 'exercises';
 
     protected $fillable = [
-        'exercise_id',
         'difficulty_id',
         'image',
         'illustration',
         'name',
         'description',
     ];
-
-    /**
-     * Si existe, el exercise actual es una variación de otro exercise.
-     */
-    public function exercise()
-    {
-        return $this->belongsTo(Exercise::class, 'exercise_id');
-    }
 
     public function difficulty()
     {

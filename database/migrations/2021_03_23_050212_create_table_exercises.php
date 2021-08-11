@@ -15,8 +15,6 @@ class CreateTableExercises extends Migration
     {
         Schema::create('exercises', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            // Se usara una tabla pivote para ver los ejercicios alternativos
-            // $table->uuid('exercise_id')->nullable();
             $table->uuid('difficulty_id');
             // Es la imagen que se mostrara
             $table->string('illustration');
@@ -26,11 +24,6 @@ class CreateTableExercises extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            // No se puede crear referencias en la misma tabla
-            // $table->foreign('exercise_id')
-            //     ->references('id')->on('exercises')
-            //     ->cascadeOnUpdate()
-            //     ->cascadeOnDelete();
             $table->foreign('difficulty_id')
                 ->references('id')->on('difficulties')
                 ->cascadeOnUpdate()

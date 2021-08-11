@@ -94,7 +94,6 @@ namespace App\Models{
  * @property-read \App\Models\Difficulty $difficulty
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Equipment[] $equipment
  * @property-read int|null $equipment_count
- * @property-read Exercise $exercise
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Muscle[] $muscles
  * @property-read int|null $muscles_count
  * @method static \Illuminate\Database\Eloquent\Builder|Exercise newModelQuery()
