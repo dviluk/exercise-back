@@ -27,7 +27,7 @@ class MakeCRUDController extends GeneratorCommand
      *
      * @var string
      */
-    protected $type = 'class';
+    protected $type = 'CrudController';
 
     private function buildNamespaceFor($classPath, $namespace)
     {

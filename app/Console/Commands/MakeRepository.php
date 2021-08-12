@@ -27,7 +27,7 @@ class MakeRepository extends GeneratorCommand
      *
      * @var string
      */
-    protected $type = 'class';
+    protected $type = 'Repository';
 
     private function buildNamespaceFor($classPath, $namespace)
     {

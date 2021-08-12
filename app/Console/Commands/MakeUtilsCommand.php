@@ -26,7 +26,7 @@ class MakeUtilsCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $type = 'class';
+    protected $type = 'Util';
 
     /**
      * Execute the console command.
