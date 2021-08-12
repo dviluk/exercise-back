@@ -60,12 +60,13 @@ Para facilitar las sesiones de fitness, [Trainer] te ayuda a:
 -   goals
 -   equipment
 -   exercises
+-   exercise_groups
+-   exercise_group
 -   exercise_equipment
 -   exercise_muscle
 -   plans
 -   plan_goal
--   plan_groups
--   plan_exercise_group
+-   plan_group
     -   plan_id
     -   exercise_group_id
     -   day

@@ -27,4 +27,14 @@ class Plan extends BaseModel
     {
         return $this->belongsToMany(Goal::class, 'plan_goal', 'plan_id', 'goal_id');
     }
+
+    public function exerciseGroups()
+    {
+        return $this->belongsToMany(ExerciseGroup::class, 'plan_group', 'plan_id', 'group_id');
+    }
+
+    public function exercises()
+    {
+        return $this->belongsToMany(Exercise::class, 'plan_exercise', 'plan_id', 'exercise_id');
+    }
 }

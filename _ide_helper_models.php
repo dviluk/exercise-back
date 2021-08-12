@@ -114,6 +114,29 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\ExerciseGroup
+ *
+ * @property string $id
+ * @property string $name
+ * @property string|null $description
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Plan[] $exercises
+ * @property-read int|null $exercises_count
+ * @method static \Illuminate\Database\Eloquent\Builder|ExerciseGroup newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ExerciseGroup newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ExerciseGroup query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ExerciseGroup whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExerciseGroup whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExerciseGroup whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExerciseGroup whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExerciseGroup whereUpdatedAt($value)
+ */
+	class ExerciseGroup extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Goal
  *
  * @property string $id
@@ -204,6 +227,10 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \App\Models\Difficulty $difficulty
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ExerciseGroup[] $exerciseGroups
+ * @property-read int|null $exercise_groups_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Exercise[] $exercises
+ * @property-read int|null $exercises_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Goal[] $goals
  * @property-read int|null $goals_count
  * @method static \Illuminate\Database\Eloquent\Builder|Plan newModelQuery()
