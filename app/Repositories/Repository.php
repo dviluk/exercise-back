@@ -636,7 +636,7 @@ class Repository
     public function defaultUpdateManyToManyRelation($id, ManyToManyAction $action, array $data = [], array $options = [])
     {
         $relationName = $options['relationName'];
-        $foreignKey = $options['foreignKey'];
+        $relatedKey = $options['relatedKey'];
 
         $item = $this->findOrFail($id);
 
@@ -645,7 +645,7 @@ class Repository
         $changes = $this->manyToManyActions($relation, $action, $data, $options);
 
         if (isset($options['returnAttachedItems'])) {
-            return $relation->wherePivotIn($foreignKey, $changes)->get();
+            return $relation->wherePivotIn($relatedKey, $changes)->get();
         }
 
         return $item;

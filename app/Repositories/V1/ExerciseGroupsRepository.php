@@ -271,7 +271,7 @@ class ExerciseGroupsRepository extends Repository
             $options,
             [
                 'relationName' => 'exercises',
-                'foreignKey' => 'exercise_id'
+                'relatedKey' => 'exercise_id'
             ]
         ));
     }
