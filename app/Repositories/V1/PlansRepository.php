@@ -237,16 +237,9 @@ class PlansRepository extends Repository
      */
     public function updateGoals($id, ManyToManyAction $action, array $data = [], array $options = [])
     {
-        $item = $this->findOrFail($id);
-
-        $relation = $item->goals();
-
-        $changes = $this->manyToManyActions($relation, $action, $data);
-
-        if (isset($options['returnAttachedItems'])) {
-            return $relation->wherePivotIn('goal_id', $changes)->get();
-        }
-
-        return $item;
+        return $this->defaultUpdateManyToManyRelation($id, $action, $data, array_merge([
+            'relationName' => 'goals',
+            'relatedKey' => 'goal_id',
+        ], $options));
     }
 }

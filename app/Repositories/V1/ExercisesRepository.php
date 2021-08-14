@@ -187,11 +187,8 @@ class ExercisesRepository extends Repository
 
             $item = parent::create($data);
 
-            $musclesOptions = [
-                'isArrayOfIds' => false,
-            ];
             $this->updateEquipment($item, ManyToManyAction::ATTACH(), $equipment);
-            $this->updateMuscles($item, ManyToManyAction::ATTACH(), $muscles, $musclesOptions);
+            $this->updateMuscles($item, ManyToManyAction::ATTACH(), $muscles);
 
             DB::commit();
 
@@ -242,11 +239,8 @@ class ExercisesRepository extends Repository
 
             $item = parent::update($id, $data, $options);
 
-            $musclesOptions = [
-                'isArrayOfIds' => false,
-            ];
             $this->updateEquipment($item, ManyToManyAction::SYNC(), $equipment);
-            $this->updateMuscles($item, ManyToManyAction::SYNC(), $muscles, $musclesOptions);
+            $this->updateMuscles($item, ManyToManyAction::SYNC(), $muscles);
 
             DB::commit();
 
@@ -299,21 +293,11 @@ class ExercisesRepository extends Repository
      */
     public function updateMuscles($id, ManyToManyAction $action, array $data = [], array $options = [])
     {
-        $item = $this->findOrFail($id);
-
-        $relation = $item->muscles();
-
-        $manyToManyOptions = [
+        return $this->defaultUpdateManyToManyRelation($id, $action, $data, array_merge([
+            'relationName' => 'muscles',
+            'relatedKey' => 'muscle_id',
             'isArrayOfIds' => false,
-        ];
-
-        $changes = $this->manyToManyActions($relation, $action, $data, $manyToManyOptions);
-
-        if (isset($options['returnAttachedItems'])) {
-            return $relation->wherePivotIn('muscle_id', $changes)->get();
-        }
-
-        return $item;
+        ], $options));
     }
 
     /**
@@ -337,16 +321,9 @@ class ExercisesRepository extends Repository
      */
     public function updateEquipment($id, ManyToManyAction $action, array $data = [], array $options = [])
     {
-        $item = $this->findOrFail($id);
-
-        $relation = $item->equipment();
-
-        $changes = $this->manyToManyActions($relation, $action, $data);
-
-        if (isset($options['returnAttachedItems'])) {
-            return $relation->wherePivotIn('muscle_id', $changes)->get();
-        }
-
-        return $item;
+        return $this->defaultUpdateManyToManyRelation($id, $action, $data, array_merge([
+            'relationName' => 'equipment',
+            'relatedKey' => 'equipment_id',
+        ], $options));
     }
 }
