@@ -2,10 +2,12 @@
 
 namespace App\Repositories\V1;
 
+use App\Enums\ManyToManyAction;
 use App\Models\Exercise;
 use App\Models\Plan;
 use App\Models\ExerciseGroup;
 use App\Repositories\Repository;
+use DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -55,7 +57,8 @@ class ExerciseGroupsRepository extends Repository
             'description' => 'nullable',
             'order' => 'required',
             'exercises' => 'nullable|array',
-            'exercises.*' => 'exists:' . Exercise::class . ',id',
+            'exercises.*.id' => 'exists:' . Exercise::class . ',id',
+            'exercises.*.order' => 'nullable',
         ];
 
         return $rules;
@@ -150,6 +153,13 @@ class ExerciseGroupsRepository extends Repository
      * @param array $data Contiene los campos a insertar en la tabla del modelo.
      *
      * - (string)   `data.name`
+     * - (string)   `data.description`
+     * 
+     * - Opcional
+     * 
+     * - (array)    `data.exercises`
+     *      - (string)    `exercises.*.id`
+     *      - (string)    `exercises.*.order`
      * 
      * @param array $options
      * @return ExerciseGroup
@@ -158,7 +168,26 @@ class ExerciseGroupsRepository extends Repository
      */
     public function create(array $data, array $options = [])
     {
-        return parent::create($data);
+        DB::beginTransaction();
+
+        try {
+            $exercises = $data['exercises'] ?? null;
+
+            $item = parent::create($data, $options);
+
+            $exerciseOptions = [
+                'isArrayOfIds' => false,
+            ];
+
+            $this->updateExercises($item, $exercises, ManyToManyAction::ATTACH(), $exerciseOptions);
+
+            DB::commit();
+
+            return $item;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
     }
 
     /**
@@ -168,6 +197,13 @@ class ExerciseGroupsRepository extends Repository
      * @param array $data Contiene los campos a actualizar.
      *
      * - (string)   `data.name`
+     * - (string)   `data.description`
+     * 
+     * - Opcional
+     * 
+     * - (array)    `data.exercises`
+     *      - (string)    `exercises.*.id`
+     *      - (string)    `exercises.*.order`
      * 
      * @param array $options
      * @return ExerciseGroup
@@ -176,7 +212,26 @@ class ExerciseGroupsRepository extends Repository
      */
     public function update($id, array $data, array $options = [])
     {
-        return parent::update($id, $data, $options);
+        DB::beginTransaction();
+
+        try {
+            $exercises = $data['exercises'] ?? null;
+
+            $item = parent::update($id, $data, $options);
+
+            $exerciseOptions = [
+                'isArrayOfIds' => false,
+            ];
+
+            $this->updateExercises($item, $exercises, ManyToManyAction::SYNC(), $exerciseOptions);
+
+            DB::commit();
+
+            return $item;
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
     }
 
     /**
@@ -191,5 +246,33 @@ class ExerciseGroupsRepository extends Repository
     public function delete($id, array $options = [])
     {
         return parent::delete($id, $options);
+    }
+
+    /**
+     * Actualiza los ejercicios del grupo.
+     * 
+     * @param mixed $id 
+     * @param array $data 
+     * 
+     * - (string)    `data.*.id`
+     * - (string)    `data.*.order`
+     * 
+     * @param \App\Enums\ManyToManyAction $action 
+     * @param array $options 
+     * @return mixed 
+     * @throws \Error 
+     * @throws \App\Utils\API\Error404 
+     * @throws \InvalidArgumentException 
+     * @throws \App\Utils\API\Error500 
+     */
+    public function updateExercises($id, array $data, ManyToManyAction $action, array $options = [])
+    {
+        return $this->defaultUpdateManyToManyRelation($id,  $action, $data, array_merge(
+            $options,
+            [
+                'relationName' => 'exercises',
+                'foreignKey' => 'exercise_id'
+            ]
+        ));
     }
 }

@@ -9,11 +9,11 @@ class ExerciseGroup extends BaseModel
     protected $fillable = [
         'name',
         'description',
-        'order',
     ];
 
     public function exercises()
     {
-        return $this->belongsToMany(Plan::class, 'exercise_group', 'group_id', 'exercise_id');
+        return $this->belongsToMany(Plan::class, 'exercise_group', 'group_id', 'exercise_id')
+            ->with(['order']);
     }
 }
