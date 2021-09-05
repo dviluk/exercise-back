@@ -25,12 +25,24 @@ use Throwable;
  */
 class Repository
 {
+    const DIRECTIONS = [
+        'ascend' => 'asc',
+        'descend' => 'desc',
+    ];
+
     /**
      * Si es verdadero todas las validaciones de los métodos can[Method] se omitirán.
      * 
      * @var bool
      */
-    private $ignoreAllValidations = false;
+    private $applyValidations = true;
+
+    /**
+     * Indica si el modelo usa SoftDeletes.
+     * 
+     * @var bool
+     */
+    private $useSoftDeletes = false;
 
     /**
      * Modelo principal de repositorio.
@@ -71,6 +83,8 @@ class Repository
     public function __construct()
     {
         $this->validateModel();
+
+        $this->useSoftDeletes = $this->useTrait($this->model, 'Illuminate\Database\Eloquent\SoftDeletes');
 
         // Se crea instancia del modelo
         $this->modelInstance = new $this->model;
@@ -123,7 +137,20 @@ class Repository
 
         $columnId = $this->modelInstance->getKeyName();
 
-        if (is_array($this->orderBy) && count($this->orderBy) >= 2) {
+        if (isset($options['sort'])) {
+            $sortOptions = $options['sort'];
+
+            $validColumns = array_flip($this->availableInputKeys([], 'index'));
+
+            foreach ($sortOptions as $sort) {
+                $column = $sort['column'];
+                $direction = Repository::DIRECTIONS[$sort['direction']] ?? null;
+
+                if ($direction && array_key_exists($column, $validColumns)) {
+                    $query->orderBy($column, $direction);
+                }
+            }
+        } else if (is_array($this->orderBy) && count($this->orderBy) >= 2) {
             $localize = isset($this->orderBy[2]) && $this->orderBy[2] === 'localized';
 
             $column = $this->orderBy[0];
@@ -195,8 +222,11 @@ class Repository
             }
         }
 
-        if (in_array('Illuminate\Database\Eloquent\SoftDeletes', class_uses($this->model))) {
-            $query->whereNull('deleted_at');
+        if ($this->useSoftDeletes) {
+            $trashedModel = $options['onlyTrashed'] ?? false;
+            if ($trashedModel) {
+                $query->onlyTrashed();
+            }
         }
 
         return $query;
@@ -230,17 +260,6 @@ class Repository
     }
 
     /**
-     * Modifica el query después de `$this->handleOptions($q, $options)`.
-     * 
-     * @param Builder $builder 
-     * @return Builder 
-     */
-    public function modifyQuery(Builder $builder)
-    {
-        return $builder;
-    }
-
-    /**
      * Retornar el query configurado.
      *
      * @param array $options Las mismas opciones que en `Repository::initQuery($options)`
@@ -252,7 +271,6 @@ class Repository
         $query = $this->initQuery($options);
 
         $this->handleOptions($query, $options);
-        $this->modifyQuery($query);
 
         return $query;
     }
@@ -290,9 +308,18 @@ class Repository
             $perPage = 15;
         }
 
+        $params = $options['params'] ?? null;
+
         $columns = $options['columns'] ?? $this->defaultColumns;
-        $pageName = $options['pageName'] ?? 'page';
-        $page = $options['page'] ?? null;
+        $pageName = $options['pageName'] ?? 'current';
+
+        if ($params !== null) {
+            $page = $params['current'] ?? null;
+            $perPage = $params['pageSize'] ?? $perPage;
+        } else {
+            $page = $options['current'] ?? null;
+            $perPage = $options['pageSize'] ?? null;
+        }
 
         return $query->paginate($perPage, $columns, $pageName, $page);
     }
@@ -369,7 +396,7 @@ class Repository
      * @param array $data
      * @return void
      */
-    public function canCreate(array $data)
+    public function canCreate(array $data, array $options = [])
     {
         //
     }
@@ -387,14 +414,12 @@ class Repository
     {
         DB::beginTransaction();
         try {
-            $validate = $options['validate'] ?? true;
-
             $data = Arrays::preserveKeys($data, $this->availableInputKeys($data, 'create', $options));
 
             $data = $this->prepareData($data, 'create', $options);
 
-            if ($validate && $this->ignoreAllValidations === false) {
-                $this->canCreate($data);
+            if ($this->applyValidations) {
+                $this->canCreate($data, $options);
             }
 
             $item = $this->modelInstance::create($data);
@@ -414,7 +439,7 @@ class Repository
      * @param Eloquent $item
      * @return void
      */
-    public function canUpdate($item, ?array $data = [])
+    public function canUpdate($item, ?array $data = [], array $options = [])
     {
         //
     }
@@ -435,14 +460,12 @@ class Repository
         try {
             $data = Arrays::preserveKeys($data, $this->availableInputKeys($data, 'update', $options));
 
-            $data = $this->prepareData($data, 'update' . $options);
+            $data = $this->prepareData($data, 'update', $options);
 
             $item = $this->findOrFail($id, $options);
 
-            $validate = $options['validate'] ?? true;
-
-            if ($validate && $this->ignoreAllValidations === false) {
-                $this->canUpdate($item, $data);
+            if ($this->applyValidations) {
+                $this->canUpdate($item, $data, $options);
             }
 
             $item->update($data);
@@ -463,7 +486,7 @@ class Repository
      * @param Eloquent $item
      * @return void
      */
-    public function canDelete($item)
+    public function canDelete($item, array $options = [])
     {
         //
     }
@@ -481,32 +504,29 @@ class Repository
     {
         DB::beginTransaction();
         try {
-            $shouldExists = $options['shouldExists'] ?? true;
+            $onDeletePermanently = $options['onDeletePermanently'] ?? function ($item) {
+            };
 
-            $item = $this->find($id, $options);
+            $item = $this->findOrFail($id, $options);
 
-            // validar que el registro exista
-            if (!$item) {
-                if ($shouldExists) {
-                    throw new Error404();
-                } else {
-                    return null;
-                }
+            if ($this->applyValidations) {
+                $this->canDelete($item, $options);
             }
 
-            $validate = $options['validate'] ?? true;
+            $forceDelete = $options['onlyTrashed'] ?? false;
 
-            if ($validate && $this->ignoreAllValidations === false) {
-                $this->canDelete($item);
-            }
-
-            $forceDelete = $options['forceDelete'] ?? false;
-
-            if (in_array('Illuminate\Database\Eloquent\SoftDeletes', class_uses($item)) && $forceDelete === true) {
+            // Se hace forceDelete() si se esta consultando un elemento `trashed` y usa SoftDeletes.
+            if ($this->useSoftDeletes && $forceDelete === true) {
+                $onDeletePermanently($item, $options);
                 $item->forceDelete();
             } else {
-                // eliminar el registro
+                // Si usa SoftDeletes, se cambia el estado a trashed
+                // Si no se usa, se elimina el registro de la DB
                 $item->delete();
+
+                if (!$this->useSoftDeletes) {
+                    $onDeletePermanently($item, $options);
+                }
             }
 
             DB::commit();
@@ -521,6 +541,37 @@ class Repository
 
             throw $e;
         }
+    }
+
+    public function canRestore($item, array $options = [])
+    {
+        //
+    }
+
+    /**
+     * Restaura un registro si usa softDeletes.
+     * 
+     * @param mixed $id 
+     * @param array $options 
+     * @return void 
+     * @throws \Error 
+     * @throws \App\Utils\API\Error404 
+     */
+    public function restore($id, array $options = [])
+    {
+        if (!$this->useSoftDeletes) {
+            throw new Error404();
+        }
+
+        $item = $this->findOrFail($id, array_merge($options, ['onlyTrashed' => true]));
+
+        if ($this->applyValidations) {
+            $this->canRestore($item, $options);
+        }
+
+        $item->restore();
+
+        return $item;
     }
 
     /**
@@ -660,7 +711,7 @@ class Repository
      * @param array $options
      * @return array
      */
-    protected function availableInputKeys(array $data, string $method, array $options = [])
+    public function availableInputKeys(array $data, string $method, array $options = [])
     {
         return [];
     }
@@ -679,8 +730,44 @@ class Repository
         return [];
     }
 
-    public function setIgnoreValidations(bool $ignore = false)
+    /**
+     * Declara si las validaciones se ignoraran.
+     * 
+     * @param bool $ignore 
+     * @return void 
+     */
+    public function setApplyValidations(bool $apply = true)
     {
-        $this->ignoreAllValidations = $ignore;
+        $this->applyValidations = $apply;
+    }
+
+    /**
+     * Verifica si la clase indicada usa el trait especificado.
+     * 
+     * @param string $class 
+     * @param string $hasTrait 
+     * @return bool 
+     */
+    private function useTrait(string $class, string $hasTrait)
+    {
+        $parentClasses = class_parents($class);
+
+        $classTraits = class_uses($class);
+        $isFound = in_array($hasTrait, $classTraits);
+
+        if ($isFound) {
+            return true;
+        }
+
+        foreach ($parentClasses as $parentClass) {
+            $parentTraits = class_uses($parentClass);
+            $isFound = in_array($hasTrait, $parentTraits);
+
+            if ($isFound) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

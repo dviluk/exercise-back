@@ -15209,6 +15209,196 @@
         }
          
     }
+            /**
+     * 
+     *
+     */ 
+        class FilesFacade {
+                    /**
+         * Guarda un archivo en el directorio indicado.
+         *
+         * @param \Illuminate\Http\UploadedFile $file Instancia del archivo
+         * @param string $saveTo Directorio relativo a `storage/app/`
+         * @param string $fileName Nombre del archivo
+         * @return string 
+         * @static 
+         */ 
+        public static function saveFile($file, $saveTo, $fileName = null)
+        {
+                        /** @var \App\Utils\FileUtils $instance */
+                        return $instance->saveFile($file, $saveTo, $fileName);
+        }
+                    /**
+         * Se encarga de eliminar un archivo
+         *
+         * @param string $fileName Nombre del archivo
+         * @param string $path Directorio absoluto
+         * @return boolean 
+         * @static 
+         */ 
+        public static function deleteFile($fileName, $path)
+        {
+                        /** @var \App\Utils\FileUtils $instance */
+                        return $instance->deleteFile($fileName, $path);
+        }
+                    /**
+         * Se encarga de generar la URL hacia el archivo indicado.
+         *
+         * @param string $fileName Nombre del archivo
+         * @param string $path Directorio relativo a storage
+         * @return void 
+         * @static 
+         */ 
+        public static function getFileUrl($fileName, $path)
+        {
+                        /** @var \App\Utils\FileUtils $instance */
+                        $instance->getFileUrl($fileName, $path);
+        }
+                    /**
+         * Guarda imágenes en el storage. Crea la carpeta si no existe.
+         * 
+         * Comprime las imágenes y las guarda en formato .jpg.
+         * 
+         * Retorna un objeto stdClass con las propiedades:
+         * - image: imagen tamaño completo
+         * - thumb: miniatura de la imagen
+         *
+         * @param \Illuminate\Http\UploadedFile $image Instancia de la imagen subida
+         * @param string|null $name Nombre de la nueva imagen, si es null se genera un string random
+         * @param string $saveTo Ruta en donde se almacenara
+         * @param boolean $thumbnail Si es true se genera una miniatura de la imagen
+         * @return \App\Utils\Objects\ImageObject|null 
+         * @static 
+         */ 
+        public static function saveImage($image, $name, $saveTo, $thumbnail = false, $isDefaultSize = true)
+        {
+                        /** @var \App\Utils\FileUtils $instance */
+                        return $instance->saveImage($image, $name, $saveTo, $thumbnail, $isDefaultSize);
+        }
+                    /**
+         * Retorna la imagen y el thumbnail.
+         *
+         * @param string $pathname directorio de la imagen
+         * @param string $imageName nombre de la imagen
+         * @param integer $size tamaño de la imagen a buscar
+         * @return \App\Utils\Objects\ImageObject 
+         * @static 
+         */ 
+        public static function getImage($pathname, $imageName, $size = 0)
+        {
+                        /** @var \App\Utils\FileUtils $instance */
+                        return $instance->getImage($pathname, $imageName, $size);
+        }
+                    /**
+         * Utilizar cuando se requiere guardar una imagen y retornar los datos
+         * usados (directorio, size, etc).
+         *
+         * @static 
+         */ 
+        public static function storeImage($image, $path, $name = null, $thumbnail = false, $isDefaultSize = true)
+        {
+                        /** @var \App\Utils\FileUtils $instance */
+                        return $instance->storeImage($image, $path, $name, $thumbnail, $isDefaultSize);
+        }
+                    /**
+         * Eliminar una imagen y su thumbnail.
+         *
+         * @param string $pathName
+         * @param string $img
+         * @param integer $size
+         * @return void 
+         * @static 
+         */ 
+        public static function deleteImage($pathName, $img, $size = 0)
+        {
+                        /** @var \App\Utils\FileUtils $instance */
+                        $instance->deleteImage($pathName, $img, $size);
+        }
+                    /**
+         * Elimina un arreglo de imágenes.
+         *
+         * @param array $images
+         * @return void 
+         * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+         * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+         * @static 
+         */ 
+        public static function deleteImagesStored($images)
+        {
+                        /** @var \App\Utils\FileUtils $instance */
+                        $instance->deleteImagesStored($images);
+        }
+                    /**
+         * Genera el path del thumbnail.
+         * 
+         * NOTA: Solo concatena la carpeta `thumbnail` a la ruta especificada.
+         *
+         * @param string $path directorio donde se encuentra la imagen
+         * @param string $img nombre de la imagen original
+         * @param integer $size tamaño de la imagen a consultar
+         * @return string 
+         * @static 
+         */ 
+        public static function generateThumbnailPath($path, $img, $size = 0)
+        {
+                        /** @var \App\Utils\FileUtils $instance */
+                        return $instance->generateThumbnailPath($path, $img, $size);
+        }
+                    /**
+         * Genera el nombre del thumbnail de acuerdo al tamaño especificado.
+         *
+         * @param string $imageName
+         * @param integer $size
+         * @return void 
+         * @static 
+         */ 
+        public static function thumbnailName($imageName, $size = 0)
+        {
+                        /** @var \App\Utils\FileUtils $instance */
+                        $instance->thumbnailName($imageName, $size);
+        }
+                    /**
+         * Retorna la url de la imagen especificada.
+         *
+         * @param string $path
+         * @param string $imageName
+         * @param integer $size
+         * @return \stdClass 
+         * @static 
+         */ 
+        public static function generateImageUrl($path, $imageName, $size = 0)
+        {
+                        /** @var \App\Utils\FileUtils $instance */
+                        return $instance->generateImageUrl($path, $imageName, $size);
+        }
+                    /**
+         * Genera un nombre para archivo.
+         *
+         * @param string $name
+         * @param array $options
+         * @return string 
+         * @throws \Exception
+         * @static 
+         */ 
+        public static function generateName($name = 'filename', $options = [])
+        {
+                        /** @var \App\Utils\FileUtils $instance */
+                        return $instance->generateName($name, $options);
+        }
+                    /**
+         * Retorna el tipo de archivo según la extension del el nombre indicado.
+         *
+         * @param string $fileName
+         * @return string 
+         * @static 
+         */ 
+        public static function getFileType($fileName)
+        {
+                        /** @var \App\Utils\FileUtils $instance */
+                        return $instance->getFileType($fileName);
+        }
+         
+    }
      
 }
 
@@ -18671,6 +18861,7 @@ namespace  {
             class Arrays extends \App\Providers\Utils\ArraysFacade {}
             class Language extends \App\Providers\Utils\LangFacade {}
             class Strings extends \App\Providers\Utils\StringFacade {}
+            class Files extends \App\Providers\Utils\FilesFacade {}
             class Flare extends \Facade\Ignition\Facades\Flare {}
      
 }

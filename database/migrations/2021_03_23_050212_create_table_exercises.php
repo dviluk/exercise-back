@@ -38,6 +38,9 @@ class CreateTableExercises extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('exercise_equipment');
+        Schema::dropIfExists('exercise_muscle');
+        Schema::dropIfExists('exercise_group');
         Schema::dropIfExists('exercises');
     }
 }

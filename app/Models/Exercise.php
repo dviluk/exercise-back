@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\Directories;
+use Files;
+
 class Exercise extends BaseModel
 {
     protected $table = 'exercises';
@@ -28,5 +31,25 @@ class Exercise extends BaseModel
     {
         return $this->belongsToMany(Muscle::class, 'exercise_muscle', 'exercise_id', 'muscle_id')
             ->withPivot(['primary']);
+    }
+
+    public function getImageUrlAttribute()
+    {
+        return Files::getFileUrl($this->image, Directories::EXERCISES_IMAGES());
+    }
+
+    public function getImageThumbnailUrlAttribute()
+    {
+        return Files::getFileUrl($this->image, Directories::EXERCISES_IMAGES_THUMBNAILS());
+    }
+
+    public function getIllustrationUrlAttribute()
+    {
+        return Files::getFileUrl($this->illustration, Directories::EXERCISES_ILLUSTRATIONS());
+    }
+
+    public function getIllustrationThumbnailUrlAttribute()
+    {
+        return Files::getFileUrl($this->image, Directories::EXERCISES_ILLUSTRATIONS_THUMBNAILS());
     }
 }

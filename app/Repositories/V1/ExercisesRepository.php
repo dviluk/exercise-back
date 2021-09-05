@@ -2,6 +2,7 @@
 
 namespace App\Repositories\V1;
 
+use App\Enums\Directories;
 use App\Models\Exercise;
 use App\Repositories\Repository;
 use DB;
@@ -9,17 +10,37 @@ use App\Enums\ManyToManyAction;
 use App\Models\Difficulty;
 use App\Models\Equipment;
 use App\Models\Muscle;
+use App\Repositories\Traits\RepositoryUtils;
 use Arrays;
+use Files;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class ExercisesRepository extends Repository
 {
+    use  RepositoryUtils;
+
     /**
      * Classname del modelo principal del repositorio (Model::class).
      *
      * @var string
      */
     protected $model = Exercise::class;
+
+    /**
+     * Indica por que columna ordenar los resultados.
+     * 
+     * ['column', 'asc'|'desc', ?'localized']
+     * 
+     * (opcional) Si se indica `localized` se buscara la columna en la db según el idioma actual de 
+     * la aplicación.
+     * 
+     * Ej. Se pasa la columna `product`, se ordenara por la columna `product_en` si la
+     * aplicación esta en ingles.
+     * 
+     * @var array
+     */
+    protected $orderBy = ['name', 'asc'];
 
     /**
      * Contiene los keys de los posibles valores del atributo $data
@@ -30,10 +51,9 @@ class ExercisesRepository extends Repository
      * @param array $options
      * @return array
      */
-    protected function availableInputKeys(array $data, string $method, array $options = [])
+    public function availableInputKeys(array $data, string $method, array $options = [])
     {
-        return [
-            'exercise_id',
+        $inputs = [
             'difficulty_id',
             'image',
             'illustration',
@@ -43,6 +63,16 @@ class ExercisesRepository extends Repository
             'muscles',
             'equipment',
         ];
+
+        if ($method === 'index') {
+            $inputs = array_merge($inputs, [
+                'created_at',
+                'updated_at',
+                'deleted_at',
+            ]);
+        }
+
+        return $inputs;
     }
 
     /**
@@ -57,7 +87,6 @@ class ExercisesRepository extends Repository
     public function inputRules(Request $request, string $method, $id = null, array $options = [])
     {
         $rules = [
-            'exercise_id' => 'nullable|exists:' . Exercise::class . ',id',
             'difficulty_id' => 'required|exists:' . Difficulty::class . ',id',
             'image' => 'required|image',
             'illustration' => 'required|image',
@@ -87,7 +116,7 @@ class ExercisesRepository extends Repository
      * @param array $data 
      * @return void 
      */
-    public function canCreate(array $data)
+    public function canCreate(array $data, array $options = [])
     {
         //
     }
@@ -99,7 +128,7 @@ class ExercisesRepository extends Repository
      * @param null|array $data 
      * @return void 
      */
-    public function canUpdate($item, ?array $data = [])
+    public function canUpdate($item, ?array $data = [], array $options = [])
     {
         //
     }
@@ -110,9 +139,29 @@ class ExercisesRepository extends Repository
      * @param Exercise $item 
      * @return void 
      */
-    public function canDelete($item)
+    public function canDelete($item, array $options = [])
     {
         //
+    }
+
+    /**
+     * Permite encargarse de las opciones adicionales.
+     *
+     * @param Builder $builder
+     * @param array $options
+     * @return Builder
+     */
+    public function handleOptions(Builder $builder, array $options = [])
+    {
+        $params = $options['params'] ?? null;
+
+        if ($params !== null) {
+            $this->handleSearchInput($builder, $params, 'name');
+            $this->handleDateInput($builder, $params, 'created_at', true);
+            $this->handleDateInput($builder, $params, 'updated_at', true);
+        }
+
+        return $builder;
     }
 
     /**
@@ -157,7 +206,6 @@ class ExercisesRepository extends Repository
      *
      * @param array $data Contiene los campos a insertar en la tabla del modelo.
      * 
-     * - (string)   `data.exercise_id`: 
      * - (string)   `data.difficulty_id`: 
      * - (file)     `data.image`: 
      * - (file)     `data.illustration`: 
@@ -172,7 +220,8 @@ class ExercisesRepository extends Repository
      */
     public function create(array $data, array $options = [])
     {
-        // TODO: Guardar imagen e ilustración
+        $imagesToStore = [];
+
         DB::beginTransaction();
         try {
             $data = Arrays::preserveKeys($data, $this->availableInputKeys($data, 'create'));
@@ -180,12 +229,46 @@ class ExercisesRepository extends Repository
             $muscles = $data['muscles'] ?? [];
             $equipment = $data['equipment'] ?? [];
 
+            /** @var \Illuminate\Http\UploadedFile|null */
+            $image = $data['image'] ?? null;
+            /** @var \Illuminate\Http\UploadedFile|null */
+            $illustration = $data['illustration'] ?? null;
+
+            $data['image'] = $data['illustration'] = 'no_image.jpg';
+
             $data = Arrays::omitKeys($data, [
                 'muscles',
                 'equipment',
             ]);
 
-            $item = parent::create($data);
+            /** @var \App\Models\Exercise */
+            $item = parent::create($data, $options);
+
+            if ($image !== null) {
+                $imageName = Files::generateName('image', [
+                    'prefix' => $item->id,
+                ]);
+
+                $imagesToStore[] = $image = Files::storeImage($image, Directories::EXERCISES_IMAGES(), $imageName, true);
+
+                if ($image !== null) {
+                    $item->image = $image['image'];
+                }
+            }
+
+            if ($illustration !== null) {
+                $illustrationName = Files::generateName('illustration', [
+                    'prefix' => $item->id,
+                ]);
+
+                $imagesToStore[] = $illustration = Files::storeImage($illustration, Directories::EXERCISES_ILLUSTRATIONS(), $illustrationName, true);
+
+                if ($image !== null) {
+                    $item->illustration = $illustration['image'];
+                }
+            }
+
+            $item->update();
 
             $this->updateEquipment($item, ManyToManyAction::ATTACH(), $equipment);
             $this->updateMuscles($item, ManyToManyAction::ATTACH(), $muscles);
@@ -194,6 +277,8 @@ class ExercisesRepository extends Repository
 
             return $item;
         } catch (\Throwable $e) {
+            Files::deleteImagesStored($imagesToStore);
+
             DB::rollBack();
             throw $e;
         }
@@ -202,7 +287,6 @@ class ExercisesRepository extends Repository
     /**
      * Actualiza un registro.
      *
-     * - (string)   `data.exercise_id`: 
      * - (string)   `data.difficulty_id`: 
      * - (file)     `data.image`: 
      * - (file)     `data.illustration`: 
@@ -225,27 +309,65 @@ class ExercisesRepository extends Repository
      */
     public function update($id, array $data, array $options = [])
     {
+        $imagesToStore = [];
+
         DB::beginTransaction();
         try {
-            $data = Arrays::preserveKeys($data, $this->availableInputKeys($data, 'update'));
+            $data = Arrays::preserveKeys($data, $this->availableInputKeys($data, 'create'));
 
-            $muscles = $data['muscles'] ?? null;
-            $equipment = $data['equipment'] ?? null;
+            $muscles = $data['muscles'] ?? [];
+            $equipment = $data['equipment'] ?? [];
+
+            /** @var \Illuminate\Http\UploadedFile|null */
+            $image = $data['image'] ?? null;
+            /** @var \Illuminate\Http\UploadedFile|null */
+            $illustration = $data['illustration'] ?? null;
 
             $data = Arrays::omitKeys($data, [
                 'muscles',
                 'equipment',
+                'image',
+                'illustration',
             ]);
 
+            /** @var \App\Models\Exercise */
             $item = parent::update($id, $data, $options);
 
-            $this->updateEquipment($item, ManyToManyAction::SYNC(), $equipment);
-            $this->updateMuscles($item, ManyToManyAction::SYNC(), $muscles);
+            if ($image !== null) {
+                $imageName = Files::generateName('image', [
+                    'prefix' => $item->id,
+                ]);
+
+                $imagesToStore[] = $image = Files::storeImage($image, Directories::EXERCISES_IMAGES(), $imageName, true);
+
+                if ($image !== null) {
+                    $item->image = $image['image'];
+                }
+            }
+
+            if ($illustration !== null) {
+                $illustrationName = Files::generateName('illustration', [
+                    'prefix' => $item->id,
+                ]);
+
+                $imagesToStore[] = $illustration = Files::storeImage($illustration, Directories::EXERCISES_ILLUSTRATIONS(), $illustrationName, true);
+
+                if ($image !== null) {
+                    $item->illustration = $illustration['image'];
+                }
+            }
+
+            $item->update();
+
+            $this->updateEquipment($item, ManyToManyAction::ATTACH(), $equipment);
+            $this->updateMuscles($item, ManyToManyAction::ATTACH(), $muscles);
 
             DB::commit();
 
             return $item;
         } catch (\Throwable $e) {
+            Files::deleteImagesStored($imagesToStore);
+
             DB::rollBack();
             throw $e;
         }

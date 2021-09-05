@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\V1\Admin\DifficultiesController;
 use App\Http\Controllers\API\V1\Admin\EquipmentController;
+use App\Http\Controllers\API\V1\Admin\ExerciseGroupsController;
 use App\Http\Controllers\API\V1\Admin\GoalsController;
 use App\Http\Controllers\API\V1\Admin\MusclesController;
 use App\Http\Controllers\API\V1\Admin\PlansController;
@@ -55,9 +56,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('exercises/{exercise}/detach/muscles', [ExercisesController::class, 'detachMuscles']);
     Route::post('exercises/{exercise}/detach-all/muscles', [ExercisesController::class, 'detachAllMuscles']);
 
+    Route::resource('exercise-groups', ExerciseGroupsController::class);
     Route::resource('exercises', ExercisesController::class);
 
     Route::resource('plans', PlansController::class);
 
     Route::resource('tags', TagsController::class);
+});
+
+
+Route::fallback(function () {
+    return API::response404();
 });

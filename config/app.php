@@ -199,6 +199,7 @@ return [
         \App\Providers\Utils\ArraysProvider::class,
         \App\Providers\Utils\LangProvider::class,
         \App\Providers\Utils\StringProvider::class,
+        \App\Providers\Utils\FilesProvider::class,
     ],
 
     /*
@@ -257,6 +258,7 @@ return [
         'Arrays' => App\Providers\Utils\ArraysFacade::class,
         'Language' => App\Providers\Utils\LangFacade::class,
         'Strings' => App\Providers\Utils\StringFacade::class,
+        'Files' => App\Providers\Utils\FilesFacade::class,
     ],
 
 ];

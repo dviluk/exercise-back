@@ -30,7 +30,7 @@ class DifficultiesSeeder extends Seeder
         ];
 
         $repo = new DifficultiesRepository;
-        $repo->setIgnoreValidations(true);
+        $repo->setApplyValidations(false);
 
         foreach ($items as $item) {
             $exists = $repo->query()->where('name', $item['name'])->exists();

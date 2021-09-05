@@ -115,11 +115,21 @@ class API
      */
     private function prepareResponse($code, $status, $extra = [])
     {
-        $response = ['message' => $status];
+        $response = [];
+
+        if ($code >= 400) {
+            $response['errorMessage'] = $status;
+            $response['errorCode'] = $code;
+            $response['success'] = false;
+        } else {
+            $response['success'] = true;
+            $response['message'] = $status;
+        }
+
         if (count($extra) > 0) $response = array_merge($response, $extra);
+
         return $this->json($response, $code);
     }
-
 
     /**
      * Retorna una respuesta en formato json.

@@ -18,13 +18,16 @@ class EquipmentResource extends JsonResource
         if (isset($options['embed'])) {
             return [
                 'id' => $resource->id,
+                'image_url' => $resource->image_url,
+                'image_thumbnail_url' => $resource->image_thumbnail_url,
                 'name' => $resource->name,
             ];
         }
 
         return [
             'id' => $resource->id,
-            'image' => $resource->image,
+            'image_url' => $resource->image_url,
+            'image_thumbnail_url' => $resource->image_thumbnail_url,
             'name' => $resource->name,
             'description' => $resource->description,
             'created_at' => $resource->created_at,

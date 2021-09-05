@@ -17,20 +17,17 @@ class ExerciseResource extends JsonResource
     {
         $format = [
             'id' => $resource->id,
-            'exercise_id' => $resource->exercise_id,
             'difficulty_id' => $resource->difficulty_id,
-            'image' => $resource->image,
-            'illustration' => $resource->illustration,
+            'image' => $resource->image_url,
+            'image_thumbnail' => $resource->image_thumbnail_url,
+            'illustration' => $resource->illustration_url,
+            'illustration_thumbnail' => $resource->illustration_thumbnail_url,
             'name' => $resource->name,
             'description' => $resource->description,
             'created_at' => $resource->created_at,
             'updated_at' => $resource->updated_at,
             'deleted_at' => $resource->deleted_at,
         ];
-
-        if ($resource->relationLoaded('exercise')) {
-            $format['exercise'] = $resource->exercise->name ?? null;
-        }
 
         if ($resource->relationLoaded('difficulty')) {
             $format['difficulty'] = $resource->difficulty->name;

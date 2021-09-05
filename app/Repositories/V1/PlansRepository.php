@@ -7,18 +7,37 @@ use App\Models\Difficulty;
 use App\Models\Goal;
 use App\Models\Plan;
 use App\Repositories\Repository;
+use App\Repositories\Traits\RepositoryUtils;
 use Arrays;
 use DB;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class PlansRepository extends Repository
 {
+    use RepositoryUtils;
+
     /**
      * Classname del modelo principal del repositorio (Model::class).
      *
      * @var string
      */
     protected $model = Plan::class;
+
+    /**
+     * Indica por que columna ordenar los resultados.
+     * 
+     * ['column', 'asc'|'desc', ?'localized']
+     * 
+     * (opcional) Si se indica `localized` se buscara la columna en la db según el idioma actual de 
+     * la aplicación.
+     * 
+     * Ej. Se pasa la columna `product`, se ordenara por la columna `product_en` si la
+     * aplicación esta en ingles.
+     * 
+     * @var array
+     */
+    protected $orderBy = ['name', 'asc'];
 
     /**
      * Contiene los keys de los posibles valores del atributo $data
@@ -29,15 +48,25 @@ class PlansRepository extends Repository
      * @param array $options
      * @return array
      */
-    protected function availableInputKeys(array $data, string $method, array $options = [])
+    public function availableInputKeys(array $data, string $method, array $options = [])
     {
-        return [
+        $inputs = [
             'name',
             'difficulty_id',
             'introduction',
             'description',
             'instructions',
         ];
+
+        if ($method === 'index') {
+            $inputs = array_merge($inputs, [
+                'created_at',
+                'updated_at',
+                'deleted_at',
+            ]);
+        }
+
+        return $inputs;
     }
 
     /**
@@ -74,7 +103,7 @@ class PlansRepository extends Repository
      * @param array $data 
      * @return void 
      */
-    public function canCreate(array $data)
+    public function canCreate(array $data, array $options = [])
     {
         //
     }
@@ -86,7 +115,7 @@ class PlansRepository extends Repository
      * @param null|array $data 
      * @return void 
      */
-    public function canUpdate($item, ?array $data = [])
+    public function canUpdate($item, ?array $data = [], array $options = [])
     {
         //
     }
@@ -97,9 +126,29 @@ class PlansRepository extends Repository
      * @param Plan $item 
      * @return void 
      */
-    public function canDelete($item)
+    public function canDelete($item, array $options = [])
     {
         //
+    }
+
+    /**
+     * Permite encargarse de las opciones adicionales.
+     *
+     * @param Builder $builder
+     * @param array $options
+     * @return Builder
+     */
+    public function handleOptions(Builder $builder, array $options = [])
+    {
+        $params = $options['params'] ?? null;
+
+        if ($params !== null) {
+            $this->handleSearchInput($builder, $params, 'name');
+            $this->handleDateInput($builder, $params, 'created_at', true);
+            $this->handleDateInput($builder, $params, 'updated_at', true);
+        }
+
+        return $builder;
     }
 
     /**

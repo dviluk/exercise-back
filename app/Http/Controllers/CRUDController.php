@@ -104,7 +104,7 @@ class CRUDController extends Controller
      * @param mixed $method 
      * @return array 
      */
-    protected function options(string $method)
+    protected function options(string $method, Request $request)
     {
         return [];
     }
@@ -144,9 +144,19 @@ class CRUDController extends Controller
     {
         $method = $this->localized  ? 'paginatedLocalized' : 'paginated';
 
+        $params = $request->only(
+            array_merge(
+                ['current', 'pageSize'],
+                $this->repo->availableInputKeys([], 'index'),
+            )
+        );
+
         $queryOptions = $this->_queryOptions('index', [
             'with' => $this->loadRelations('index'),
-        ]);
+            'params' => $params,
+            'sort' => $request->sort,
+            'onlyTrashed' => $request->boolean('onlyTrashed'),
+        ], $request);
 
         $resourceOptions = $queryOptions['resourceOptions'] ?? [];
 
@@ -169,7 +179,7 @@ class CRUDController extends Controller
 
         $data = $this->getStoreData($request);
 
-        $queryOptions = $this->_queryOptions('store');
+        $queryOptions = $this->_queryOptions('store', [], $request);
 
         $resourceOptions = $queryOptions['resourceOptions'] ?? [];
 
@@ -204,7 +214,8 @@ class CRUDController extends Controller
 
         $queryOptions = $this->_queryOptions('show', [
             'with' => $this->loadRelations('show'),
-        ]);
+            'onlyTrashed' => $request->boolean('onlyTrashed'),
+        ], $request);
 
         $resourceOptions = $queryOptions['resourceOptions'] ?? [];
 
@@ -223,7 +234,8 @@ class CRUDController extends Controller
     {
         $queryOptions = $this->_queryOptions('edit', [
             'with' => $this->loadRelations('edit'),
-        ]);
+            'onlyTrashed' => $request->boolean('onlyTrashed'),
+        ], $request);
 
         $resourceOptions = $queryOptions['resourceOptions'] ?? [];
         $resourceOptions['editing'] = true;
@@ -248,17 +260,19 @@ class CRUDController extends Controller
 
         $data = $this->getUpdateData($request, $id);
 
-        $queryOptions = $this->_queryOptions('update');
+        $queryOptions = $this->_queryOptions('update', [
+            'onlyTrashed' => $request->boolean('onlyTrashed'),
+        ], $request);
 
         $resourceOptions = $queryOptions['resourceOptions'] ?? [];
 
         DB::beginTransaction();
         try {
-            $item = $this->repo->findOrFail($id);
+            $item = $this->repo->findOrFail($id, $queryOptions);
 
             $data = $this->preAction('update', $data, $id, $item);
 
-            $item = $this->repo->{$method}($item, $data);
+            $item = $this->repo->{$method}($item, $data, $queryOptions);
 
             $this->postAction('update', $item);
 
@@ -279,11 +293,29 @@ class CRUDController extends Controller
      * @param  string  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $queryOptions = $this->_queryOptions('destroy');
+        $queryOptions = $this->_queryOptions('destroy', [
+            'onlyTrashed' => $request->boolean('onlyTrashed'),
+        ], $request);
 
         $this->repo->delete($id, $queryOptions);
+
+        return API::response200();
+    }
+
+    /**
+     * Restaura un registro softDeleted.
+     * 
+     * @param \Illuminate\Http\Request $request 
+     * @param mixed $id 
+     * @return \Illuminate\Http\JsonResponse 
+     */
+    public function restore(Request $request, $id)
+    {
+        $queryOptions = $this->_queryOptions('restore', [], $request);
+
+        $this->repo->restore($id, $queryOptions);
 
         return API::response200();
     }
@@ -295,8 +327,8 @@ class CRUDController extends Controller
      * @param array $attach 
      * @return array 
      */
-    private function _queryOptions($method, $attach = [])
+    private function _queryOptions($method, $attach = [], Request $request = null)
     {
-        return array_merge_recursive($this->options($method), $attach);
+        return array_merge_recursive($this->options($method, $request), $attach);
     }
 }

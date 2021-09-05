@@ -28,7 +28,7 @@ class UnitsSeeder extends Seeder
         ];
 
         $repo = new UnitsRepository;
-        $repo->setIgnoreValidations(true);
+        $repo->setApplyValidations(false);
 
         foreach ($items as $item) {
             $exists = $repo->query()->where('name', $item['name'])->exists();

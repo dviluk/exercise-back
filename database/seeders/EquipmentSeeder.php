@@ -6,6 +6,7 @@ use App\Repositories\V1\EquipmentRepository;
 use Faker\Generator as Faker;
 use Illuminate\Container\Container;
 use Illuminate\Database\Seeder;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 
 class EquipmentSeeder extends Seeder
@@ -100,7 +101,7 @@ class EquipmentSeeder extends Seeder
         ];
 
         $repo = new EquipmentRepository;
-        $repo->setIgnoreValidations(true);
+        $repo->setApplyValidations(false);
 
         $imagesDir =  storage_path('app/public/equipments/images');
 
@@ -108,15 +109,21 @@ class EquipmentSeeder extends Seeder
             File::makeDirectory($imagesDir, 493, true);
         }
 
+        $tempDir =  storage_path('app/temp');
+
+        if (!File::exists($tempDir)) {
+            File::makeDirectory($tempDir, 493, true);
+        }
+
         foreach ($items as $item) {
             $exists = $repo->query()->where('name', $item['name'])->exists();
 
             if (!$exists) {
-                $image = $faker->image($imagesDir, 400, 400, null, true, false, $item['name']);
+                $image = $faker->image($tempDir, 400, 400, null, true, false, $item['name']);
                 $image = explode('/', $image);
-                $image = $image[count($image) - 1];
+                $image = last($image);
 
-                $item['image'] = $image;
+                $item['image'] = new UploadedFile($tempDir . '/' . $image, $image);
 
                 $created = $repo->create($item, ['customId' => true]);
                 $this->command->info("{$created->name} creado.");

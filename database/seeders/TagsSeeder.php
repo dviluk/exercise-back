@@ -26,7 +26,7 @@ class TagsSeeder extends Seeder
         ];
 
         $repo = new TagsRepository;
-        $repo->setIgnoreValidations(true);
+        $repo->setApplyValidations(false);
 
         foreach ($items as $item) {
             $exists = $repo->query()->where('name', $item['name'])->exists();

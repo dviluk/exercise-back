@@ -64,6 +64,8 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Exercise[] $exercises
  * @property-read int|null $exercises_count
+ * @property-read mixed $image_thumbnail_url
+ * @property-read mixed $image_url
  * @method static \Illuminate\Database\Eloquent\Builder|Equipment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Equipment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Equipment query()
@@ -94,6 +96,10 @@ namespace App\Models{
  * @property-read \App\Models\Difficulty $difficulty
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Equipment[] $equipment
  * @property-read int|null $equipment_count
+ * @property-read mixed $illustration_thumbnail_url
+ * @property-read mixed $illustration_url
+ * @property-read mixed $image_thumbnail_url
+ * @property-read mixed $image_url
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Muscle[] $muscles
  * @property-read int|null $muscles_count
  * @method static \Illuminate\Database\Eloquent\Builder|Exercise newModelQuery()

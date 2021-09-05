@@ -29,7 +29,7 @@ class ExerciseGroupsRepository extends Repository
      * @param array $options
      * @return array
      */
-    protected function availableInputKeys(array $data, string $method, array $options = [])
+    public function availableInputKeys(array $data, string $method, array $options = [])
     {
         return [
             'plan_id',
@@ -70,7 +70,7 @@ class ExerciseGroupsRepository extends Repository
      * @param array $data 
      * @return void 
      */
-    public function canCreate(array $data)
+    public function canCreate(array $data, array $options = [])
     {
         //
     }
@@ -82,7 +82,7 @@ class ExerciseGroupsRepository extends Repository
      * @param null|array $data 
      * @return void 
      */
-    public function canUpdate($item, ?array $data = [])
+    public function canUpdate($item, ?array $data = [], array $options = [])
     {
         //
     }
@@ -93,7 +93,7 @@ class ExerciseGroupsRepository extends Repository
      * @param ExerciseGroup $item 
      * @return void 
      */
-    public function canDelete($item)
+    public function canDelete($item, array $options = [])
     {
         //
     }

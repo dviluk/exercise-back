@@ -38,5 +38,8 @@ class CreateTablePlans extends Migration
     public function down()
     {
         Schema::dropIfExists('plans');
+        Schema::dropIfExists('plan_goal');
+        Schema::dropIfExists('plan_exercise');
+        Schema::dropIfExists('plan_group');
     }
 }

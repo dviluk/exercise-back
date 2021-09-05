@@ -2,9 +2,13 @@
 
 namespace App\Exceptions;
 
-use Api;
+use API;
+use App\Utils\API\Error401;
+use App\Utils\API\Error422;
 use App\Utils\API\ErrorResponse;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -54,7 +58,15 @@ class Handler extends ExceptionHandler
     {
         if ($e instanceof ErrorResponse) {
             return API::exceptionResponse($e);
+        } else if ($e instanceof ValidationException) {
+            $ex = new Error422($e->errors());
+            return API::exceptionResponse($ex);
+        } else if ($e instanceof AuthenticationException) {
+            $ex = new Error401();
+            return API::exceptionResponse($ex);
         }
+        // TODO HANDLE AUTHENTICATION ERROR CON Error401
+
 
         return parent::render($request, $e);
     }

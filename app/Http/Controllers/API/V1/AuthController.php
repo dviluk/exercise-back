@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use API;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\V1\UserResource;
+use App\Http\Resources\V1\AuthUserResource;
 use App\Models\User;
 use Auth;
 use CurrentUser;
@@ -17,7 +17,7 @@ class AuthController extends Controller
     {
         $user = CurrentUser::get();
 
-        return new UserResource($user);
+        return new AuthUserResource($user);
     }
 
     public function register(Request $request)
@@ -64,7 +64,7 @@ class AuthController extends Controller
 
         return API::response200([
             'data' => [
-                'token' => CurrentUser::get()->createToken('API Token')->plainTextToken
+                'token' => CurrentUser::get()->createToken('API Token')->plainTextToken,
             ]
         ]);
     }
@@ -73,8 +73,6 @@ class AuthController extends Controller
     {
         CurrentUser::get()->tokens()->delete();
 
-        return [
-            'message' => 'Tokens Revoked'
-        ];
+        return API::response200([], 'Token removed');
     }
 }

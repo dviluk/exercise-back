@@ -84,6 +84,8 @@ class JsonResource implements Responsable
         } else if ($resource instanceof LengthAwarePaginator) {
             $data = $this->formatResource($resource->items());
 
+            $total = $resource->total();
+
             $this->extraData = [
                 'links' => [
                     'next' => $resource->nextPageUrl(),
@@ -91,13 +93,14 @@ class JsonResource implements Responsable
                     'last' => $resource->url($resource->lastPage()),
                     'first' => $resource->url(1),
                 ],
+                'total' => $total,
                 'meta' => [
                     'current_page' => $resource->currentPage(),
                     'from' => $resource->firstItem(),
                     'last_page' => (int) $resource->lastPage(),
                     'path' => $resource->path(),
                     'per_page' => $resource->perPage(),
-                    'total' => $resource->total(),
+                    'total' => $total,
                     'to' => $resource->lastItem(),
                 ],
             ];
@@ -142,8 +145,9 @@ class JsonResource implements Responsable
     {
         $data = [];
 
-        $message = $this->statuses[$statusCode];
-        $data['message'] = $message;
+        if ($statusCode === 200) {
+            $data['success'] = true;
+        }
 
         $data = array_merge($data, $this->dataWrapped(), $this->extraData);
 

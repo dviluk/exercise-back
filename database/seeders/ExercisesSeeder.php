@@ -6,6 +6,7 @@ use App\Repositories\V1\ExercisesRepository;
 use Faker\Generator as Faker;
 use Illuminate\Container\Container;
 use Illuminate\Database\Seeder;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 
 class ExercisesSeeder extends Seeder
@@ -59,10 +60,15 @@ class ExercisesSeeder extends Seeder
         ];
 
         $repo = new ExercisesRepository;
-        $repo->setIgnoreValidations(true);
+        $repo->setApplyValidations(false);
 
+        $tempDir =  storage_path('app/temp');
         $imagesDir =  storage_path('app/public/exercises/images');
         $illustrationsDir =  storage_path('app/public/exercises/illustrations');
+
+        if (!File::exists($tempDir)) {
+            File::makeDirectory($tempDir, 493, true);
+        }
 
         if (!File::exists($imagesDir)) {
             File::makeDirectory($imagesDir, 493, true);
@@ -76,17 +82,17 @@ class ExercisesSeeder extends Seeder
             $exists = $repo->query()->where('name', $item['name'])->exists();
 
             if (!$exists) {
-                $image = $faker->image($imagesDir, 400, 400, null, true, false, $item['name']);
+                $image = $faker->image($tempDir, 400, 400, null, true, false, $item['name']);
                 $image = explode('/', $image);
-                $image = $image[count($image) - 1];
+                $image = last($image);
 
-                $item['image'] = $image;
+                $item['image'] = new UploadedFile($tempDir . '/' . $image, $image);
 
-                $illustration = $faker->image($illustrationsDir, 400, 400, null, true, false, $item['name']);
+                $illustration = $faker->image($tempDir, 400, 400, null, true, false, $item['name']);
                 $illustration = explode('/', $illustration);
-                $illustration = $illustration[count($illustration) - 1];
+                $illustration = last($illustration);
 
-                $item['illustration'] = $illustration;
+                $item['illustration'] = new UploadedFile($tempDir . '/' . $illustration, $illustration);
 
                 $created = $repo->create($item);
 
