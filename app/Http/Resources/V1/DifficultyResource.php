@@ -15,6 +15,13 @@ class DifficultyResource extends JsonResource
      */
     public function formatter($resource, array $options): array
     {
+        if (isset($options['select'])) {
+            return [
+                'value' => $resource->id,
+                'label' => $resource->name,
+            ];
+        }
+
         return [
             'id' => $resource->id,
             'name' => $resource->name,

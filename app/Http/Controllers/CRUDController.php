@@ -160,7 +160,16 @@ class CRUDController extends Controller
 
         $resourceOptions = $queryOptions['resourceOptions'] ?? [];
 
-        $items = $this->repo->{$method}(15, $queryOptions);
+        // Indica si el resultado se utiliza par un select
+        $forSelect = $request->boolean('select');
+
+        if ($forSelect) {
+            $resourceOptions['select'] = true;
+            $items = $this->repo->all($queryOptions);
+        } else {
+            $items = $this->repo->{$method}(15, $queryOptions);
+        }
+
 
         return new $this->resource($items, [], $resourceOptions);
     }
