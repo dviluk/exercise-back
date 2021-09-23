@@ -133,9 +133,9 @@ class UnitsRepository extends Repository
         $params = $options['params'] ?? null;
 
         if ($params !== null) {
-            $this->handleSearchInput($builder, $params, 'name');
-            $this->handleDateInput($builder, $params, 'created_at', true);
-            $this->handleDateInput($builder, $params, 'updated_at', true);
+            $this->handleSearchInput($builder, $params['name']);
+            $this->handleDateInput($builder, $params['created_at'], true);
+            $this->handleDateInput($builder, $params['updated_at'], true);
         }
 
         return $builder;

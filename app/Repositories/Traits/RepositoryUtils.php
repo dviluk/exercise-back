@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Traits;
 
+use App\Repositories\Repository;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -20,6 +21,31 @@ trait RepositoryUtils
     }
 
     /**
+     * Agrega el ordenamiento segun los handler.
+     * 
+     * @param array $options 
+     * @param array $handlers 
+     * @return void 
+     */
+    protected function handleSort(array $options = [], array $handlers)
+    {
+        $sortOptions = $options['sort'] ?? null;
+
+        if (!$sortOptions) return;
+
+        foreach ($sortOptions as $sort) {
+            $column = $sort['column'];
+            $direction = Repository::DIRECTIONS[$sort['direction']] ?? null;
+
+            $handler = $handlers[$column] ?? null;
+
+            if ($handler) {
+                $handler($column, $direction);
+            }
+        }
+    }
+
+    /**
      * Se encarga de input de tipo search.
      * 
      * @param \Illuminate\Database\Eloquent\Builder $builder 
@@ -29,13 +55,13 @@ trait RepositoryUtils
      * @return void 
      * @throws \InvalidArgumentException 
      */
-    protected function handleSearchInput(Builder $builder, array $params, string $input, array $columns = [])
+    protected function handleSearchInput(Builder $builder,  &$input, array $columns = [])
     {
-        if (!array_key_exists($input, $params)) {
+        if ($input === null) {
             return;
         }
 
-        $value = $params[$input];
+        $value = $input;
 
         $columnsLen = count($columns);
 
@@ -60,18 +86,18 @@ trait RepositoryUtils
      * Se encarga del input de tipo DateRange/Date/Datetime.
      * 
      * @param \Illuminate\Database\Eloquent\Builder $builder 
-     * @param array $params 
      * @param string $input 
+     * @param boolean $useTimezone
      * @return void 
      * @throws \InvalidArgumentException 
      */
-    protected function handleDateInput(Builder $builder, array $params, string $input, bool $useTimezone = false)
+    protected function handleDateInput(Builder $builder,  &$input, bool $useTimezone = false)
     {
-        if (!array_key_exists($input, $params)) {
+        if ($input === null) {
             return;
         }
 
-        $value = $params[$input];
+        $value = $input;
 
         if ($value === null) {
             $builder->whereNull($input);
@@ -139,5 +165,17 @@ trait RepositoryUtils
             $builder->whereBetween($input, [$startDate, $endDate]);
             return;
         }
+    }
+
+
+    protected function handleWhereHas(Builder $builder, string $relation, &$input, string $column = 'id')
+    {
+        if ($input === null) {
+            return;
+        }
+
+        $builder->whereHas($relation, function ($q) use ($input, $column) {
+            $q->where($column, $input);
+        });
     }
 }
