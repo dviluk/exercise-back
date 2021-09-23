@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Enums\ManyToManyAction;
 use App\Utils\API\Error404;
 use App\Utils\API\Error500;
+use App\Models\Traits\SortUtils;
 use Arrays;
 use Closure;
 use DB;
@@ -140,7 +141,12 @@ class Repository
         if (isset($options['sort'])) {
             $sortOptions = $options['sort'];
 
-            $validColumns = array_flip($this->availableInputKeys([], 'index'));
+            // Se obtienen las columnas que se pueden ordenar
+            if ($this->useTrait($this->model, SortUtils::class)) {
+                $validColumns = $this->modelInstance->getSortableColumns();
+            } else {
+                $validColumns = array_flip($this->modelInstance->getFillable());
+            }
 
             foreach ($sortOptions as $sort) {
                 $column = $sort['column'];

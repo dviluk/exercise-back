@@ -64,14 +64,6 @@ class ExercisesRepository extends Repository
             'equipment',
         ];
 
-        if ($method === 'index') {
-            $inputs = array_merge($inputs, [
-                'created_at',
-                'updated_at',
-                'deleted_at',
-            ]);
-        }
-
         return $inputs;
     }
 
@@ -156,6 +148,14 @@ class ExercisesRepository extends Repository
     public function handleOptions(Builder $builder, array $options = [])
     {
         $params = $options['params'] ?? null;
+
+        $this->handleSort($options, [
+            'difficulty' => function ($column, $direction) use ($builder) {
+                $builder->with('difficulty', function ($q) use ($column, $direction) {
+                    $q->orderBy('name', $direction);
+                });
+            }
+        ]);
 
         if ($params !== null) {
             $this->handleSearchInput($builder, $params['name']);

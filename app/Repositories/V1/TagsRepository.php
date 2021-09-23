@@ -50,14 +50,6 @@ class TagsRepository extends Repository
             'description',
         ];
 
-        if ($method === 'index') {
-            $inputs = array_merge($inputs, [
-                'created_at',
-                'updated_at',
-                'deleted_at',
-            ]);
-        }
-
         return $inputs;
     }
 

@@ -50,14 +50,6 @@ class MusclesRepository extends Repository
             'description',
         ];
 
-        if ($method === 'index') {
-            $inputs = array_merge($inputs, [
-                'created_at',
-                'updated_at',
-                'deleted_at',
-            ]);
-        }
-
         if (array_key_exists('customId', $options)) {
             $inputs[] = 'id';
         }
