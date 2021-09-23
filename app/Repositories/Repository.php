@@ -15,6 +15,7 @@ use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
@@ -85,7 +86,7 @@ class Repository
     {
         $this->validateModel();
 
-        $this->useSoftDeletes = $this->useTrait($this->model, 'Illuminate\Database\Eloquent\SoftDeletes');
+        $this->useSoftDeletes = $this->useTrait($this->model, SoftDeletes::class);
 
         // Se crea instancia del modelo
         $this->modelInstance = new $this->model;
