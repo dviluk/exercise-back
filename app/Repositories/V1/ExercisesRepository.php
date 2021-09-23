@@ -105,6 +105,8 @@ class ExercisesRepository extends Repository
             $rules['name'] = $rules['name'] . ',' . $id . ',id';
             $rules['muscles'] = str_replace('required', 'nullable', $rules['muscles']);
             $rules['equipment'] = str_replace('required', 'nullable', $rules['equipment']);
+            $rules['image'] = str_replace('required', 'nullable', $rules['image']);
+            $rules['illustration'] = str_replace('required', 'nullable', $rules['illustration']);
         }
 
         return $rules;
