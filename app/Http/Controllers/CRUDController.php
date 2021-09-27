@@ -144,16 +144,9 @@ class CRUDController extends Controller
     {
         $method = $this->localized  ? 'paginatedLocalized' : 'paginated';
 
-        $params = $request->only(
-            array_merge(
-                ['current', 'pageSize'],
-                $this->repo->availableInputKeys([], 'index'),
-            )
-        );
-
         $queryOptions = $this->_queryOptions('index', [
             'with' => $this->loadRelations('index'),
-            'params' => $params,
+            'params' => $request->all(),
             'sort' => $request->sort,
             'onlyTrashed' => $request->boolean('onlyTrashed'),
         ], $request);
