@@ -27,7 +27,7 @@ trait RepositoryUtils
      * @param array $handlers 
      * @return void 
      */
-    protected function handleSort(array $options = [], array $handlers)
+    protected function handleSort(array $options, array $handlers)
     {
         $sortOptions = $options['sort'] ?? null;
 
