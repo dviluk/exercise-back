@@ -66,7 +66,7 @@ trait RepositoryUtils
         $columnsLen = count($columns);
 
         if ($columnsLen === 0) {
-            $builder->where($input, 'like', "%{$value}%");
+            $builder->where('name', 'like', "%{$value}%");
         } else if ($columnsLen === 1) {
             $builder->where($columns[0], 'like', "%{$value}%");
         } else if ($columnsLen > 1) {
