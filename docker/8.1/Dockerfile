@@ -58,7 +58,9 @@ RUN chmod +x /usr/local/bin/start-container
 
 USER sail
 
-RUN wget https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh -O - | bash || true
+RUN apt-get update \
+    && apt-get install wget \
+    wget https://raw.githubusercontent.com/ohmybash/oh-my-bash/master/tools/install.sh -O - | bash || true
 
 RUN mkdir -p /home/sail/.vscode-server/extensions \
     /home/sail/.vscode-server-insiders/extensions \
