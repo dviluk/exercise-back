@@ -5,7 +5,7 @@
     "remoteUser": "sail",
     "workspaceFolder": "/home/sail/exercise",
     "extensions": [
-        "felixfbecker.php-debug",
+        "xdebug.php-debug",
         "neilbrayfield.php-docblocker",
         "bmewburn.vscode-intelephense-client",
         "stef-k.laravel-goto-controller",
