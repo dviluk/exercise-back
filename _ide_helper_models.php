@@ -40,6 +40,7 @@ namespace App\Models{
  * @property-read int|null $workouts_count
  * @method static \Illuminate\Database\Eloquent\Builder|Difficulty newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Difficulty newQuery()
+ * @method static \Illuminate\Database\Query\Builder|Difficulty onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Difficulty query()
  * @method static \Illuminate\Database\Eloquent\Builder|Difficulty whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Difficulty whereDeletedAt($value)
@@ -47,6 +48,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Difficulty whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Difficulty whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Difficulty whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|Difficulty withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Difficulty withoutTrashed()
  */
 	class Difficulty extends \Eloquent {}
 }
@@ -65,6 +68,7 @@ namespace App\Models{
  * @property-read int|null $workouts_count
  * @method static \Illuminate\Database\Eloquent\Builder|Equipment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Equipment newQuery()
+ * @method static \Illuminate\Database\Query\Builder|Equipment onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Equipment query()
  * @method static \Illuminate\Database\Eloquent\Builder|Equipment whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Equipment whereDeletedAt($value)
@@ -72,6 +76,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Equipment whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Equipment whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Equipment whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|Equipment withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Equipment withoutTrashed()
  */
 	class Equipment extends \Eloquent {}
 }
@@ -90,6 +96,7 @@ namespace App\Models{
  * @property-read int|null $routines_count
  * @method static \Illuminate\Database\Eloquent\Builder|Goal newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Goal newQuery()
+ * @method static \Illuminate\Database\Query\Builder|Goal onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Goal query()
  * @method static \Illuminate\Database\Eloquent\Builder|Goal whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Goal whereDeletedAt($value)
@@ -97,6 +104,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Goal whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Goal whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Goal whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|Goal withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Goal withoutTrashed()
  */
 	class Goal extends \Eloquent {}
 }
@@ -115,6 +124,7 @@ namespace App\Models{
  * @property-read int|null $workouts_count
  * @method static \Illuminate\Database\Eloquent\Builder|Muscle newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Muscle newQuery()
+ * @method static \Illuminate\Database\Query\Builder|Muscle onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Muscle query()
  * @method static \Illuminate\Database\Eloquent\Builder|Muscle whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Muscle whereDeletedAt($value)
@@ -122,6 +132,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Muscle whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Muscle whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Muscle whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|Muscle withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Muscle withoutTrashed()
  */
 	class Muscle extends \Eloquent {}
 }
@@ -207,6 +219,7 @@ namespace App\Models{
  * @property-read int|null $workouts_count
  * @method static \Illuminate\Database\Eloquent\Builder|Routine newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Routine newQuery()
+ * @method static \Illuminate\Database\Query\Builder|Routine onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Routine query()
  * @method static \Illuminate\Database\Eloquent\Builder|Routine whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Routine whereDeletedAt($value)
@@ -214,6 +227,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Routine whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Routine whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Routine whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|Routine withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Routine withoutTrashed()
  */
 	class Routine extends \Eloquent {}
 }
@@ -234,6 +249,7 @@ namespace App\Models{
  * @property-read int|null $workouts_count
  * @method static \Illuminate\Database\Eloquent\Builder|Tag newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tag newQuery()
+ * @method static \Illuminate\Database\Query\Builder|Tag onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Tag query()
  * @method static \Illuminate\Database\Eloquent\Builder|Tag whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tag whereDeletedAt($value)
@@ -241,6 +257,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Tag whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tag whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tag whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|Tag withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Tag withoutTrashed()
  */
 	class Tag extends \Eloquent {}
 }
@@ -257,6 +275,7 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @method static \Illuminate\Database\Eloquent\Builder|Unit newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Unit newQuery()
+ * @method static \Illuminate\Database\Query\Builder|Unit onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Unit query()
  * @method static \Illuminate\Database\Eloquent\Builder|Unit whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Unit whereDeletedAt($value)
@@ -264,6 +283,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Unit whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Unit whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Unit whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|Unit withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Unit withoutTrashed()
  */
 	class Unit extends \Eloquent {}
 }
@@ -328,6 +349,7 @@ namespace App\Models{
  * @property-read Workout|null $workout
  * @method static \Illuminate\Database\Eloquent\Builder|Workout newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Workout newQuery()
+ * @method static \Illuminate\Database\Query\Builder|Workout onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Workout query()
  * @method static \Illuminate\Database\Eloquent\Builder|Workout whereCover($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Workout whereCreatedAt($value)
@@ -339,6 +361,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Workout whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Workout whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Workout whereWorkoutId($value)
+ * @method static \Illuminate\Database\Query\Builder|Workout withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Workout withoutTrashed()
  */
 	class Workout extends \Eloquent {}
 }
