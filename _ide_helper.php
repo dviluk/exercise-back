@@ -16007,6 +16007,613 @@
      
 }
 
+    namespace App\Providers\Utils { 
+            /**
+     * 
+     *
+     */ 
+        class ApiFacade {
+                    /**
+         * La petición ha sido completada correctamente.
+         *
+         * @param string $message Mensaje descriptivo de la acción realizada
+         * @return \Illuminate\Http\JsonResponse 
+         * @static 
+         */ 
+        public static function response200($extra = [], $message = 'Success')
+        {
+                        /** @var \App\Utils\API $instance */
+                        return $instance->response200($extra, $message);
+        }
+                    /**
+         * Se creó correctamente el recurso.
+         *
+         * @param string $message Mensaje descriptivo de la acción realizada
+         * @return \Illuminate\Http\JsonResponse 
+         * @static 
+         */ 
+        public static function response201($extra = [], $message = 'Created')
+        {
+                        /** @var \App\Utils\API $instance */
+                        return $instance->response201($extra, $message);
+        }
+                    /**
+         * Los datos de la petición no fueron entendidos por el servidor.
+         *
+         * @param string $message Mensaje descriptivo de la acción realizada
+         * @return \Illuminate\Http\JsonResponse 
+         * @static 
+         */ 
+        public static function response400($extra = [], $message = 'Bad Request')
+        {
+                        /** @var \App\Utils\API $instance */
+                        return $instance->response400($extra, $message);
+        }
+                    /**
+         * La petición require autenticación del usuario.
+         *
+         * @param string $message Mensaje descriptivo de la acción realizada
+         * @return \Illuminate\Http\JsonResponse 
+         * @static 
+         */ 
+        public static function response401($extra = [], $message = 'Unauthenticated')
+        {
+                        /** @var \App\Utils\API $instance */
+                        return $instance->response401($extra, $message);
+        }
+                    /**
+         * No tiene permiso para completar la acción de la petición.
+         *
+         * @param string $message Mensaje descriptivo de la acción realizada
+         * @return \Illuminate\Http\JsonResponse 
+         * @static 
+         */ 
+        public static function response403($extra = [], $message = 'Forbidden')
+        {
+                        /** @var \App\Utils\API $instance */
+                        return $instance->response403($extra, $message);
+        }
+                    /**
+         * El recurso que solicita no se encontró.
+         *
+         * @param string $message Mensaje descriptivo de la acción realizada
+         * @return \Illuminate\Http\JsonResponse 
+         * @static 
+         */ 
+        public static function response404($extra = [], $message = 'Not Found')
+        {
+                        /** @var \App\Utils\API $instance */
+                        return $instance->response404($extra, $message);
+        }
+                    /**
+         * El recurso que solicita no se encontró.
+         *
+         * @param string $message Mensaje descriptivo de la acción realizada
+         * @return \Illuminate\Http\JsonResponse 
+         * @static 
+         */ 
+        public static function response422($errors = [], $message = 'Datos incorrectos')
+        {
+                        /** @var \App\Utils\API $instance */
+                        return $instance->response422($errors, $message);
+        }
+                    /**
+         * Ocurrió un error en el servidor durante el procesamiento de la petición.
+         *
+         * @param string $message Mensaje descriptivo de la acción realizada
+         * @return \Illuminate\Http\JsonResponse 
+         * @static 
+         */ 
+        public static function response500($extra = [], $message = 'Internal Server Error')
+        {
+                        /** @var \App\Utils\API $instance */
+                        return $instance->response500($extra, $message);
+        }
+                    /**
+         * Retorna una respuesta en formato json.
+         *
+         * @param array $response Respuesta JSON
+         * @param int $status Código http, default 200
+         * @return \Illuminate\Http\Response 
+         * @static 
+         */ 
+        public static function json($response, $status = 200, $headers = [])
+        {
+                        /** @var \App\Utils\API $instance */
+                        return $instance->json($response, $status, $headers);
+        }
+                    /**
+         * Undocumented function
+         *
+         * @param array|\Illuminate\Support\Collection $data
+         * @param \Closure $formatter
+         * @static 
+         */ 
+        public static function formatResponse($data = [], $formatter = null)
+        {
+                        /** @var \App\Utils\API $instance */
+                        return $instance->formatResponse($data, $formatter);
+        }
+                    /**
+         * Pagina un listado de recursos.
+         *
+         * @param \App\Utils\Illuminate\Contracts\Pagination\LengthAwarePaginator $data Paginator
+         * @param \Closure $formatter función que se encargara del formateo de recursos
+         * @static 
+         */ 
+        public static function paginate($data, $formatter = null, $extra = null)
+        {
+                        /** @var \App\Utils\API $instance */
+                        return $instance->paginate($data, $formatter, $extra);
+        }
+                    /**
+         * Retorna la excepción en formato JSON y los datos del usuario autenticado.
+         *
+         * @param \Exception|\Throwable $e
+         * @return \Illuminate\Http\JsonResponse 
+         * @static 
+         */ 
+        public static function exceptionResponse($e)
+        {
+                        /** @var \App\Utils\API $instance */
+                        return $instance->exceptionResponse($e);
+        }
+         
+    }
+            /**
+     * 
+     *
+     */ 
+        class ArraysFacade {
+                    /**
+         * Los valores del arreglo se convierten en keys y se le asigna el valor retornado
+         * por el closure.
+         *
+         * @param array $array
+         * @param \Closure $attach
+         * @return array 
+         * @static 
+         */ 
+        public static function arrayValuesAsKeysWithData($array, $attach)
+        {
+                        /** @var \App\Utils\ArrayUtils $instance */
+                        return $instance->arrayValuesAsKeysWithData($array, $attach);
+        }
+                    /**
+         * Retorna un arreglo sin los keys especificados.
+         *
+         * @param array $array
+         * @param array $keysToOmit
+         * @return array 
+         * @static 
+         */ 
+        public static function omitKeys($array, $keysToOmit)
+        {
+                        /** @var \App\Utils\ArrayUtils $instance */
+                        return $instance->omitKeys($array, $keysToOmit);
+        }
+                    /**
+         * Retorna un arreglo con solo los elementos de los keys especificado.
+         *
+         * @param array $array
+         * @param array $keysToPreserve
+         * @return array 
+         * @static 
+         */ 
+        public static function preserveKeys($array, $keysToPreserve)
+        {
+                        /** @var \App\Utils\ArrayUtils $instance */
+                        return $instance->preserveKeys($array, $keysToPreserve);
+        }
+                    /**
+         * Retorna un arreglo sin los valores especificados.
+         *
+         * @param array $array
+         * @param array $valuesToOmit
+         * @return array 
+         * @static 
+         */ 
+        public static function omitValues($array, $valuesToOmit)
+        {
+                        /** @var \App\Utils\ArrayUtils $instance */
+                        return $instance->omitValues($array, $valuesToOmit);
+        }
+                    /**
+         * Extrae el id pivote y lo usa como key de los elementos.
+         *
+         * @param array $array
+         * @param string $pivotKey
+         * @param null|array $attachExtraData
+         * @return array 
+         * @static 
+         */ 
+        public static function formatPivotData($array, $pivotKey = 'id', $attachExtraData = null)
+        {
+                        /** @var \App\Utils\ArrayUtils $instance */
+                        return $instance->formatPivotData($array, $pivotKey, $attachExtraData);
+        }
+         
+    }
+            /**
+     * 
+     *
+     */ 
+        class LangFacade {
+                    /**
+         * Retorna el idioma actual de la aplicación.
+         * 
+         * Ej: `en` | 'es'
+         *
+         * @param boolean $fromRequest Indica si el idioma esta especificado en la petición
+         * @return string 
+         * @static 
+         */ 
+        public static function getCurrent($fromRequest = false)
+        {
+                        /** @var \App\Utils\LangUtils $instance */
+                        return $instance->getCurrent($fromRequest);
+        }
+                    /**
+         * Retorna todos los lenguajes reportados por la aplicación.
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function all()
+        {
+                        /** @var \App\Utils\LangUtils $instance */
+                        return $instance->all();
+        }
+                    /**
+         * Retorna todos los lenguajes reportados por la aplicación
+         * utilizándolo como Key en el arreglo.
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function allByKey()
+        {
+                        /** @var \App\Utils\LangUtils $instance */
+                        return $instance->allByKey();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function primaryLang()
+        {
+                        /** @var \App\Utils\LangUtils $instance */
+                        return $instance->primaryLang();
+        }
+                    /**
+         * Se encarga de generar las reglas para un input localizado.
+         *
+         * @param mixed $inputName
+         * @param mixed $rules
+         * @return array 
+         * @static 
+         */ 
+        public static function inputRulesLocalized($inputName, $rules, $langs = null)
+        {
+                        /** @var \App\Utils\LangUtils $instance */
+                        return $instance->inputRulesLocalized($inputName, $rules, $langs);
+        }
+                    /**
+         * Genera un arreglo con los nombre del input localizados.
+         * 
+         * name => [name_es, name_en]
+         *
+         * @param mixed $inputName
+         * @return array 
+         * @static 
+         */ 
+        public static function inputNameLocalized($inputName, $langs = null)
+        {
+                        /** @var \App\Utils\LangUtils $instance */
+                        return $instance->inputNameLocalized($inputName, $langs);
+        }
+                    /**
+         * Helper para combinar los inputs a localizar y los otros inputs.
+         * 
+         * `$request->only(combineInputNamesLocalized)`
+         *
+         * @param array $inputsToLocalize
+         * @param array $otherInputs
+         * @return array 
+         * @static 
+         */ 
+        public static function combineLocalizedInputNames($inputsToLocalize, $otherInputs = [], $langs = null)
+        {
+                        /** @var \App\Utils\LangUtils $instance */
+                        return $instance->combineLocalizedInputNames($inputsToLocalize, $otherInputs, $langs);
+        }
+                    /**
+         * Helper para combinar las reglas de los inputs a localizar y las otras reglas.
+         * 
+         * `Validator::validate($request, combineInputRulesLocalized(inputsRulesLocalized, otherInputRules))`
+         *
+         * @param array $inputsToLocalize
+         * @param array $otherInputsRules
+         * @return array 
+         * @static 
+         */ 
+        public static function combineLocalizedInputRules($inputsToLocalize, $otherInputsRules = [], $langs = null)
+        {
+                        /** @var \App\Utils\LangUtils $instance */
+                        return $instance->combineLocalizedInputRules($inputsToLocalize, $otherInputsRules, $langs);
+        }
+                    /**
+         * Extrae las traducciones de los campos especificados en `$keys`.
+         * 
+         * Retorna un arreglo con los siguientes indices:
+         * 
+         * ```
+         * [
+         *   // Traducciones del registro
+         *  'translations' => array,
+         *   // La traducción para el idioma por default de la aplicación
+         *  'default_translation' => array,
+         *   // La traduccion para el idioma actual de la aplicación
+         *  'current_translation' => array,
+         *   // Los campos sin las traducciones, se deben agregar manualmente después de la extracción
+         *  'data' => array,
+         * ]
+         * ```
+         *
+         * @param mixed $data
+         * @param array $keys
+         * @param array $extraData
+         * @return array 
+         * @static 
+         */ 
+        public static function extractTranslations($data, $keys = [], $extraData = [])
+        {
+                        /** @var \App\Utils\LangUtils $instance */
+                        return $instance->extractTranslations($data, $keys, $extraData);
+        }
+                    /**
+         * Retorna el nombre de la columna con el sufijo del idioma actual
+         * de la aplicación
+         *
+         * @param string $columnNameWithoutLang
+         * @return string 
+         * @static 
+         */ 
+        public static function dbColumn($columnNameWithoutLang)
+        {
+                        /** @var \App\Utils\LangUtils $instance */
+                        return $instance->dbColumn($columnNameWithoutLang);
+        }
+                    /**
+         * Se encarga de localizar un key dentro del arreglo.
+         * 
+         * Se utiliza el helper `__('dictionary.key')`.
+         *
+         * @param mixed $collection
+         * @param mixed $key Nombre del campo a localizar
+         * @param mixed $keyInDictionary Grupo en los diccionarios `ejemplo.dic`
+         * @return array 
+         * @throws \Illuminate\Contracts\Container\BindingResolutionException
+         * @static 
+         */ 
+        public static function localizeKeyInArray($collection, $key, $keyInDictionary)
+        {
+                        /** @var \App\Utils\LangUtils $instance */
+                        return $instance->localizeKeyInArray($collection, $key, $keyInDictionary);
+        }
+         
+    }
+            /**
+     * 
+     *
+     */ 
+        class StringFacade {
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function toSlug($name)
+        {
+                        /** @var \App\Utils\StringUtils $instance */
+                        return $instance->toSlug($name);
+        }
+         
+    }
+            /**
+     * 
+     *
+     */ 
+        class FilesFacade {
+                    /**
+         * Guarda un archivo en el directorio indicado.
+         *
+         * @param \Illuminate\Http\UploadedFile $file Instancia del archivo
+         * @param string $saveTo Directorio relativo a `storage/app/`
+         * @param string $fileName Nombre del archivo
+         * @return string 
+         * @static 
+         */ 
+        public static function saveFile($file, $saveTo, $fileName = null)
+        {
+                        /** @var \App\Utils\FileUtils $instance */
+                        return $instance->saveFile($file, $saveTo, $fileName);
+        }
+                    /**
+         * Se encarga de eliminar un archivo
+         *
+         * @param string $fileName Nombre del archivo
+         * @param string $path Directorio absoluto
+         * @return boolean 
+         * @static 
+         */ 
+        public static function deleteFile($fileName, $path)
+        {
+                        /** @var \App\Utils\FileUtils $instance */
+                        return $instance->deleteFile($fileName, $path);
+        }
+                    /**
+         * Se encarga de generar la URL hacia el archivo indicado.
+         *
+         * @param string $fileName Nombre del archivo
+         * @param string $path Directorio relativo a storage
+         * @return void 
+         * @static 
+         */ 
+        public static function getFileUrl($fileName, $path)
+        {
+                        /** @var \App\Utils\FileUtils $instance */
+                        $instance->getFileUrl($fileName, $path);
+        }
+                    /**
+         * Guarda imágenes en el storage. Crea la carpeta si no existe.
+         * 
+         * Comprime las imágenes y las guarda en formato .jpg.
+         * 
+         * Retorna un objeto stdClass con las propiedades:
+         * - image: imagen tamaño completo
+         * - thumb: miniatura de la imagen
+         *
+         * @param \Illuminate\Http\UploadedFile $image Instancia de la imagen subida
+         * @param string|null $name Nombre de la nueva imagen, si es null se genera un string random
+         * @param string $saveTo Ruta en donde se almacenara
+         * @param boolean $thumbnail Si es true se genera una miniatura de la imagen
+         * @return \App\Utils\Objects\ImageObject|null 
+         * @static 
+         */ 
+        public static function saveImage($image, $name, $saveTo, $thumbnail = false, $isDefaultSize = true)
+        {
+                        /** @var \App\Utils\FileUtils $instance */
+                        return $instance->saveImage($image, $name, $saveTo, $thumbnail, $isDefaultSize);
+        }
+                    /**
+         * Retorna la imagen y el thumbnail.
+         *
+         * @param string $pathname directorio de la imagen
+         * @param string $imageName nombre de la imagen
+         * @param integer $size tamaño de la imagen a buscar
+         * @return \App\Utils\Objects\ImageObject 
+         * @static 
+         */ 
+        public static function getImage($pathname, $imageName, $size = 0)
+        {
+                        /** @var \App\Utils\FileUtils $instance */
+                        return $instance->getImage($pathname, $imageName, $size);
+        }
+                    /**
+         * Utilizar cuando se requiere guardar una imagen y retornar los datos
+         * usados (directorio, size, etc).
+         *
+         * @static 
+         */ 
+        public static function storeImage($image, $path, $name = null, $thumbnail = false, $isDefaultSize = true)
+        {
+                        /** @var \App\Utils\FileUtils $instance */
+                        return $instance->storeImage($image, $path, $name, $thumbnail, $isDefaultSize);
+        }
+                    /**
+         * Eliminar una imagen y su thumbnail.
+         *
+         * @param string $pathName
+         * @param string $img
+         * @param integer $size
+         * @return void 
+         * @static 
+         */ 
+        public static function deleteImage($pathName, $img, $size = 0)
+        {
+                        /** @var \App\Utils\FileUtils $instance */
+                        $instance->deleteImage($pathName, $img, $size);
+        }
+                    /**
+         * Elimina un arreglo de imágenes.
+         *
+         * @param array $images
+         * @return void 
+         * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+         * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+         * @static 
+         */ 
+        public static function deleteImagesStored($images)
+        {
+                        /** @var \App\Utils\FileUtils $instance */
+                        $instance->deleteImagesStored($images);
+        }
+                    /**
+         * Genera el path del thumbnail.
+         * 
+         * NOTA: Solo concatena la carpeta `thumbnail` a la ruta especificada.
+         *
+         * @param string $path directorio donde se encuentra la imagen
+         * @param string $img nombre de la imagen original
+         * @param integer $size tamaño de la imagen a consultar
+         * @return string 
+         * @static 
+         */ 
+        public static function generateThumbnailPath($path, $img, $size = 0)
+        {
+                        /** @var \App\Utils\FileUtils $instance */
+                        return $instance->generateThumbnailPath($path, $img, $size);
+        }
+                    /**
+         * Genera el nombre del thumbnail de acuerdo al tamaño especificado.
+         *
+         * @param string $imageName
+         * @param integer $size
+         * @return void 
+         * @static 
+         */ 
+        public static function thumbnailName($imageName, $size = 0)
+        {
+                        /** @var \App\Utils\FileUtils $instance */
+                        $instance->thumbnailName($imageName, $size);
+        }
+                    /**
+         * Retorna la url de la imagen especificada.
+         *
+         * @param string $path
+         * @param string $imageName
+         * @param integer $size
+         * @return \stdClass 
+         * @static 
+         */ 
+        public static function generateImageUrl($path, $imageName, $size = 0)
+        {
+                        /** @var \App\Utils\FileUtils $instance */
+                        return $instance->generateImageUrl($path, $imageName, $size);
+        }
+                    /**
+         * Genera un nombre para archivo.
+         *
+         * @param string $name
+         * @param array $options
+         * @return string 
+         * @throws \Exception
+         * @static 
+         */ 
+        public static function generateName($name = 'filename', $options = [])
+        {
+                        /** @var \App\Utils\FileUtils $instance */
+                        return $instance->generateName($name, $options);
+        }
+                    /**
+         * Retorna el tipo de archivo según la extension del el nombre indicado.
+         *
+         * @param string $fileName
+         * @return string 
+         * @static 
+         */ 
+        public static function getFileType($fileName)
+        {
+                        /** @var \App\Utils\FileUtils $instance */
+                        return $instance->getFileType($fileName);
+        }
+         
+    }
+     
+}
+
     namespace Spatie\LaravelIgnition\Facades { 
             /**
      * 
@@ -20015,6 +20622,11 @@ namespace  {
             class Validator extends \Illuminate\Support\Facades\Validator {}
             class View extends \Illuminate\Support\Facades\View {}
             class CurrentUser extends \App\Providers\CurrentUser\CurrentUserFacade {}
+            class API extends \App\Providers\Utils\ApiFacade {}
+            class Arrays extends \App\Providers\Utils\ArraysFacade {}
+            class Language extends \App\Providers\Utils\LangFacade {}
+            class Strings extends \App\Providers\Utils\StringFacade {}
+            class Files extends \App\Providers\Utils\FilesFacade {}
             class Flare extends \Spatie\LaravelIgnition\Facades\Flare {}
      
 }

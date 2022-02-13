@@ -252,7 +252,7 @@ class ExercisesRepository extends Repository
                     'prefix' => $item->id,
                 ]);
 
-                $imagesToStore[] = $image = Files::storeImage($image, Directories::EXERCISES_IMAGES(), $imageName, true);
+                $imagesToStore[] = $image = Files::storeImage($image, Directories::EXERCISES_IMAGES, $imageName, true);
 
                 if ($image !== null) {
                     $item->image = $image['image'];
@@ -264,7 +264,7 @@ class ExercisesRepository extends Repository
                     'prefix' => $item->id,
                 ]);
 
-                $imagesToStore[] = $illustration = Files::storeImage($illustration, Directories::EXERCISES_ILLUSTRATIONS(), $illustrationName, true);
+                $imagesToStore[] = $illustration = Files::storeImage($illustration, Directories::EXERCISES_ILLUSTRATIONS, $illustrationName, true);
 
                 if ($image !== null) {
                     $item->illustration = $illustration['image'];
@@ -273,8 +273,8 @@ class ExercisesRepository extends Repository
 
             $item->update();
 
-            $this->updateEquipment($item, ManyToManyAction::ATTACH(), $equipment);
-            $this->updateMuscles($item, ManyToManyAction::ATTACH(), $muscles);
+            $this->updateEquipment($item, ManyToManyAction::ATTACH, $equipment);
+            $this->updateMuscles($item, ManyToManyAction::ATTACH, $muscles);
 
             DB::commit();
 
@@ -341,7 +341,7 @@ class ExercisesRepository extends Repository
                     'prefix' => $item->id,
                 ]);
 
-                $imagesToStore[] = $image = Files::storeImage($image, Directories::EXERCISES_IMAGES(), $imageName, true);
+                $imagesToStore[] = $image = Files::storeImage($image, Directories::EXERCISES_IMAGES, $imageName, true);
 
                 if ($image !== null) {
                     $item->image = $image['image'];
@@ -353,7 +353,7 @@ class ExercisesRepository extends Repository
                     'prefix' => $item->id,
                 ]);
 
-                $imagesToStore[] = $illustration = Files::storeImage($illustration, Directories::EXERCISES_ILLUSTRATIONS(), $illustrationName, true);
+                $imagesToStore[] = $illustration = Files::storeImage($illustration, Directories::EXERCISES_ILLUSTRATIONS, $illustrationName, true);
 
                 if ($image !== null) {
                     $item->illustration = $illustration['image'];
@@ -362,8 +362,8 @@ class ExercisesRepository extends Repository
 
             $item->update();
 
-            $this->updateEquipment($item, ManyToManyAction::ATTACH(), $equipment);
-            $this->updateMuscles($item, ManyToManyAction::ATTACH(), $muscles);
+            $this->updateEquipment($item, ManyToManyAction::ATTACH, $equipment);
+            $this->updateMuscles($item, ManyToManyAction::ATTACH, $muscles);
 
             DB::commit();
 

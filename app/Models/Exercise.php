@@ -35,21 +35,21 @@ class Exercise extends BaseModel
 
     public function getImageUrlAttribute()
     {
-        return Files::getFileUrl($this->image, Directories::EXERCISES_IMAGES());
+        return Files::getFileUrl($this->image, Directories::EXERCISES_IMAGES);
     }
 
     public function getImageThumbnailUrlAttribute()
     {
-        return Files::getFileUrl($this->image, Directories::EXERCISES_IMAGES_THUMBNAILS());
+        return Files::getFileUrl($this->image, Directories::EXERCISES_IMAGES_THUMBNAILS);
     }
 
     public function getIllustrationUrlAttribute()
     {
-        return Files::getFileUrl($this->illustration, Directories::EXERCISES_ILLUSTRATIONS());
+        return Files::getFileUrl($this->illustration, Directories::EXERCISES_ILLUSTRATIONS);
     }
 
     public function getIllustrationThumbnailUrlAttribute()
     {
-        return Files::getFileUrl($this->image, Directories::EXERCISES_ILLUSTRATIONS_THUMBNAILS());
+        return Files::getFileUrl($this->image, Directories::EXERCISES_ILLUSTRATIONS_THUMBNAILS);
     }
 }

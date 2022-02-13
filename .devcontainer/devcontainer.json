@@ -46,6 +46,7 @@
         "emmet.showExpandedAbbreviation": "inMarkupAndStylesheetFilesOnly",
         "editor.snippetSuggestions": "bottom",
         "intelephense.phpdoc.useFullyQualifiedNames": true,
+        "intelephense.environment.phpVersion": "8.1.0",
         // Leer solo hojas de estilos que se ocupan
         "html-css-class-completion.includeGlobPattern": "public/assets/css/app.css",
         "editor.tokenColorCustomizations": {

@@ -201,7 +201,7 @@ class PlansRepository extends Repository
             /** @var Plan */
             $item = parent::create($data);
 
-            $this->updateGoals($item, ManyToManyAction::ATTACH(), $goals);
+            $this->updateGoals($item, ManyToManyAction::ATTACH, $goals);
 
             DB::commit();
 
@@ -235,7 +235,7 @@ class PlansRepository extends Repository
             /** @var Plan */
             $item = parent::update($id, $data, $options);
 
-            $this->updateGoals($item, ManyToManyAction::SYNC(), $goals);
+            $this->updateGoals($item, ManyToManyAction::SYNC, $goals);
 
             DB::commit();
 

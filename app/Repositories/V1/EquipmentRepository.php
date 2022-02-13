@@ -196,11 +196,11 @@ class EquipmentRepository extends Repository
                 'postfix' => 'random',
             ]);
 
-            $image = Files::storeImage($image, Directories::EQUIPMENT_IMAGES(), $imageName, true);
+            $image = Files::storeImage($image, Directories::EQUIPMENT_IMAGES, $imageName, true);
 
             if ($image !== null) {
                 if ($method === 'update') {
-                    Files::deleteImage(Directories::EQUIPMENT_IMAGES(), $item->image);
+                    Files::deleteImage(Directories::EQUIPMENT_IMAGES, $item->image);
                 }
 
                 $item->image =  $image['image'];
@@ -304,7 +304,7 @@ class EquipmentRepository extends Repository
     public function delete($id, array $options = [])
     {
         $options['onDeletePermanently'] = function (Equipment $item) {
-            Files::deleteImage(Directories::EQUIPMENT_IMAGES(), $item->image);
+            Files::deleteImage(Directories::EQUIPMENT_IMAGES, $item->image);
         };
 
         return parent::delete($id, $options);

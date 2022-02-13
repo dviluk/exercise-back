@@ -73,7 +73,7 @@ class ExercisesController extends CRUDController
 
         $data = $request->muscles;
 
-        $this->repo->updateMuscles($id, ManyToManyAction::ATTACH(), $data);
+        $this->repo->updateMuscles($id, ManyToManyAction::ATTACH, $data);
 
         return API::response200();
     }
@@ -98,7 +98,7 @@ class ExercisesController extends CRUDController
 
         $data = $request->muscles;
 
-        $this->repo->updateMuscles($id, ManyToManyAction::DETACH(), $data);
+        $this->repo->updateMuscles($id, ManyToManyAction::DETACH, $data);
 
         return API::response200();
     }
@@ -114,7 +114,7 @@ class ExercisesController extends CRUDController
      */
     public function detachAllMuscles($id)
     {
-        $this->repo->updateMuscles($id, ManyToManyAction::DETACH_ALL());
+        $this->repo->updateMuscles($id, ManyToManyAction::DETACH_ALL);
 
         return API::response200();
     }
@@ -140,7 +140,7 @@ class ExercisesController extends CRUDController
 
         $data = $request->equipment;
 
-        $this->repo->updateEquipment($id, ManyToManyAction::ATTACH(), $data);
+        $this->repo->updateEquipment($id, ManyToManyAction::ATTACH, $data);
 
         return API::response200();
     }
@@ -165,7 +165,7 @@ class ExercisesController extends CRUDController
 
         $data = $request->equipment;
 
-        $this->repo->updateEquipment($id, ManyToManyAction::DETACH(), $data);
+        $this->repo->updateEquipment($id, ManyToManyAction::DETACH, $data);
 
         return API::response200();
     }
@@ -182,7 +182,7 @@ class ExercisesController extends CRUDController
      */
     public function detachAllEquipment($id)
     {
-        $this->repo->updateEquipment($id, ManyToManyAction::DETACH_ALL());
+        $this->repo->updateEquipment($id, ManyToManyAction::DETACH_ALL);
 
         return API::response200();
     }

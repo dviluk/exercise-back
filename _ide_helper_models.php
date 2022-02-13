@@ -110,6 +110,7 @@ namespace App\Models{
  * @property-read int|null $muscles_count
  * @method static \Illuminate\Database\Eloquent\Builder|Exercise newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Exercise newQuery()
+ * @method static \Illuminate\Database\Query\Builder|Exercise onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Exercise query()
  * @method static \Illuminate\Database\Eloquent\Builder|Exercise whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Exercise whereDeletedAt($value)
@@ -120,6 +121,8 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Exercise whereImage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Exercise whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Exercise whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|Exercise withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Exercise withoutTrashed()
  */
 	class Exercise extends \Eloquent {}
 }
@@ -133,16 +136,21 @@ namespace App\Models{
  * @property string|null $description
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Plan[] $exercises
  * @property-read int|null $exercises_count
  * @method static \Illuminate\Database\Eloquent\Builder|ExerciseGroup newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ExerciseGroup newQuery()
+ * @method static \Illuminate\Database\Query\Builder|ExerciseGroup onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|ExerciseGroup query()
  * @method static \Illuminate\Database\Eloquent\Builder|ExerciseGroup whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ExerciseGroup whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExerciseGroup whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExerciseGroup whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExerciseGroup whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ExerciseGroup whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|ExerciseGroup withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|ExerciseGroup withoutTrashed()
  */
 	class ExerciseGroup extends \Eloquent {}
 }
@@ -272,34 +280,6 @@ namespace App\Models{
 
 namespace App\Models{
 /**
- * App\Models\Routine
- *
- * @property string $id
- * @property string $name
- * @property string $description
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Workout[] $workouts
- * @property-read int|null $workouts_count
- * @method static \Illuminate\Database\Eloquent\Builder|Routine newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Routine newQuery()
- * @method static \Illuminate\Database\Query\Builder|Routine onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Routine query()
- * @method static \Illuminate\Database\Eloquent\Builder|Routine whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Routine whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Routine whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Routine whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Routine whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Routine whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|Routine withTrashed()
- * @method static \Illuminate\Database\Query\Builder|Routine withoutTrashed()
- */
-	class Routine extends \Eloquent {}
-}
-
-namespace App\Models{
-/**
  * App\Models\Tag
  *
  * @property string $id
@@ -388,47 +368,5 @@ namespace App\Models{
  * @method static \Illuminate\Database\Query\Builder|User withoutTrashed()
  */
 	class User extends \Eloquent {}
-}
-
-namespace App\Models{
-/**
- * App\Models\Workout
- *
- * @property string $id
- * @property string|null $workout_id
- * @property string $difficulty_id
- * @property string $cover
- * @property string $illustration
- * @property string $name
- * @property string $description
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \App\Models\Difficulty $difficulty
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Equipment[] $equipment
- * @property-read int|null $equipment_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Muscle[] $muscles
- * @property-read int|null $muscles_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Routine[] $routines
- * @property-read int|null $routines_count
- * @property-read Workout|null $workout
- * @method static \Illuminate\Database\Eloquent\Builder|Workout newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Workout newQuery()
- * @method static \Illuminate\Database\Query\Builder|Workout onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Workout query()
- * @method static \Illuminate\Database\Eloquent\Builder|Workout whereCover($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Workout whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Workout whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Workout whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Workout whereDifficultyId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Workout whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Workout whereIllustration($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Workout whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Workout whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Workout whereWorkoutId($value)
- * @method static \Illuminate\Database\Query\Builder|Workout withTrashed()
- * @method static \Illuminate\Database\Query\Builder|Workout withoutTrashed()
- */
-	class Workout extends \Eloquent {}
 }
 

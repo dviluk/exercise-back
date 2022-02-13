@@ -616,14 +616,14 @@ class Repository
             throw new Error500([], '$data is not valid');
         }
 
-        $isAttachAction = $action->equals(ManyToManyAction::ATTACH());
+        $isAttachAction = $action === ManyToManyAction::ATTACH;
 
         // Cuando es un AttachAction y no se tienen datos, se finaliza el proceso
         if ($isAttachAction && count($data) === 0) {
             return [];
         }
 
-        $isSyncAction = $action->equals(ManyToManyAction::SYNC());
+        $isSyncAction = $action === ManyToManyAction::SYNC;
 
         $isInsertAction = $isAttachAction || $isSyncAction;
 
@@ -631,7 +631,7 @@ class Repository
         $pivotKey = $options['pivotKey'] ?? 'id';
 
         // Detach solo recibe ids
-        if ($action->equals(ManyToManyAction::DETACH())) {
+        if ($action === ManyToManyAction::DETACH) {
             $isArrayOfIds = true;
         }
 
@@ -659,16 +659,16 @@ class Repository
         }
 
         switch ($action) {
-            case ManyToManyAction::ATTACH():
+            case ManyToManyAction::ATTACH:
                 $relation->attach($data);
                 break;
-            case ManyToManyAction::DETACH():
+            case ManyToManyAction::DETACH:
                 $relation->detach($data);
                 break;
-            case ManyToManyAction::DETACH_ALL():
+            case ManyToManyAction::DETACH_ALL:
                 $relation->detach();
                 break;
-            case ManyToManyAction::SYNC():
+            case ManyToManyAction::SYNC:
                 $changes = $relation->sync($data);
                 break;
             default:

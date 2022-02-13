@@ -179,7 +179,7 @@ class ExerciseGroupsRepository extends Repository
                 'isArrayOfIds' => false,
             ];
 
-            $this->updateExercises($item, $exercises, ManyToManyAction::ATTACH(), $exerciseOptions);
+            $this->updateExercises($item, $exercises, ManyToManyAction::ATTACH, $exerciseOptions);
 
             DB::commit();
 
@@ -223,7 +223,7 @@ class ExerciseGroupsRepository extends Repository
                 'isArrayOfIds' => false,
             ];
 
-            $this->updateExercises($item, $exercises, ManyToManyAction::SYNC(), $exerciseOptions);
+            $this->updateExercises($item, $exercises, ManyToManyAction::SYNC, $exerciseOptions);
 
             DB::commit();
 

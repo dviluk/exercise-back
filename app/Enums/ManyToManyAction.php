@@ -6,16 +6,11 @@ use MyCLabs\Enum\Enum;
 
 /**
  * Acciones básicas de relaciones many-to-many.
- * 
- * @method static self ATTACH()
- * @method static self DETACH()
- * @method static self DETACH_ALL()
- * @method static self SYNC()
  */
-final class ManyToManyAction extends Enum
+enum ManyToManyAction: string
 {
-    private const ATTACH = 'ATTACH';
-    private const DETACH = 'DETACH';
-    private const DETACH_ALL = 'DETACH_ALL';
-    private const SYNC = 'SYNC';
+    case ATTACH = 'ATTACH';
+    case DETACH = 'DETACH';
+    case DETACH_ALL = 'DETACH_ALL';
+    case SYNC = 'SYNC';
 }

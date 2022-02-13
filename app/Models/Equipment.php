@@ -22,11 +22,11 @@ class Equipment extends BaseModel
 
     public function getImageUrlAttribute()
     {
-        return Files::getFileUrl($this->image, Directories::EQUIPMENT_IMAGES());
+        return Files::getFileUrl($this->image, Directories::EQUIPMENT_IMAGES);
     }
 
     public function getImageThumbnailUrlAttribute()
     {
-        return Files::getFileUrl($this->image, Directories::EQUIPMENT_IMAGES_THUMBNAILS());
+        return Files::getFileUrl($this->image, Directories::EQUIPMENT_IMAGES_THUMBNAILS);
     }
 }

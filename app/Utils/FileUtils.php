@@ -3,6 +3,7 @@
 namespace App\Utils;
 
 use API;
+use App\Enums\Directories;
 use App\Utils\Objects\ImageObject;
 use Gumlet\ImageResize;
 use Gumlet\ImageResizeException;
@@ -78,11 +79,13 @@ class FileUtils
      * Se encarga de eliminar un archivo
      *
      * @param string $fileName Nombre del archivo
-     * @param string $path Directorio absoluto
+     * @param \App\Enums\Directories $path Directorio absoluto
      * @return boolean
      */
-    public function deleteFile(string $fileName, string $path)
+    public function deleteFile(string $fileName, Directories $path)
     {
+        $path = $path->value;
+
         $filePath = $path . $fileName;
         try {
             if ($this->disk->exists($filePath)) {
@@ -101,11 +104,13 @@ class FileUtils
      * Se encarga de generar la URL hacia el archivo indicado.
      *
      * @param string $fileName Nombre del archivo
-     * @param string $path Directorio relativo a storage
+     * @param \App\Enums\Directories $path Directorio relativo a storage
      * @return void
      */
-    public function getFileUrl(string $fileName, string $path)
+    public function getFileUrl(string $fileName, Directories $path)
     {
+        $path = $path->value;
+
         $url = asset('storage/' . $path . $fileName);
 
         return $url;
@@ -198,22 +203,24 @@ class FileUtils
      * Retorna la imagen y el thumbnail.
      * 
      *
-     * @param string $pathname directorio de la imagen
+     * @param \App\Enums\Directories $path directorio de la imagen
      * @param string $imageName nombre de la imagen
      * @param integer $size tamaño de la imagen a buscar
      * @return \App\Utils\Objects\ImageObject
      */
-    public function getImage(string $pathname, string $imageName, int $size = 0)
+    public function getImage(Directories $path, string $imageName, int $size = 0)
     {
         $image = null;
         $thumbnail = null;
 
+        $path = $path->value;
+
         if ($size === 0) {
-            $image = $pathname . $imageName;
-            $thumbnail = $pathname . 'thumbnails/' . $imageName;
+            $image = $path . $imageName;
+            $thumbnail = $path . 'thumbnails/' . $imageName;
         } else {
-            $image = $pathname . $imageName;
-            $thumbnail = $pathname . 'thumbnails/' . (str_replace('.jpg', "_{$size}x{$size}.jpg", $imageName));
+            $image = $path . $imageName;
+            $thumbnail = $path . 'thumbnails/' . (str_replace('.jpg', "_{$size}x{$size}.jpg", $imageName));
         }
 
         return new ImageObject($image, $thumbnail);
@@ -224,8 +231,10 @@ class FileUtils
      * usados (directorio, size, etc).
      * 
      */
-    public function storeImage(?UploadedFile $image, string $path, $name = null, bool $thumbnail = false, $isDefaultSize = true)
+    public function storeImage(?UploadedFile $image, Directories $path, $name = null, bool $thumbnail = false, $isDefaultSize = true)
     {
+        $path = $path->value;
+
         if ($image !== null) {
             $img = $this->saveImage($image, $name, $path, $thumbnail, $isDefaultSize);
 
@@ -246,15 +255,15 @@ class FileUtils
     /**
      * Eliminar una imagen y su thumbnail.
      *
-     * @param string $pathName
+     * @param \App\Enums\Directories $path
      * @param string $img
      * @param integer $size
      * @return void
      */
-    public function deleteImage(string $pathName, string $img, int $size = 0)
+    public function deleteImage(Directories $path, string $img, int $size = 0)
     {
-        $fullPath = $pathName . $img;
-        $thumbnailPath  = $this->generateThumbnailPath($pathName, $img, $size);
+        $fullPath = $path->value . $img;
+        $thumbnailPath  = $this->generateThumbnailPath($path, $img, $size);
 
         try {
             if ($this->disk->exists($fullPath)) {
@@ -299,14 +308,14 @@ class FileUtils
      * 
      * NOTA: Solo concatena la carpeta `thumbnail` a la ruta especificada.
      *
-     * @param string $path directorio donde se encuentra la imagen
+     * @param \App\Enums\Directories $path directorio donde se encuentra la imagen
      * @param string $img nombre de la imagen original
      * @param integer $size tamaño de la imagen a consultar
      * @return string
      */
-    public function generateThumbnailPath(string $path, string $img, int $size = 0)
+    public function generateThumbnailPath(Directories $path, string $img, int $size = 0)
     {
-        return $path . '/thumbnails/' . $this->thumbnailName($img, $size);
+        return $path->value . '/thumbnails/' . $this->thumbnailName($img, $size);
     }
 
     /**
@@ -326,13 +335,15 @@ class FileUtils
     /**
      * Retorna la url de la imagen especificada.
      *
-     * @param string $path
+     * @param \App\Enums\Directories $path
      * @param string $imageName
      * @param integer $size
      * @return \stdClass
      */
-    public function generateImageUrl(string $path, $imageName, $size = 0)
+    public function generateImageUrl(Directories $path, $imageName, $size = 0)
     {
+        $path = $path->value;
+
         $image = null;
         $thumbnail = null;
 
