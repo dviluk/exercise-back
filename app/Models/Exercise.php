@@ -50,6 +50,6 @@ class Exercise extends BaseModel
 
     public function getIllustrationThumbnailUrlAttribute()
     {
-        return Files::getFileUrl($this->image, Directories::EXERCISES_ILLUSTRATIONS_THUMBNAILS);
+        return Files::getFileUrl($this->illustration, Directories::EXERCISES_ILLUSTRATIONS_THUMBNAILS);
     }
 }

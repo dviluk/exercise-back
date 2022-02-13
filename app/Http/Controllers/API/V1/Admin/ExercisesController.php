@@ -41,7 +41,7 @@ class ExercisesController extends CRUDController
             ];
         }
 
-        if ($method === 'show' || $method === 'edit') {
+        if ($method === 'show') {
             $relations = [
                 'difficulty',
                 'muscles',

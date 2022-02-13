@@ -247,6 +247,8 @@ class ExercisesRepository extends Repository
             /** @var \App\Models\Exercise */
             $item = parent::create($data, $options);
 
+            // TODO: Renombrar imágenes para no tener problemas con cache
+
             if ($image !== null) {
                 $imageName = Files::generateName('image', [
                     'prefix' => $item->id,
@@ -266,7 +268,7 @@ class ExercisesRepository extends Repository
 
                 $imagesToStore[] = $illustration = Files::storeImage($illustration, Directories::EXERCISES_ILLUSTRATIONS, $illustrationName, true);
 
-                if ($image !== null) {
+                if ($illustration !== null) {
                     $item->illustration = $illustration['image'];
                 }
             }
