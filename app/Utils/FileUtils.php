@@ -127,15 +127,16 @@ class FileUtils
      * 
      * @param \Illuminate\Http\UploadedFile $image Instancia de la imagen subida
      * @param string|null $name Nombre de la nueva imagen, si es null se genera un string random
-     * @param string $saveTo Ruta en donde se almacenara
+     * @param \App\Enums\Directories $saveTo Ruta en donde se almacenara
      * @param boolean $thumbnail Si es true se genera una miniatura de la imagen
      * @return ImageObject|null
      */
-    public function saveImage($image, $name, $saveTo, $thumbnail = false, $isDefaultSize = true): ImageObject
+    public function saveImage($image, $name, Directories $path, $thumbnail = false, $isDefaultSize = true): ImageObject
     {
         $imagesStored = [];
         try {
             $tempPath = $image->path();
+            $saveTo = $path->value;
 
             // crear directorio si no existe
             $this->disk->exists($saveTo) or $this->disk->makeDirectory($saveTo);
@@ -233,8 +234,6 @@ class FileUtils
      */
     public function storeImage(?UploadedFile $image, Directories $path, $name = null, bool $thumbnail = false, $isDefaultSize = true)
     {
-        $path = $path->value;
-
         if ($image !== null) {
             $img = $this->saveImage($image, $name, $path, $thumbnail, $isDefaultSize);
 
