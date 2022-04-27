@@ -4,12 +4,10 @@ services:
     laravel:
         build:
             context: ./docker/8.1
-            dockerfile: Dockerfile
             args:
-                WWWGROUP: "${WWWGROUP}"
-                DOCKER_PROJECT_NAME: "${DOCKER_PROJECT_NAME}"
-                APP_PORT: "${APP_PORT}"
-        image: sail-8.0/app
+                DOCKER_PROJECT_NAME: ${DOCKER_PROJECT_NAME:?err}
+                APP_PORT: ${APP_PORT:?err}
+        image: "dviluk/laravel9-php81"
         ports:
             - "${APP_PORT:-80}:80"
         environment:

@@ -1,11 +1,13 @@
 {
-    "name": "Exercise",
+    "name": "exercises",
     "dockerComposeFile": "../docker-compose.yml",
+    "postCreateCommand": "composer install && php artisan key:generate --ansi && php artisan storage:link",
     "service": "laravel",
     "remoteUser": "sail",
-    "workspaceFolder": "/home/sail/exercise",
+    "workspaceFolder": "/home/sail/exercises",
     "extensions": [
         "xdebug.php-debug",
+        "formulahendry.vscode-mysql",
         "neilbrayfield.php-docblocker",
         "bmewburn.vscode-intelephense-client",
         "stef-k.laravel-goto-controller",
@@ -31,6 +33,7 @@
         "editor.fontLigatures": true,
         "editor.formatOnSave": true,
         "editor.mouseWheelZoom": true,
+        "intelephense.environment.phpVersion": "8.1.0",
         "cSpell.language": "en_us,es-es",
         "php.suggest.basic": false,
         "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -46,7 +49,6 @@
         "emmet.showExpandedAbbreviation": "inMarkupAndStylesheetFilesOnly",
         "editor.snippetSuggestions": "bottom",
         "intelephense.phpdoc.useFullyQualifiedNames": true,
-        "intelephense.environment.phpVersion": "8.1.0",
         // Leer solo hojas de estilos que se ocupan
         "html-css-class-completion.includeGlobPattern": "public/assets/css/app.css",
         "editor.tokenColorCustomizations": {
