@@ -2,23 +2,20 @@
 
 namespace App\Repositories\V1;
 
-use App\Enums\ManyToManyAction;
-use App\Models\Exercise;
 use App\Models\Plan;
-use App\Models\ExerciseGroup;
+use App\Models\Routine;
 use App\Repositories\Repository;
-use DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
-class ExerciseGroupsRepository extends Repository
+class RoutinesRepository extends Repository
 {
     /**
      * Classname del modelo principal del repositorio (Model::class).
      *
      * @var string
      */
-    protected $model = ExerciseGroup::class;
+    protected $model = Routine::class;
 
     /**
      * Contiene los keys de los posibles valores del atributo $data
@@ -32,11 +29,10 @@ class ExerciseGroupsRepository extends Repository
     public function availableInputKeys(array $data, string $method, array $options = [])
     {
         return [
-            'plan_id',
             'name',
             'description',
-            'order',
-            'exercises',
+            'plan_id',
+            'day',
         ];
     }
 
@@ -52,13 +48,10 @@ class ExerciseGroupsRepository extends Repository
     public function inputRules(Request $request, string $method, $id = null, array $options = [])
     {
         $rules = [
-            'plan_id' => 'required|exists:' . Plan::class . ',id',
             'name' => 'required',
-            'description' => 'nullable',
-            'order' => 'required',
-            'exercises' => 'nullable|array',
-            'exercises.*.id' => 'exists:' . Exercise::class . ',id',
-            'exercises.*.order' => 'nullable',
+            'description' => 'required',
+            'plan_id' => 'required|exists:' . Plan::class . ',id',
+            'day' => 'required',
         ];
 
         return $rules;
@@ -78,7 +71,7 @@ class ExerciseGroupsRepository extends Repository
     /**
      * Valida si se puede editar el registro.
      * 
-     * @param ExerciseGroup $item 
+     * @param Routine $item 
      * @param null|array $data 
      * @return void 
      */
@@ -90,7 +83,7 @@ class ExerciseGroupsRepository extends Repository
     /**
      * Valida si se puede eliminar el registro.
      * 
-     * @param ExerciseGroup $item 
+     * @param Routine $item 
      * @return void 
      */
     public function canDelete($item, array $options = [])
@@ -114,7 +107,7 @@ class ExerciseGroupsRepository extends Repository
      * Consulta todos los registros.
      *
      * @param array $options Las mismas opciones que en `Repository::prepareQuery($options)`
-     * @return \Illuminate\Support\Collection|ExerciseGroup[]
+     * @return \Illuminate\Support\Collection|Routine[]
      * @throws \Error
      */
     public function all(array $options = [])
@@ -127,7 +120,7 @@ class ExerciseGroupsRepository extends Repository
      *
      * @param int $id
      * @param array $options Las mismas opciones que en `Repository::prepareQuery($options)`
-     * @return null|ExerciseGroup
+     * @return null|Routine
      * @throws \Error
      */
     public function find($id, array $options = [])
@@ -140,7 +133,7 @@ class ExerciseGroupsRepository extends Repository
      *
      * @param int $id
      * @param array $options
-     * @return ExerciseGroup
+     * @return Routine
      */
     public function findOrFail($id, array $options = [])
     {
@@ -154,40 +147,17 @@ class ExerciseGroupsRepository extends Repository
      *
      * - (string)   `data.name`
      * - (string)   `data.description`
-     * 
-     * - Opcional
-     * 
-     * - (array)    `data.exercises`
-     *      - (string)    `exercises.*.id`
-     *      - (string)    `exercises.*.order`
+     * - (string)   `data.plan_id`
+     * - (int)      `data.day`: dia de la semana
      * 
      * @param array $options
-     * @return ExerciseGroup
+     * @return Routine
      * @throws \Exception
      * @throws \Throwable
      */
     public function create(array $data, array $options = [])
     {
-        DB::beginTransaction();
-
-        try {
-            $exercises = $data['exercises'] ?? null;
-
-            $item = parent::create($data, $options);
-
-            $exerciseOptions = [
-                'isArrayOfIds' => false,
-            ];
-
-            $this->updateExercises($item, $exercises, ManyToManyAction::ATTACH, $exerciseOptions);
-
-            DB::commit();
-
-            return $item;
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            throw $th;
-        }
+        return parent::create($data);
     }
 
     /**
@@ -198,40 +168,17 @@ class ExerciseGroupsRepository extends Repository
      *
      * - (string)   `data.name`
      * - (string)   `data.description`
-     * 
-     * - Opcional
-     * 
-     * - (array)    `data.exercises`
-     *      - (string)    `exercises.*.id`
-     *      - (string)    `exercises.*.order`
+     * - (string)   `data.plan_id`
+     * - (int)      `data.day`: dia de la semana
      * 
      * @param array $options
-     * @return ExerciseGroup
+     * @return Routine
      * @throws \Exception
      * @throws \Throwable
      */
     public function update($id, array $data, array $options = [])
     {
-        DB::beginTransaction();
-
-        try {
-            $exercises = $data['exercises'] ?? null;
-
-            $item = parent::update($id, $data, $options);
-
-            $exerciseOptions = [
-                'isArrayOfIds' => false,
-            ];
-
-            $this->updateExercises($item, $exercises, ManyToManyAction::SYNC, $exerciseOptions);
-
-            DB::commit();
-
-            return $item;
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            throw $th;
-        }
+        return parent::update($id, $data, $options);
     }
 
     /**
@@ -239,40 +186,12 @@ class ExerciseGroupsRepository extends Repository
      *
      * @param int $id
      * @param array $options
-     * @return ExerciseGroup
+     * @return Routine
      * @throws \Exception
      * @throws \Throwable
      */
     public function delete($id, array $options = [])
     {
         return parent::delete($id, $options);
-    }
-
-    /**
-     * Actualiza los ejercicios del grupo.
-     * 
-     * @param mixed $id 
-     * @param array $data 
-     * 
-     * - (string)    `data.*.id`
-     * - (string)    `data.*.order`
-     * 
-     * @param \App\Enums\ManyToManyAction $action 
-     * @param array $options 
-     * @return mixed 
-     * @throws \Error 
-     * @throws \App\Utils\API\Error404 
-     * @throws \InvalidArgumentException 
-     * @throws \App\Utils\API\Error500 
-     */
-    public function updateExercises($id, array $data, ManyToManyAction $action, array $options = [])
-    {
-        return $this->defaultUpdateManyToManyRelation($id,  $action, $data, array_merge(
-            $options,
-            [
-                'relationName' => 'exercises',
-                'relatedKey' => 'exercise_id'
-            ]
-        ));
     }
 }

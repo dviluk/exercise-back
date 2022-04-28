@@ -4,7 +4,7 @@ namespace App\Http\Resources\V1;
 
 use App\Utils\Json\JsonResource;
 
-class ExerciseGroupResource extends JsonResource
+class RoutineResource extends JsonResource
 {
     /**
      * Da formato al recurso.

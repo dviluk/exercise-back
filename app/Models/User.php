@@ -62,4 +62,9 @@ class User extends Authenticatable
     {
         return $this->morphMany(Sanctum::$personalAccessTokenModel, 'tokenable', "tokenable_type", "tokenable_id");
     }
+
+    public function plans()
+    {
+        return $this->hasMany(UserPlan::class);
+    }
 }

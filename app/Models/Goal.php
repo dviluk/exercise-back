@@ -8,5 +8,6 @@ class Goal extends BaseModel
 
     protected $fillable = [
         'name',
+        'description',
     ];
 }

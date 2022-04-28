@@ -10,6 +10,7 @@ use App\Enums\ManyToManyAction;
 use App\Models\Difficulty;
 use App\Models\Equipment;
 use App\Models\Muscle;
+use App\Models\Tag;
 use App\Repositories\Traits\RepositoryUtils;
 use Arrays;
 use Files;
@@ -55,6 +56,7 @@ class ExercisesRepository extends Repository
     {
         $inputs = [
             'difficulty_id',
+            'tag_id',
             'image',
             'illustration',
             'name',
@@ -80,6 +82,7 @@ class ExercisesRepository extends Repository
     {
         $rules = [
             'difficulty_id' => 'required|exists:' . Difficulty::class . ',id',
+            'tag_id' => 'required|exists:' . Tag::class . ',id',
             'image' => 'required|image',
             'illustration' => 'required|image',
             'name' => 'required|unique:' . Exercise::class . ',name',
@@ -210,6 +213,7 @@ class ExercisesRepository extends Repository
      * @param array $data Contiene los campos a insertar en la tabla del modelo.
      * 
      * - (string)   `data.difficulty_id`: 
+     * - (string)   `data.tag_id`: 
      * - (file)     `data.image`: 
      * - (file)     `data.illustration`: 
      * - (string)   `data.name`: 
@@ -293,6 +297,7 @@ class ExercisesRepository extends Repository
      * Actualiza un registro.
      *
      * - (string)   `data.difficulty_id`: 
+     * - (string)   `data.tag_id`: 
      * - (file)     `data.image`: 
      * - (file)     `data.illustration`: 
      * - (string)   `data.name`: 

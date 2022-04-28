@@ -15,6 +15,7 @@ class Exercise extends BaseModel
         'illustration',
         'name',
         'description',
+        'tag_id',
     ];
 
     public function difficulty()

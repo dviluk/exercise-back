@@ -2,37 +2,22 @@
 
 namespace App\Repositories\V1;
 
-use App\Models\Tag;
+use App\Models\Plan;
+use App\Models\User;
+use App\Models\UserPlan;
+use App\Models\Workout;
 use App\Repositories\Repository;
-use App\Repositories\Traits\RepositoryUtils;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
-class TagsRepository extends Repository
+class WorkoutsRepository extends Repository
 {
-    use RepositoryUtils;
-
     /**
      * Classname del modelo principal del repositorio (Model::class).
      *
      * @var string
      */
-    protected $model = Tag::class;
-
-    /**
-     * Indica por que columna ordenar los resultados.
-     * 
-     * ['column', 'asc'|'desc', ?'localized']
-     * 
-     * (opcional) Si se indica `localized` se buscara la columna en la db según el idioma actual de 
-     * la aplicación.
-     * 
-     * Ej. Se pasa la columna `product`, se ordenara por la columna `product_en` si la
-     * aplicación esta en ingles.
-     * 
-     * @var array
-     */
-    protected $orderBy = ['name', 'asc'];
+    protected $model = Workout::class;
 
     /**
      * Contiene los keys de los posibles valores del atributo $data
@@ -45,16 +30,16 @@ class TagsRepository extends Repository
      */
     public function availableInputKeys(array $data, string $method, array $options = [])
     {
-        $inputs = [
-            'name',
-            'description',
+        return [
+            'user_id',
+            'user_plan_id',
+            'workout_id',
+            'plan_id',
+            'sets',
+            'repetitions',
+            'rest',
+            'time',
         ];
-
-        if (array_key_exists('customId', $options)) {
-            $inputs[] = 'id';
-        }
-
-        return $inputs;
     }
 
     /**
@@ -69,13 +54,15 @@ class TagsRepository extends Repository
     public function inputRules(Request $request, string $method, $id = null, array $options = [])
     {
         $rules = [
-            'name' => 'required|unique:' . Tag::class . ',name',
-            'description' => 'required',
+            'user_id' => 'required|exists:' . User::class . ',id',
+            'user_plan_id' => 'required|exists:' . UserPlan::class . ',id',
+            'workout_id' => 'required|exists:' . Workout::class . ',id',
+            'plan_id' => 'required|exists:' . Plan::class . ',id',
+            'sets' => 'required|numeric',
+            'repetitions' => 'required|numeric',
+            'rest' => 'required|numeric',
+            'time' => 'required|numeric',
         ];
-
-        if ($method === 'update') {
-            $rules['name'] = $rules['name'] . ',' . $id . ',id';
-        }
 
         return $rules;
     }
@@ -94,7 +81,7 @@ class TagsRepository extends Repository
     /**
      * Valida si se puede editar el registro.
      * 
-     * @param Tag $item 
+     * @param Workout $item 
      * @param null|array $data 
      * @return void 
      */
@@ -106,7 +93,7 @@ class TagsRepository extends Repository
     /**
      * Valida si se puede eliminar el registro.
      * 
-     * @param Tag $item 
+     * @param Workout $item 
      * @return void 
      */
     public function canDelete($item, array $options = [])
@@ -123,14 +110,6 @@ class TagsRepository extends Repository
      */
     public function handleOptions(Builder $builder, array $options = [])
     {
-        $params = $options['params'] ?? null;
-
-        if ($params !== null) {
-            $this->handleSearchInput($builder, $params['name']);
-            $this->handleDateInput($builder, $params['created_at'], true);
-            $this->handleDateInput($builder, $params['updated_at'], true);
-        }
-
         return $builder;
     }
 
@@ -138,7 +117,7 @@ class TagsRepository extends Repository
      * Consulta todos los registros.
      *
      * @param array $options Las mismas opciones que en `Repository::prepareQuery($options)`
-     * @return \Illuminate\Support\Collection|Tag[]
+     * @return \Illuminate\Support\Collection|Workout[]
      * @throws \Error
      */
     public function all(array $options = [])
@@ -151,7 +130,7 @@ class TagsRepository extends Repository
      *
      * @param int $id
      * @param array $options Las mismas opciones que en `Repository::prepareQuery($options)`
-     * @return null|Tag
+     * @return null|Workout
      * @throws \Error
      */
     public function find($id, array $options = [])
@@ -164,7 +143,7 @@ class TagsRepository extends Repository
      *
      * @param int $id
      * @param array $options
-     * @return Tag
+     * @return Workout
      */
     public function findOrFail($id, array $options = [])
     {
@@ -175,17 +154,25 @@ class TagsRepository extends Repository
      * Crea un nuevo registro.
      *
      * @param array $data Contiene los campos a insertar en la tabla del modelo.
+     *
+     * - (string)   `data.exercise_id`
+     * - (string)   `data.difficulty_id`
+     * - (string)   `data.plan_id`
+     * - (string)   `data.routine_id`
+     * - (int)      `data.sets`
+     * - (int)      `data.rest`
+     * - (int)      `data.order`
+     * - (int)      `data.min_repetitions`
+     * - (int)      `data.max_repetitions`
      * 
-     * - (string)   `data.name`
-     * - (string)   `data.description`
-     * 
-     * @return Tag
+     * @param array $options
+     * @return Workout
      * @throws \Exception
      * @throws \Throwable
      */
     public function create(array $data, array $options = [])
     {
-        return parent::create($data, $options);
+        return parent::create($data);
     }
 
     /**
@@ -193,12 +180,19 @@ class TagsRepository extends Repository
      *
      * @param int $id
      * @param array $data Contiene los campos a actualizar.
-     * 
-     * - (string)   `data.name`
-     * - (string)   `data.description`
+     *
+     * - (string)   `data.exercise_id`
+     * - (string)   `data.difficulty_id`
+     * - (string)   `data.plan_id`
+     * - (string)   `data.routine_id`
+     * - (int)      `data.sets`
+     * - (int)      `data.rest`
+     * - (int)      `data.order`
+     * - (int)      `data.min_repetitions`
+     * - (int)      `data.max_repetitions`
      * 
      * @param array $options
-     * @return Tag
+     * @return Workout
      * @throws \Exception
      * @throws \Throwable
      */
@@ -212,7 +206,7 @@ class TagsRepository extends Repository
      *
      * @param int $id
      * @param array $options
-     * @return Tag
+     * @return Workout
      * @throws \Exception
      * @throws \Throwable
      */

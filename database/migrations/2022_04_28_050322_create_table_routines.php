@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTablePlanExercise extends Migration
+class CreateTableRoutines extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,16 @@ class CreateTablePlanExercise extends Migration
      */
     public function up()
     {
-        Schema::create('plan_exercise', function (Blueprint $table) {
+        Schema::create('routines', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('name');
+            $table->text('description');
             $table->uuid('plan_id');
-            $table->uuid('exercise_id');
-            $table->string('order')->default('00000');
+            $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('plan_id')
                 ->references('id')->on('plans')
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-
-            $table->foreign('exercise_id')
-                ->references('id')->on('exercises')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
         });
@@ -37,6 +35,6 @@ class CreateTablePlanExercise extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('plan_exercise');
+        Schema::dropIfExists('routines');
     }
 }

@@ -32,7 +32,7 @@ class TagsSeeder extends Seeder
             $exists = $repo->query()->where('name', $item['name'])->exists();
 
             if (!$exists) {
-                $created = $repo->create($item);
+                $created = $repo->create($item, ['customId' => true]);
                 $this->command->info("{$created->name} creado.");
             }
         }

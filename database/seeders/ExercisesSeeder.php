@@ -24,6 +24,7 @@ class ExercisesSeeder extends Seeder
         $items = [
             [
                 'name' => 'Dumbbell Flat Bench Press',
+                'tag_id' => 'tags_1',
                 'description' => '
                 Lie on a flat bench holding a dumbbell in each hand with an overhand grip.
                 Start by holding the dumbbells slightly wider than shoulder width apart above your shoulders. Your palms should be facing forward.

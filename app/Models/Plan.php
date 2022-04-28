@@ -12,25 +12,26 @@ class Plan extends BaseModel
         'introduction',
         'description',
         'instructions',
+        'weeks',
     ];
 
     public function difficulty()
     {
-        return $this->belongsTo(Difficulty::class, 'difficulty_id');
+        return $this->belongsTo(Difficulty::class);
     }
 
     public function goals()
     {
-        return $this->belongsToMany(Goal::class, 'plan_goal', 'plan_id', 'goal_id');
+        return $this->belongsToMany(Goal::class, 'plan_goal');
     }
 
-    public function exerciseGroups()
+    public function routines()
     {
-        return $this->belongsToMany(ExerciseGroup::class, 'plan_group', 'plan_id', 'group_id');
+        return $this->hasMany(Routine::class);
     }
 
-    public function exercises()
+    public function workouts()
     {
-        return $this->belongsToMany(Exercise::class, 'plan_exercise', 'plan_id', 'exercise_id');
+        return $this->hasMany(Workout::class);
     }
 }

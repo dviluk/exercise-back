@@ -3,22 +3,22 @@
 namespace App\Http\Controllers\API\V1\Admin;
 
 use App\Http\Controllers\CRUDController;
-use App\Http\Resources\V1\ExerciseGroupResource;
-use App\Repositories\V1\ExerciseGroupsRepository;
+use App\Http\Resources\V1\WorkoutResource;
+use App\Repositories\V1\WorkoutsRepository;
 
-class ExerciseGroupsController extends CRUDController
+class WorkoutsController extends CRUDController
 {
     /**
      * Instancia del repositorio.
      * 
-     * @var \App\Repositories\V1\ExerciseGroupsRepository
+     * @var \App\Repositories\V1\WorkoutsRepository
      */
-    protected $repo = ExerciseGroupsRepository::class;
+    protected $repo = WorkoutsRepository::class;
 
     /**
-     * @var \App\Http\Resources\V1\ExerciseGroupResource
+     * @var \App\Http\Resources\V1\WorkoutResource
      */
-    protected $resource = ExerciseGroupResource::class;
+    protected $resource = WorkoutResource::class;
 
     /**
      * Indica las relaciones que se cargaran según el método indicado.

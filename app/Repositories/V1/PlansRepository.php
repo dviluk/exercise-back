@@ -56,6 +56,7 @@ class PlansRepository extends Repository
             'introduction',
             'description',
             'instructions',
+            'weeks',
         ];
 
         return $inputs;
@@ -78,6 +79,7 @@ class PlansRepository extends Repository
             'introduction' => 'required',
             'description' => 'required',
             'instructions' => 'required',
+            'weeks' => 'required|numeric',
             'goals' => 'required|array',
             'goals.*' => 'exists:' . Goal::class . ',id',
         ];
@@ -184,6 +186,14 @@ class PlansRepository extends Repository
      * Crea un nuevo registro.
      *
      * @param array $data Contiene los campos a insertar en la tabla del modelo.
+     * 
+     * - (string)   `data.difficulty_id`
+     * - (string)   `data.name`
+     * - (string)   `data.description`
+     * - (string)   `data.introduction`
+     * - (string)   `data.instructions`
+     * - (int)      `data.weeks`
+     * 
      * @return Plan
      * @throws \Exception
      * @throws \Throwable
@@ -217,6 +227,14 @@ class PlansRepository extends Repository
      *
      * @param int $id
      * @param array $data Contiene los campos a actualizar.
+     * 
+     * - (string)   `data.difficulty_id`
+     * - (string)   `data.name`
+     * - (string)   `data.description`
+     * - (string)   `data.introduction`
+     * - (string)   `data.instructions`
+     * - (int)      `data.weeks`
+     * 
      * @param array $options
      * @return Plan
      * @throws \Exception

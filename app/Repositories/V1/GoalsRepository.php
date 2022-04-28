@@ -47,6 +47,7 @@ class GoalsRepository extends Repository
     {
         $inputs = [
             'name',
+            'description',
         ];
 
         if (array_key_exists('customId', $options)) {
@@ -176,6 +177,7 @@ class GoalsRepository extends Repository
      * @param array $data Contiene los campos a insertar en la tabla del modelo.
      * 
      * - (string)   `data.name`
+     * - (string)   `data.description`
      * 
      * @return Goal
      * @throws \Exception
@@ -193,6 +195,7 @@ class GoalsRepository extends Repository
      * @param array $data Contiene los campos a actualizar.
      * 
      * - (string)   `data.name`
+     * - (string)   `data.description`
      * 
      * @param array $options
      * @return Goal

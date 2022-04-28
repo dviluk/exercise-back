@@ -16,6 +16,7 @@ class CreateTableExercises extends Migration
         Schema::create('exercises', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('difficulty_id');
+            $table->uuid('tag_id');
             // Es la imagen que se mostrara
             $table->string('illustration');
             $table->string('image');
@@ -26,6 +27,11 @@ class CreateTableExercises extends Migration
 
             $table->foreign('difficulty_id')
                 ->references('id')->on('difficulties')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
+            $table->foreign('tag_id')
+                ->references('id')->on('tags')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
         });
@@ -40,7 +46,6 @@ class CreateTableExercises extends Migration
     {
         Schema::dropIfExists('exercise_equipment');
         Schema::dropIfExists('exercise_muscle');
-        Schema::dropIfExists('exercise_group');
         Schema::dropIfExists('exercises');
     }
 }

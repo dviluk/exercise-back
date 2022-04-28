@@ -2,37 +2,21 @@
 
 namespace App\Repositories\V1;
 
-use App\Models\Tag;
+use App\Models\Plan;
+use App\Models\User;
+use App\Models\UserPlan;
 use App\Repositories\Repository;
-use App\Repositories\Traits\RepositoryUtils;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
-class TagsRepository extends Repository
+class UserPlansRepository extends Repository
 {
-    use RepositoryUtils;
-
     /**
      * Classname del modelo principal del repositorio (Model::class).
      *
      * @var string
      */
-    protected $model = Tag::class;
-
-    /**
-     * Indica por que columna ordenar los resultados.
-     * 
-     * ['column', 'asc'|'desc', ?'localized']
-     * 
-     * (opcional) Si se indica `localized` se buscara la columna en la db según el idioma actual de 
-     * la aplicación.
-     * 
-     * Ej. Se pasa la columna `product`, se ordenara por la columna `product_en` si la
-     * aplicación esta en ingles.
-     * 
-     * @var array
-     */
-    protected $orderBy = ['name', 'asc'];
+    protected $model = UserPlan::class;
 
     /**
      * Contiene los keys de los posibles valores del atributo $data
@@ -45,16 +29,13 @@ class TagsRepository extends Repository
      */
     public function availableInputKeys(array $data, string $method, array $options = [])
     {
-        $inputs = [
-            'name',
-            'description',
+        return [
+            'user_id',
+            'plan_id',
+            'progress',
+            'start_date',
+            'end_date',
         ];
-
-        if (array_key_exists('customId', $options)) {
-            $inputs[] = 'id';
-        }
-
-        return $inputs;
     }
 
     /**
@@ -69,13 +50,12 @@ class TagsRepository extends Repository
     public function inputRules(Request $request, string $method, $id = null, array $options = [])
     {
         $rules = [
-            'name' => 'required|unique:' . Tag::class . ',name',
-            'description' => 'required',
+            'user_id' => 'required|exists:' . User::class . ',id',
+            'plan_id' => 'required|exists:' . Plan::class . ',id',
+            'progress' => 'required|numeric',
+            'start_date' => 'required',
+            'end_date' => 'required',
         ];
-
-        if ($method === 'update') {
-            $rules['name'] = $rules['name'] . ',' . $id . ',id';
-        }
 
         return $rules;
     }
@@ -94,7 +74,7 @@ class TagsRepository extends Repository
     /**
      * Valida si se puede editar el registro.
      * 
-     * @param Tag $item 
+     * @param UserPlan $item 
      * @param null|array $data 
      * @return void 
      */
@@ -106,7 +86,7 @@ class TagsRepository extends Repository
     /**
      * Valida si se puede eliminar el registro.
      * 
-     * @param Tag $item 
+     * @param UserPlan $item 
      * @return void 
      */
     public function canDelete($item, array $options = [])
@@ -123,14 +103,6 @@ class TagsRepository extends Repository
      */
     public function handleOptions(Builder $builder, array $options = [])
     {
-        $params = $options['params'] ?? null;
-
-        if ($params !== null) {
-            $this->handleSearchInput($builder, $params['name']);
-            $this->handleDateInput($builder, $params['created_at'], true);
-            $this->handleDateInput($builder, $params['updated_at'], true);
-        }
-
         return $builder;
     }
 
@@ -138,7 +110,7 @@ class TagsRepository extends Repository
      * Consulta todos los registros.
      *
      * @param array $options Las mismas opciones que en `Repository::prepareQuery($options)`
-     * @return \Illuminate\Support\Collection|Tag[]
+     * @return \Illuminate\Support\Collection|UserPlan[]
      * @throws \Error
      */
     public function all(array $options = [])
@@ -151,7 +123,7 @@ class TagsRepository extends Repository
      *
      * @param int $id
      * @param array $options Las mismas opciones que en `Repository::prepareQuery($options)`
-     * @return null|Tag
+     * @return null|UserPlan
      * @throws \Error
      */
     public function find($id, array $options = [])
@@ -164,7 +136,7 @@ class TagsRepository extends Repository
      *
      * @param int $id
      * @param array $options
-     * @return Tag
+     * @return UserPlan
      */
     public function findOrFail($id, array $options = [])
     {
@@ -175,17 +147,21 @@ class TagsRepository extends Repository
      * Crea un nuevo registro.
      *
      * @param array $data Contiene los campos a insertar en la tabla del modelo.
+     *
+     * - (string)   `data.user_id`
+     * - (string)   `data.plan_id`
+     * - (int)      `data.progress`
+     * - (string)   `data.start_date`
+     * - (string)   `data.end_date`
      * 
-     * - (string)   `data.name`
-     * - (string)   `data.description`
-     * 
-     * @return Tag
+     * @param array $options
+     * @return UserPlan
      * @throws \Exception
      * @throws \Throwable
      */
     public function create(array $data, array $options = [])
     {
-        return parent::create($data, $options);
+        return parent::create($data);
     }
 
     /**
@@ -193,12 +169,15 @@ class TagsRepository extends Repository
      *
      * @param int $id
      * @param array $data Contiene los campos a actualizar.
-     * 
-     * - (string)   `data.name`
-     * - (string)   `data.description`
+     *
+     * - (string)   `data.user_id`
+     * - (string)   `data.plan_id`
+     * - (int)      `data.progress`
+     * - (string)   `data.start_date`
+     * - (string)   `data.end_date`
      * 
      * @param array $options
-     * @return Tag
+     * @return UserPlan
      * @throws \Exception
      * @throws \Throwable
      */
@@ -212,7 +191,7 @@ class TagsRepository extends Repository
      *
      * @param int $id
      * @param array $options
-     * @return Tag
+     * @return UserPlan
      * @throws \Exception
      * @throws \Throwable
      */
