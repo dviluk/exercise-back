@@ -55,9 +55,12 @@ class PlansRepository extends Repository
             'difficulty_id',
             'introduction',
             'description',
-            'instructions',
             'weeks',
         ];
+
+        if (array_key_exists('customId', $options)) {
+            $inputs[] = 'id';
+        }
 
         return $inputs;
     }
@@ -78,7 +81,6 @@ class PlansRepository extends Repository
             'difficulty_id' => 'required|exists:' . Difficulty::class . ',id',
             'introduction' => 'required',
             'description' => 'required',
-            'instructions' => 'required',
             'weeks' => 'required|numeric',
             'goals' => 'required|array',
             'goals.*' => 'exists:' . Goal::class . ',id',
@@ -209,7 +211,7 @@ class PlansRepository extends Repository
             ]);
 
             /** @var Plan */
-            $item = parent::create($data);
+            $item = parent::create($data, $options);
 
             $this->updateGoals($item, ManyToManyAction::ATTACH, $goals);
 

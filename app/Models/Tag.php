@@ -13,6 +13,6 @@ class Tag extends BaseModel
 
     public function exercises()
     {
-        return $this->hasMany(Exercise::class, 'difficulty_id');
+        return $this->hasMany(Exercise::class, 'tag_id');
     }
 }

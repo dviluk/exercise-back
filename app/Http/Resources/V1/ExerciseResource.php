@@ -29,6 +29,10 @@ class ExerciseResource extends JsonResource
             'deleted_at' => $resource->deleted_at,
         ];
 
+        if (isset($options['editing'])) {
+            return $format;
+        }
+
         if ($resource->relationLoaded('difficulty')) {
             $format['difficulty'] = $resource->difficulty->name;
         }

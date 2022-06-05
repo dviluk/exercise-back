@@ -17,6 +17,7 @@ class CreateTableWorkoutLogs extends Migration
             $table->uuid('id')->primary();
             $table->uuid('user_id');
             $table->uuid('workout_id');
+            $table->uuid('routine_id');
             $table->uuid('plan_id');
             $table->integer('sets');
             $table->integer('repetitions');
@@ -27,6 +28,11 @@ class CreateTableWorkoutLogs extends Migration
 
             $table->foreign('user_id')
                 ->references('id')->on('users')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+
+            $table->foreign('routine_id')
+                ->references('id')->on('routines')
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
 

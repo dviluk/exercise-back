@@ -66,6 +66,10 @@ class ExercisesRepository extends Repository
             'equipment',
         ];
 
+        if (array_key_exists('customId', $options)) {
+            $inputs[] = 'id';
+        }
+
         return $inputs;
     }
 
@@ -231,7 +235,7 @@ class ExercisesRepository extends Repository
 
         DB::beginTransaction();
         try {
-            $data = Arrays::preserveKeys($data, $this->availableInputKeys($data, 'create'));
+            $data = Arrays::preserveKeys($data, $this->availableInputKeys($data, 'create', $options));
 
             $muscles = $data['muscles'] ?? [];
             $equipment = $data['equipment'] ?? [];

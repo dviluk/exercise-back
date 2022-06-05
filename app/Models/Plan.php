@@ -11,7 +11,6 @@ class Plan extends BaseModel
         'difficulty_id',
         'introduction',
         'description',
-        'instructions',
         'weeks',
     ];
 

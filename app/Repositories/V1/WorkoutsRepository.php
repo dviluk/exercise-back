@@ -2,7 +2,10 @@
 
 namespace App\Repositories\V1;
 
+use App\Models\Difficulty;
+use App\Models\Exercise;
 use App\Models\Plan;
+use App\Models\Routine;
 use App\Models\User;
 use App\Models\UserPlan;
 use App\Models\Workout;
@@ -30,16 +33,24 @@ class WorkoutsRepository extends Repository
      */
     public function availableInputKeys(array $data, string $method, array $options = [])
     {
-        return [
+        $inputs = [
             'user_id',
-            'user_plan_id',
-            'workout_id',
+            'exercise_id',
+            'difficulty_id',
+            'routine_id',
             'plan_id',
             'sets',
-            'repetitions',
             'rest',
-            'time',
+            'order',
+            'min_repetitions',
+            'max_repetitions',
         ];
+
+        if (array_key_exists('customId', $options)) {
+            $inputs[] = 'id';
+        }
+
+        return $inputs;
     }
 
     /**
@@ -54,14 +65,15 @@ class WorkoutsRepository extends Repository
     public function inputRules(Request $request, string $method, $id = null, array $options = [])
     {
         $rules = [
-            'user_id' => 'required|exists:' . User::class . ',id',
-            'user_plan_id' => 'required|exists:' . UserPlan::class . ',id',
-            'workout_id' => 'required|exists:' . Workout::class . ',id',
+            'exercise_id' => 'required|exists:' . Exercise::class . ',id',
+            'difficulty_id' => 'required|exists:' . Difficulty::class . ',id',
             'plan_id' => 'required|exists:' . Plan::class . ',id',
+            'routine_id' => 'required|exists:' . Routine::class . ',id',
             'sets' => 'required|numeric',
-            'repetitions' => 'required|numeric',
             'rest' => 'required|numeric',
-            'time' => 'required|numeric',
+            'order' => 'required|numeric',
+            'min_repetitions' => 'required|numeric',
+            'max_repetitions' => 'required|numeric',
         ];
 
         return $rules;
@@ -172,7 +184,7 @@ class WorkoutsRepository extends Repository
      */
     public function create(array $data, array $options = [])
     {
-        return parent::create($data);
+        return parent::create($data, $options);
     }
 
     /**

@@ -9,7 +9,7 @@ class UnitResource extends JsonResource
     /**
      * Da formato al recurso.
      * 
-     * @param mixed $resource 
+     * @param \App\Models\Unit $resource 
      * @param array $options 
      * @return array 
      */
@@ -18,7 +18,6 @@ class UnitResource extends JsonResource
         return [
             'id' => $resource->id,
             'name' => $resource->name,
-            'description' => $resource->description,
             'created_at' => $resource->created_at,
             'updated_at' => $resource->updated_at,
             'deleted_at' => $resource->deleted_at,

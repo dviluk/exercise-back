@@ -8,6 +8,7 @@ use Illuminate\Container\Container;
 use Illuminate\Database\Seeder;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
+use Mmo\Faker\PicsumProvider;
 
 class EquipmentSeeder extends Seeder
 {
@@ -20,6 +21,7 @@ class EquipmentSeeder extends Seeder
     {
         /** @var Faker */
         $faker = Container::getInstance()->make(Faker::class);
+        $faker->addProvider(new PicsumProvider($faker));
 
         $items = [
             [
@@ -119,7 +121,7 @@ class EquipmentSeeder extends Seeder
             $exists = $repo->query()->where('name', $item['name'])->exists();
 
             if (!$exists) {
-                $image = $faker->image($tempDir, 400, 400, null, true, false, $item['name']);
+                $image = $faker->picsum($tempDir, 400, 400, null, true, false, $item['name']);
                 $image = explode('/', $image);
                 $image = last($image);
 

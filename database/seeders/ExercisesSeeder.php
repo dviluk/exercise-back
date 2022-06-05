@@ -8,6 +8,7 @@ use Illuminate\Container\Container;
 use Illuminate\Database\Seeder;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
+use Mmo\Faker\PicsumProvider;
 
 class ExercisesSeeder extends Seeder
 {
@@ -20,9 +21,11 @@ class ExercisesSeeder extends Seeder
     {
         /** @var Faker */
         $faker = Container::getInstance()->make(Faker::class);
+        $faker->addProvider(new PicsumProvider($faker));
 
         $items = [
             [
+                'id' => 'exercises_1',
                 'name' => 'Dumbbell Flat Bench Press',
                 'tag_id' => 'tags_1',
                 'description' => '
@@ -83,19 +86,19 @@ class ExercisesSeeder extends Seeder
             $exists = $repo->query()->where('name', $item['name'])->exists();
 
             if (!$exists) {
-                $image = $faker->image($tempDir, 400, 400, null, true, false, $item['name']);
+                $image = $faker->picsum($tempDir, 400, 400, null, true, false, $item['name']);
                 $image = explode('/', $image);
                 $image = last($image);
 
                 $item['image'] = new UploadedFile($tempDir . '/' . $image, $image);
 
-                $illustration = $faker->image($tempDir, 400, 400, null, true, false, $item['name']);
+                $illustration = $faker->picsum($tempDir, 400, 400, null, true, false, $item['name']);
                 $illustration = explode('/', $illustration);
                 $illustration = last($illustration);
 
                 $item['illustration'] = new UploadedFile($tempDir . '/' . $illustration, $illustration);
 
-                $created = $repo->create($item);
+                $created = $repo->create($item, ['customId' => true]);
 
                 $this->command->info("{$created->name} creado!.");
             }

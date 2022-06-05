@@ -19,7 +19,6 @@ class CreateTablePlans extends Migration
             $table->uuid('difficulty_id');
             $table->string('introduction');
             $table->string('description');
-            $table->string('instructions');
             $table->integer('weeks');
             $table->timestamps();
             $table->softDeletes();

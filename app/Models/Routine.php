@@ -18,4 +18,9 @@ class Routine extends BaseModel
     {
         return $this->belongsToMany(Workout::class, 'workout_routine');
     }
+
+    public function plan()
+    {
+        return $this->belongsTo(Plan::class);
+    }
 }

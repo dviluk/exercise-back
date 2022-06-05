@@ -9,7 +9,6 @@ class WorkoutLog extends BaseModel
     protected $fillable = [
         'id',
         'user_id',
-        'user_plan_id',
         'workout_id',
         'plan_id',
         'sets',
@@ -21,11 +20,6 @@ class WorkoutLog extends BaseModel
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function userPlan()
-    {
-        return $this->belongsTo(UserPlan::class);
     }
 
     public function workout()
