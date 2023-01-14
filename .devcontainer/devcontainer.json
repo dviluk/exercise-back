@@ -26,7 +26,8 @@
         "k--kato.intellij-idea-keybindings",
         "rangav.vscode-thunder-client",
         "formulahendry.auto-close-tag",
-        "formulahendry.auto-rename-tag"
+        "formulahendry.auto-rename-tag",
+        "qvtec3.swagger-php-annotation"
     ],
     "settings": {
         "terminal.integrated.defaultProfile.linux": "bash",

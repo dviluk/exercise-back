@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "darkaonline/l5-swagger": "^8.3",
         "fruitcake/laravel-cors": "^2.0.5",
         "goldspecdigital/laravel-eloquent-uuid": "^9.0",
         "gumlet/php-image-resize": "^2.0",
